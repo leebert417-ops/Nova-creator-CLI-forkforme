@@ -1,93 +1,66 @@
-# Nova creator CLI
+# Nova Creator CLI - 专业级 SillyTavern 角色卡创作工作流
 
+这是一个为 SillyTavern 设计的、专业且高效的角色卡（Character Card）创作工作流。
 
+它将大型语言模型（LLM）的强大能力与现代代码编辑器（如 VS Code）的开发优势相结合，让你摆脱在不同网页间反复切换的繁琐，在一个统一的环境中，以工程化的方式，创造出具有动态变量（MVU）、分阶段人设、特殊事件等高级功能的复杂角色。
 
-## Getting started
+## 核心理念
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+传统的角色卡制作方式，往往涉及大量的复制粘贴和手动调整。本工作流旨在通过以下方式革新这一过程：
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+*   **编辑器即一切**：将 AI 创作能力直接集成到 VS Code 或 Cursor 中，享受代码高亮、文件管理和终端操作的便利。
+*   **AI 辅助创作**：利用模板和自然语言指令，让 AI（Gemini/Claude）完成大部分的文本生成和代码编写工作，例如背景故事、人物设定、开场白、JSON/YAML 变量文件等。
+*   **版本控制**：引入 Git 对创作过程进行版本管理。你可以随时提交（commit）一个满意的版本，也可以轻松回溯到任何历史状态，让创作过程不再“一步错，步步错”。
+*   **模板化与自动化**：通过预设的模板文件，结构化地生成角色卡的各个部分，并为实现 MVU 等高级功能提供支持。
 
-## Add your files
+## 前置要求
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+在开始之前，请确保你已安装并配置好以下环境：
 
-```
-cd existing_repo
-git remote add origin https://gitgud.io/Mooneet/nova-creator-cli.git
-git branch -M master
-git push -uf origin master
-```
+1.  **代码编辑器**:
+    *   [Visual Studio Code](https://code.visualstudio.com/) (推荐) 或 [Cursor](https://cursor.sh/)
 
-## Integrate with your tools
+2.  **CLI 工具** (任选其一):
+    *   [Gemini CLI](https://github.com/google-gemini/gemini-cli)
+    *   [Claude Code](https://www.anthropic.com/claude-code)
 
-- [ ] [Set up project integrations](https://gitgud.io/Mooneet/nova-creator-cli/-/settings/integrations)
+3.  **VS Code 扩展** (根据你选择的 CLI 工具安装):
+    *   **Gemini 用户**: 安装 `Gemini CLI Companion`
+    *   **Claude 用户**: 安装 `Claude Code for VS Code`
+    *   **推荐安装**: `XYAML Support` (用于 `.xyaml` 文件高亮)
 
-## Collaborate with your team
+## 工作流程概览
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+### 第一阶段：基础角色构筑
 
-## Test and Deploy
+1.  **初始化项目**:
+    *   在 VS Code 中打开本项目 (`nova-creator-cli`)。
+    *   打开终端，激活 Gemini 或 Claude CLI 工具。
+    *   使用 AI 指令创建一个新的文件夹，用于存放你的角色卡文件。
 
-Use the built-in continuous integration in GitLab.
+2.  **编写核心设定**:
+    *   **世界观/背景**: 使用 `@` 符号引用 `Z.1.背景模板.md`，通过自然语言描述你想要的背景故事，AI 将自动生成并填充文件。
+    *   **角色人设**: 同样地，使用 `Z.2.人物模板.md` 来生成角色的核心设定。
+    *   **开场白**: 使用 `Z.3.开场白.md` 生成与用户的第一次对话。这是后续设置动态变量的基础。
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+3.  **迭代与保存**:
+    *   对 AI 生成的内容进行检查和修改，可以直接在编辑器里手动修改，也可以选中不满意的部分，让 AI 重新生成。
+    *   在每个阶段完成后，强烈建议使用 `git commit` 保存你的进度。
 
-***
+### 第二阶段：实现高级功能 (MVU & 分阶段人设)
 
-# Editing this README
+1.  **设计并生成变量**:
+    *   构思你的角色需要哪些动态变量（如好感度、饥饿值、情绪等）。
+    *   让 AI 阅读 MVU 的相关说明文档，然后根据你的需求生成初始化变量文件 (`initial_variables.json` 或 `.yaml`)。
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+2.  **定义变量更新规则**:
+    *   向 AI 描述在什么情况下，这些变量应该如何变化（增加、减少、改变状态）。AI 会据此生成变量的更新规则文件。
 
-## Suggestions for a good README
+3.  **设计分阶段人设**:
+    *   根据变量的不同状态，设计角色的不同性格和行为模式。例如，当“好感度”低于10时是一种表现，高于90时则是另一种表现。
+    *   AI 将根据你的设计，生成包含不同阶段人设描述的文件。
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+4.  **整合与测试**:
+    *   将所有生成的文件（角色设定、世界观、开场白、变量、更新规则等）整合，并导入 SillyTavern 中进行测试和调试。
 
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+通过以上流程，你将得到一个内容丰富、交互性强的完整角色卡。
