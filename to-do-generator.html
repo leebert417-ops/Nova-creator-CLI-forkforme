@@ -107,7 +107,7 @@
         }
 
         textarea {
-            min-height: 120px;
+            min-height: 200px;
             resize: vertical;
         }
 
@@ -280,10 +280,6 @@
                     <label for="workType">作品类型</label>
                     <input type="text" id="workType" placeholder="例如：废土科幻、奇幻冒险、现代都市、历史架空">
                 </div>
-                <div class="form-group">
-                    <label for="workGoal">创作目标</label>
-                    <textarea id="workGoal" placeholder="例如：用于 SillyTavern 的角色扮演、制作互动小说等"></textarea>
-                </div>
             </div>
 
             <!-- 第一步：世界观构建 -->
@@ -308,20 +304,44 @@
                         <label>背景类型（可多选）</label>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" id="bgType1" value="世界观/国家设定">
-                                <label for="bgType1">世界观/国家设定</label>
+                                <input type="checkbox" id="bgType1" value="世界观设定">
+                                <label for="bgType1">世界观设定</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="bgType2" value="游戏系统设定">
-                                <label for="bgType2">游戏系统设定</label>
+                                <input type="checkbox" id="bgType2" value="国家/城市/地点设定">
+                                <label for="bgType2">国家/城市/地点设定</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="bgType3" value="魔法系统设定">
-                                <label for="bgType3">魔法系统设定</label>
+                                <input type="checkbox" id="bgType3" value="历史背景设定">
+                                <label for="bgType3">历史背景设定</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="bgType4" value="角色背景设定">
-                                <label for="bgType4">角色背景设定</label>
+                                <input type="checkbox" id="bgType4" value="社会结构设定">
+                                <label for="bgType4">社会结构设定</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bgType5" value="魔法系统设定">
+                                <label for="bgType5">魔法系统设定</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bgType6" value="科技系统设定">
+                                <label for="bgType6">科技系统设定</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bgType7" value="游戏规则设定">
+                                <label for="bgType7">游戏规则设定</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bgType8" value="势力组织设定">
+                                <label for="bgType8">势力组织设定</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bgType9" value="经济贸易设定">
+                                <label for="bgType9">经济贸易设定</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bgType10" value="文化风俗设定">
+                                <label for="bgType10">文化风俗设定</label>
                             </div>
                         </div>
                     </div>
@@ -618,7 +638,6 @@
             md += '## 基本信息\n\n';
             md += `**作品名称：** ${document.getElementById('workName').value || '_[待填写]_'}\n\n`;
             md += `**作品类型：** ${document.getElementById('workType').value || '_[待填写]_'}\n\n`;
-            md += `**创作目标：** ${document.getElementById('workGoal').value || '_[待填写]_'}\n\n`;
             md += '---\n\n';
 
             // 第一步：世界观构建
@@ -632,10 +651,16 @@
             md += `- [${noBg ? 'x' : ' '}] 不需要\n\n`;
 
             md += '**背景类型：**\n';
-            md += `- [${document.getElementById('bgType1').checked ? 'x' : ' '}] 世界观/国家设定\n`;
-            md += `- [${document.getElementById('bgType2').checked ? 'x' : ' '}] 游戏系统设定\n`;
-            md += `- [${document.getElementById('bgType3').checked ? 'x' : ' '}] 魔法系统设定\n`;
-            md += `- [${document.getElementById('bgType4').checked ? 'x' : ' '}] 角色背景设定\n\n`;
+            md += `- [${document.getElementById('bgType1').checked ? 'x' : ' '}] 世界观设定\n`;
+            md += `- [${document.getElementById('bgType2').checked ? 'x' : ' '}] 国家/城市/地点设定\n`;
+            md += `- [${document.getElementById('bgType3').checked ? 'x' : ' '}] 历史背景设定\n`;
+            md += `- [${document.getElementById('bgType4').checked ? 'x' : ' '}] 社会结构设定\n`;
+            md += `- [${document.getElementById('bgType5').checked ? 'x' : ' '}] 魔法系统设定\n`;
+            md += `- [${document.getElementById('bgType6').checked ? 'x' : ' '}] 科技系统设定\n`;
+            md += `- [${document.getElementById('bgType7').checked ? 'x' : ' '}] 游戏规则设定\n`;
+            md += `- [${document.getElementById('bgType8').checked ? 'x' : ' '}] 势力组织设定\n`;
+            md += `- [${document.getElementById('bgType9').checked ? 'x' : ' '}] 经济贸易设定\n`;
+            md += `- [${document.getElementById('bgType10').checked ? 'x' : ' '}] 文化风俗设定\n\n`;
 
             const bgOutline = document.getElementById('backgroundOutline').value;
             md += '**背景设定大纲：**\n';
