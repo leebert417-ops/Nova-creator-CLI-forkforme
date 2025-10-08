@@ -630,8 +630,14 @@
 
         // 生成 Markdown
         function generateMarkdown() {
+            const workName = document.getElementById('workName').value || '作品名称';
             let md = '# 角色卡创作任务清单\n\n';
             md += '> 💡 **使用说明**：此文件由任务清单生成器自动生成，在创作过程中可以随时更新和调整。\n\n';
+            md += '> 📁 **文件组织建议**：\n';
+            md += `> - 请在 \`作品\` 目录下创建一个名为 \`${workName}\` 的文件夹\n`;
+            md += '> - 将此 to-do.md 文件放入该文件夹\n';
+            md += '> - 后续创作的所有相关文件（背景设定、角色卡、开场白等）也都放入此文件夹中\n';
+            md += '> - 这样可以保持项目文件的整洁和有序\n\n';
             md += '---\n\n';
 
             // 基本信息
