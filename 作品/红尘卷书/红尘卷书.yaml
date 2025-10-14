@@ -63,8 +63,17 @@ character_book:
 
     # 玩家角色
     - comment: "玩家角色_{{user}}"
-      content: 作品/红尘卷书/玩家角色_{{user}}.xyaml
+      content: 作品/红尘卷书/玩家角色_乞丐{{user}}.xyaml
       enabled: true
+      position: before_char
+      insertion_order: 4
+      depth: 4
+      role: 0
+
+    # 玩家角色
+    - comment: "玩家角色_{{user}}"
+      content: 作品/红尘卷书/玩家角色_剑客{{user}}.xyaml
+      enabled: false
       position: before_char
       insertion_order: 4
       depth: 4
