@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>晴美 状态</title>
+    <style>
+        :root {
+            --primary-color: #ff6b9d;
+            --secondary-color: #c44569;
+            --accent-color: #ffa07a;
+            --soft-pink: #ffe6f0;
+            --text-dark: #3a3a3a;
+            --text-light: #7a7a7a;
+            --border-color: #ffc0cb;
+            --shadow-color: rgba(255, 107, 157, 0.3);
+            --background-gradient: linear-gradient(135deg, #fff0f5 0%, #ffffff 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            background: var(--background-gradient);
+        }
+
+        .status-card {
+            max-width: 650px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            background: white;
+            border: 3px solid var(--border-color);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::before {
+            content: '♡';
+            position: absolute;
+            font-size: 100px;
+            color: rgba(255, 255, 255, 0.1);
+            top: -30px;
+            left: -20px;
+            transform: rotate(-20deg);
+        }
+
+        .card-header::after {
+            content: '♡';
+            position: absolute;
+            font-size: 80px;
+            color: rgba(255, 255, 255, 0.1);
+            bottom: -25px;
+            right: -15px;
+            transform: rotate(20deg);
+        }
+
+        .card-header h2 {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+            letter-spacing: 2px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .world-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .world-info-item {
+            background: linear-gradient(135deg, var(--soft-pink) 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 16px;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .world-info-label {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .world-info-value {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--text-dark);
+            word-break: break-word;
+        }
+
+        .info-section {
+            margin-bottom: 16px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 2px solid var(--border-color);
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%);
+            padding: 14px 18px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        .section-content {
+            padding: 18px;
+        }
+
+        .info-item {
+            margin-bottom: 14px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 6px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-label::before {
+            content: '▸';
+            margin-right: 6px;
+            font-size: 16px;
+        }
+
+        .info-value {
+            color: var(--text-dark);
+            font-size: 14px;
+            line-height: 1.7;
+            padding: 8px 12px;
+            background: var(--soft-pink);
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-color);
+            word-break: break-word;
+        }
+
+        @media (max-width: 480px) {
+            .card-header h2 {
+                font-size: 24px;
+            }
+            .world-info {
+                grid-template-columns: 1fr;
+            }
+            .section-title {
+                font-size: 15px;
+            }
+            .info-label {
+                font-size: 13px;
+            }
+            .info-value {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="status-card" id="status-card">
+    <div class="card-header">
+        <h2>♡ 晴美的状态 ♡</h2>
+    </div>
+
+    <div class="card-body">
+        <div class="world-info">
+            <div class="world-info-item">
+                <div class="world-info-label">当前时间</div>
+                <div class="world-info-value" id="world-time">--</div>
+            </div>
+            <div class="world-info-item">
+                <div class="world-info-label">当前地点</div>
+                <div class="world-info-value" id="world-location">--</div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="section-title">当前着装</div>
+            <div class="section-content">
+                <div class="info-value" id="harumi-outfit">--</div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="section-title">当前姿势</div>
+            <div class="section-content">
+                <div class="info-value" id="harumi-pose">--</div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="section-title">内心想法</div>
+            <div class="section-content">
+                <div class="info-value" id="harumi-thoughts">--</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function SafeGetValue(obj, path, defaultValue = "N/A") {
+        let keys = Array.isArray(path) ? path : path.split('.');
+        let current = obj;
+        for (let i = 0; i < keys.length; i++) {
+            if (current === undefined || current === null || typeof current !== 'object' || !current.hasOwnProperty(keys[i])) {
+                return defaultValue;
+            }
+            current = current[keys[i]];
+        }
+        if (current === undefined || current === null) {
+            return defaultValue;
+        }
+        if (Array.isArray(current)) {
+            if (current.length > 0) {
+                const actualValue = current[0];
+                if (typeof actualValue === 'boolean') {
+                    return actualValue;
+                }
+                return String(actualValue);
+            } else {
+                return defaultValue;
+            }
+        }
+        if (typeof current === 'boolean') {
+            return current;
+        }
+        return String(current);
+    }
+
+    async function initDisplay() {
+        try {
+            const messages = await getChatMessages(getCurrentMessageId());
+            if (!messages || messages.length === 0 || !messages[0].data) {
+                document.getElementById('status-card').innerHTML = "<p style='color:red; padding:20px; text-align:center;'>无法加载状态数据</p>";
+                return;
+            }
+            const gameData = messages[0].data;
+            const characterData = gameData.stat_data;
+            if (!characterData) {
+                document.getElementById('status-card').innerHTML = "<p style='color:red; padding:20px; text-align:center;'>状态数据缺失</p>";
+                return;
+            }
+
+            const worldTimeElement = document.getElementById('world-time');
+            const worldLocationElement = document.getElementById('world-location');
+            const harumiOutfitElement = document.getElementById('harumi-outfit');
+            const harumiPoseElement = document.getElementById('harumi-pose');
+            const harumiThoughtsElement = document.getElementById('harumi-thoughts');
+
+            if (characterData.hasOwnProperty('世界')) {
+                const worldTime = SafeGetValue(characterData, '世界.当前时间', '--');
+                const worldLocation = SafeGetValue(characterData, '世界.当前地点', '--');
+
+                if (worldTimeElement) worldTimeElement.innerText = worldTime;
+                if (worldLocationElement) worldLocationElement.innerText = worldLocation;
+            }
+
+            if (characterData.hasOwnProperty('晴美')) {
+                const outfit = SafeGetValue(characterData, '晴美.当前着装', '--');
+                const pose = SafeGetValue(characterData, '晴美.当前姿势', '--');
+                const thoughts = SafeGetValue(characterData, '晴美.当前想法', '--');
+
+                if (harumiOutfitElement) harumiOutfitElement.innerText = outfit;
+                if (harumiPoseElement) harumiPoseElement.innerText = pose;
+                if (harumiThoughtsElement) harumiThoughtsElement.innerText = thoughts;
+            }
+        } catch (error) {
+            document.getElementById('status-card').innerHTML = `<p style='color:red; padding:20px; text-align:center;'>加载出错: ${error.message}</p>`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initDisplay);
+</script>
+</body>
+</html>
