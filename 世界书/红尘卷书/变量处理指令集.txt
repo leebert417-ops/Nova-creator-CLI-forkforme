@@ -6,7 +6,8 @@ rule:
   - You should output the update analysis in the end of the next reply.
   - Use `_.set('path', 'old', 'new')` for direct assignment or state changes.
   - Use `_.add('path', value)` to add or subtract a numerical value.
-  - Use `_.insert('path', 'item_or_key', 'value')` to add an element to an array or object.
+  - Use `_.insert('path', 'item')` to add an element to an array.
+  - Use `_.insert('path', 'key', 'value')` to add a property to an object.
   - Use `_.remove('path', 'item_or_key')` to remove an element from an array or object.
   - When using _.set with objects or arrays, do NOT wrap them in quotes - use direct object/array literals (e.g., {key: value} or [item1, item2])
   - When using _.set with strings, DO wrap them in quotes (e.g., 'string value')
@@ -49,3 +50,4 @@ example: |-
     _.set('世界.当前时间', '皇历368年 3月15日 星期五 晚上 07:30', '皇历368年 3月15日 星期五 晚上 08:00'); // 时间流逝,对话和战斗经过了约半小时
     _.set('世界.当前地点', '清河镇外破庙', '破庙外空地'); // 将歹徒赶出破庙后的新位置
     _.add('凌若雪.好感度', 8); // {{user}}出手相救,凌若雪非常感激
+    _.insert('江湖传记', '【雨夜救美】：某个雨夜在破庙中救下被歹徒追杀的神秘女子'); // 侠义之举传开
