@@ -405,10 +405,6 @@
                     <span class="info-label">关系状态</span>
                     <span class="info-value" id="lingruoxue-relationship">N/A</span>
                 </div>
-                <div class="info-card">
-                    <span class="info-label">是否同行</span>
-                    <span class="info-value" id="lingruoxue-inteam">未入队</span>
-                </div>
             </div>
         </div>
         <div class="panel-block">
@@ -450,10 +446,6 @@
                     <span class="info-label">关系状态</span>
                     <span class="info-value" id="murongzhi-relationship">N/A</span>
                 </div>
-                <div class="info-card">
-                    <span class="info-label">是否同行</span>
-                    <span class="info-value" id="murongzhi-inteam">未入队</span>
-                </div>
             </div>
         </div>
         <div class="panel-block">
@@ -494,10 +486,6 @@
                 <div class="info-card">
                     <span class="info-label">关系状态</span>
                     <span class="info-value" id="lanlinger-relationship">N/A</span>
-                </div>
-                <div class="info-card">
-                    <span class="info-label">是否同行</span>
-                    <span class="info-value" id="lanlinger-inteam">未入队</span>
                 </div>
             </div>
         </div>
@@ -660,8 +648,6 @@
                 );
                 const lrxRelation = document.getElementById('lingruoxue-relationship');
                 if (lrxRelation) lrxRelation.innerText = SafeGetValue(characterData, '凌若雪.关系状态');
-                const lrxInteam = document.getElementById('lingruoxue-inteam');
-                if (lrxInteam) lrxInteam.innerText = SafeGetValue(characterData, '凌若雪.是否相遇') === true || SafeGetValue(characterData, '凌若雪.是否相遇') === 'true' ? '已入队' : '未入队';
                 const lrxOutfit = document.getElementById('lingruoxue-outfit');
                 if (lrxOutfit) lrxOutfit.innerText = SafeGetValue(characterData, '凌若雪.当前着装');
                 const lrxPose = document.getElementById('lingruoxue-pose');
@@ -684,8 +670,6 @@
                 );
                 const mrzRelation = document.getElementById('murongzhi-relationship');
                 if (mrzRelation) mrzRelation.innerText = SafeGetValue(characterData, '慕容芷.关系状态');
-                const mrzInteam = document.getElementById('murongzhi-inteam');
-                if (mrzInteam) mrzInteam.innerText = SafeGetValue(characterData, '慕容芷.是否相遇') === true || SafeGetValue(characterData, '慕容芷.是否相遇') === 'true' ? '已入队' : '未入队';
                 const mrzOutfit = document.getElementById('murongzhi-outfit');
                 if (mrzOutfit) mrzOutfit.innerText = SafeGetValue(characterData, '慕容芷.当前着装');
                 const mrzPose = document.getElementById('murongzhi-pose');
@@ -708,8 +692,6 @@
                 );
                 const lleRelation = document.getElementById('lanlinger-relationship');
                 if (lleRelation) lleRelation.innerText = SafeGetValue(characterData, '蓝灵儿.关系状态');
-                const lleInteam = document.getElementById('lanlinger-inteam');
-                if (lleInteam) lleInteam.innerText = SafeGetValue(characterData, '蓝灵儿.是否相遇') === true || SafeGetValue(characterData, '蓝灵儿.是否相遇') === 'true' ? '已入队' : '未入队';
                 const lleOutfit = document.getElementById('lanlinger-outfit');
                 if (lleOutfit) lleOutfit.innerText = SafeGetValue(characterData, '蓝灵儿.当前着装');
                 const llePose = document.getElementById('lanlinger-pose');
