@@ -15,7 +15,6 @@
             --text-secondary: #6e4f6a;
             --border-soft: rgba(255, 174, 211, 0.45);
             --shadow-soft: rgba(224, 83, 151, 0.25);
-            --good-color: #ffedf6;
             --meter-start: #ffd4e7;
             --meter-end: #ff649d;
         }
@@ -29,7 +28,7 @@
         body {
             font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', Arial, sans-serif;
             padding: 20px clamp(16px, 4vw, 48px);
-            background: linear-gradient(135deg, #fff2f8 0%, #ffe7f3 48%, #ffffff 100%);
+            background: transparent;
             color: var(--text-primary);
         }
 
@@ -40,18 +39,8 @@
             background: linear-gradient(150deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 237, 246, 0.92) 100%);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 40px var(--shadow-soft);
             border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(12px);
-        }
-
-        .status-hud::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at top right, rgba(255, 120, 185, 0.24), transparent 55%),
-                        radial-gradient(circle at bottom left, rgba(255, 198, 219, 0.32), transparent 60%);
-            pointer-events: none;
         }
 
         .hud-frame {
@@ -116,52 +105,90 @@
             letter-spacing: 0.5px;
         }
 
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: clamp(12px, 2vw, 18px);
+        .hud-meta-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: clamp(12px, 3vw, 24px);
+            padding: 12px 16px;
+            border-radius: 14px;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0.45), rgba(255, 174, 211, 0.25));
+            border: 1px solid rgba(255, 174, 211, 0.35);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
         }
 
-        .stat-block {
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            min-width: 0;
+        }
+
+        .meta-label {
+            font-size: 12px;
+            letter-spacing: 1.4px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            font-size: clamp(14px, 2.4vw, 16px);
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .meta-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(255, 174, 211, 0.45);
+        }
+
+        .status-list {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            padding: 12px 14px;
+            gap: clamp(12px, 2vw, 16px);
+            padding: clamp(12px, 2vw, 16px) 0;
+        }
+
+        .status-item {
+            display: grid;
+            grid-template-columns: minmax(90px, 120px) 1fr;
+            align-items: start;
+            gap: 16px;
+            padding: 12px 16px;
             border-radius: 14px;
             background: var(--surface-color);
             border: 1px solid var(--border-soft);
             position: relative;
         }
 
-        .stat-block::after {
+        .status-item::before {
             content: "";
             position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            border: 1px solid rgba(255, 255, 255, 0.45);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            padding: 1px;
-            pointer-events: none;
+            left: 14px;
+            top: 16px;
+            width: 4px;
+            height: calc(100% - 32px);
+            min-height: 20px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, rgba(255, 120, 185, 0.8), rgba(255, 200, 222, 0.5));
         }
 
-        .stat-label {
-            font-size: 12px;
+        .status-label {
+            font-size: 13px;
+            letter-spacing: 1.2px;
             color: var(--text-secondary);
-            letter-spacing: 1.6px;
             text-transform: uppercase;
+            padding-left: 12px;
         }
 
-        .stat-value {
+        .status-value {
             font-size: clamp(14px, 2.4vw, 16px);
             font-weight: 600;
             color: var(--text-primary);
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        .stat-block.thoughts {
-            grid-column: 1 / -1;
+            line-height: 1.5;
         }
 
         .love-meter {
@@ -177,7 +204,7 @@
 
         .love-meter-header {
             display: flex;
-            align-items: baseline;
+            align-items: center;
             gap: 12px;
             justify-content: space-between;
         }
@@ -213,6 +240,51 @@
             box-shadow: 0 0 12px rgba(255, 120, 185, 0.4);
         }
 
+        .love-meter-stats {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .love-meter-beat {
+            width: clamp(60px, 12vw, 100px);
+            height: clamp(18px, 3vw, 26px);
+            pointer-events: none;
+        }
+
+        .love-meter-beat svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .love-meter-beat path {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.95);
+            stroke-width: 3;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+            stroke-dasharray: 190;
+            stroke-dashoffset: 190;
+            animation: beat-trace 2.4s linear infinite;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+        }
+
+        @keyframes beat-trace {
+            0% {
+                stroke-dashoffset: 190;
+                opacity: 0.25;
+            }
+            40% {
+                opacity: 1;
+            }
+            100% {
+                stroke-dashoffset: -190;
+                opacity: 0.25;
+            }
+        }
+
         .hud-footer {
             display: flex;
             flex-wrap: wrap;
@@ -223,17 +295,33 @@
             opacity: 0.7;
         }
 
-        @media (max-width: 540px) {
-            body {
-                padding: 16px;
+        @media (max-width: 640px) {
+            .hud-meta-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 12px;
             }
 
-            .hud-header {
-                gap: 12px;
+            .meta-divider {
+                display: none;
             }
 
-            .hud-status-chip {
-                padding: 6px 12px;
+            .meta-value {
+                white-space: normal;
+            }
+
+            .status-item {
+                grid-template-columns: 1fr;
+                padding-left: 28px;
+            }
+
+            .status-item::before {
+                left: 12px;
+            }
+
+            .status-label {
+                padding-left: 0;
+                letter-spacing: 1px;
             }
 
             .love-meter-value {
@@ -248,40 +336,51 @@
         <div class="hud-header">
             <div class="hud-title">
                 <span>恋爱同步频道</span>
-                <h1>晴美状态面板</h1>
+                <h1>恋爱面板</h1>
             </div>
             <div class="hud-status-chip">
                 <span>ACTIVE LINK</span>
             </div>
         </div>
 
-        <div class="stat-grid">
-            <div class="stat-block">
-                <div class="stat-label">世界时间</div>
-                <div class="stat-value" id="world-time">--</div>
+        <div class="hud-meta-bar">
+            <div class="meta-item">
+                <div class="meta-label">世界时间</div>
+                <div class="meta-value" id="world-time">--</div>
             </div>
-            <div class="stat-block">
-                <div class="stat-label">当前地点</div>
-                <div class="stat-value" id="world-location">--</div>
+            <div class="meta-divider"></div>
+            <div class="meta-item">
+                <div class="meta-label">当前地点</div>
+                <div class="meta-value" id="world-location">--</div>
             </div>
-            <div class="stat-block">
-                <div class="stat-label">当前着装</div>
-                <div class="stat-value" id="harumi-outfit">--</div>
+        </div>
+
+        <div class="status-list">
+            <div class="status-item">
+                <div class="status-label">当前着装</div>
+                <div class="status-value" id="harumi-outfit">--</div>
             </div>
-            <div class="stat-block">
-                <div class="stat-label">当前姿势</div>
-                <div class="stat-value" id="harumi-pose">--</div>
+            <div class="status-item">
+                <div class="status-label">当前姿势</div>
+                <div class="status-value" id="harumi-pose">--</div>
             </div>
-            <div class="stat-block thoughts">
-                <div class="stat-label">内心想法</div>
-                <div class="stat-value" id="harumi-thoughts">--</div>
+            <div class="status-item">
+                <div class="status-label">内心想法</div>
+                <div class="status-value" id="harumi-thoughts">--</div>
             </div>
         </div>
 
         <div class="love-meter">
             <div class="love-meter-header">
                 <div class="love-meter-title">晴美 · 心动值</div>
-                <div class="love-meter-value" id="harumi-heart-value">--</div>
+                <div class="love-meter-stats">
+                    <div class="love-meter-value" id="harumi-heart-value">--</div>
+                    <div class="love-meter-beat" aria-hidden="true">
+                        <svg viewBox="0 0 240 40" preserveAspectRatio="none">
+                            <path d="M0 20 L12 20 L20 8 L28 32 L36 20 L58 20 L66 10 L74 30 L82 20 L102 20 L110 6 L118 34 L126 20 L148 20 L156 10 L164 30 L172 20 L192 20 L200 8 L208 32 L216 20 L240 20"></path>
+                        </svg>
+                    </div>
+                </div>
             </div>
             <div class="meter-bar">
                 <div class="meter-fill" id="harumi-heart-fill"></div>
@@ -289,7 +388,7 @@
         </div>
 
         <div class="hud-footer">
-            <div>状态数据自动更新 · 恋爱主题 HUD</div>
+            <div>恋爱数据监视中 · 恋爱主题 HUD</div>
             <div>© HeartLink Interface</div>
         </div>
     </div>
