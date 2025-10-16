@@ -52,12 +52,21 @@ character_book:
       depth: 1
       role: 0
 
-    # 变量处理指令集
+    # 晴美分阶段设定
     - comment: "晴美分阶段设定"
       content: 作品/租借女友租到了白发红瞳的可爱妈妈！？/晴美分阶段设定.xyaml
       enabled: true
       position: at_depth
       insertion_order: 3
+      depth: 1
+      role: 0
+
+    # 动态世界内容
+    - comment: "动态世界内容"
+      content: 作品/租借女友租到了白发红瞳的可爱妈妈！？/动态世界内容.xyaml
+      enabled: true
+      position: at_depth
+      insertion_order: 4
       depth: 1
       role: 0
 
