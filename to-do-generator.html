@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>角色卡创作任务清单生成器</title>
     <style>
+:root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --surface: #ffffff;
+            --surface-muted: rgba(255, 255, 255, 0.82);
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: rgba(99, 102, 241, 0.18);
+            --shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+            --radius-lg: 20px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,259 +24,281 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: radial-gradient(circle at 20% 20%, #e6e9ff 0%, #f7f7ff 45%, #eef2ff 100%);
+            color: var(--text);
             min-height: 100vh;
-            padding: 20px;
+            padding: 40px 24px 64px;
+            line-height: 1.5;
+            scroll-behavior: smooth;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
+        a {
+            color: inherit;
+            text-decoration: none;
         }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            opacity: 0.9;
-            font-size: 1.1em;
-        }
-
-        .content {
-            padding: 40px;
-        }
-
-        .section {
-            margin-bottom: 40px;
-            padding: 30px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            border-left: 4px solid #667eea;
-        }
-
-        .section h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            display: flex;
-            align-items: center;
-        }
-
-        .section h2::before {
-            content: "▸";
-            margin-right: 10px;
-            color: #667eea;
-        }
-
-        .section h3 {
-            color: #555;
-            margin: 20px 0 15px 0;
-            font-size: 1.2em;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-        }
-
-        input[type="text"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s;
+        button {
             font-family: inherit;
         }
 
-        input[type="text"]:focus,
-        textarea:focus,
-        select:focus {
-            outline: none;
-            border-color: #667eea;
+        .app-shell {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            gap: 32px;
+            align-items: flex-start;
         }
 
-        textarea {
-            min-height: 200px;
-            max-height: none;
-            resize: vertical;
-        }
-
-        .checkbox-group {
+        .sidebar {
+            position: sticky;
+            top: 32px;
+            width: 264px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 24px;
+            padding: 28px;
+            background: var(--surface-muted);
+            border: 1px solid rgba(99, 102, 241, 0.12);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 18px 45px rgba(99, 102, 241, 0.14);
+            backdrop-filter: blur(12px);
         }
 
-        .checkbox-item {
+        .sidebar-header {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar-logo {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--primary-dark);
+            letter-spacing: 0.02em;
+        }
+
+        .sidebar-intro {
+            font-size: 0.9em;
+            color: var(--text-light);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-link {
             display: flex;
             align-items: center;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-
-        .checkbox-item:hover {
-            background: #f0f0f0;
-        }
-
-        .checkbox-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: inherit;
             cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
         }
 
-        .checkbox-item label {
-            margin: 0;
-            cursor: pointer;
-            flex: 1;
+        .nav-link:hover {
+            border-color: rgba(99, 102, 241, 0.28);
+            background: rgba(99, 102, 241, 0.08);
         }
 
-        .character-card {
-            background: white;
-            padding: 20px;
+        .nav-link.active {
+            border-color: rgba(99, 102, 241, 0.55);
+            background: rgba(99, 102, 241, 0.18);
+            color: var(--primary-dark);
+            box-shadow: 0 12px 28px rgba(99, 102, 241, 0.18);
+        }
+
+        .nav-index {
+            width: 28px;
+            height: 28px;
             border-radius: 8px;
-            margin-bottom: 15px;
-            border: 2px solid #e0e0e0;
-        }
-
-        .variable-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border: 2px solid #e0e0e0;
-            display: flex;
-            gap: 10px;
-            align-items: stretch;
-        }
-
-        .variable-card .form-group {
-            margin-bottom: 0;
-            flex: 1;
-        }
-
-        .variable-card .variable-name-group {
-            flex: 0 0 200px;
-        }
-
-        .variable-card input[type="text"] {
-            width: 100%;
-            white-space: normal;
-            overflow: visible;
-            text-overflow: clip;
-        }
-
-        .variable-card .remove-btn-container {
-            display: flex;
-            align-items: flex-end;
-            padding-bottom: 0;
-        }
-
-        .variable-card textarea {
-            min-height: 60px;
-        }
-
-        .add-character-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background 0.3s;
-            margin-top: 10px;
-        }
-
-        .add-character-btn:hover {
-            background: #5568d3;
-        }
-
-        .add-character-btn:hover[style*="background: #28a745"] {
-            background: #218838 !important;
-        }
-
-        .add-character-btn:hover[style*="background: #dc3545"] {
-            background: #c82333 !important;
-        }
-
-        .remove-character-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9em;
-            margin-top: 10px;
-        }
-
-        .remove-character-btn:hover {
-            background: #c82333;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 0.8em;
             font-weight: 600;
+            background: rgba(99, 102, 241, 0.12);
+            color: var(--primary-dark);
         }
 
-        .btn:hover {
+        .sidebar-tips {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px dashed rgba(99, 102, 241, 0.4);
+            font-size: 0.85em;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 44px;
+            border-radius: calc(var(--radius-lg) + 4px);
+            background: linear-gradient(130deg, rgba(99, 102, 241, 0.95) 0%, rgba(76, 125, 255, 0.85) 60%, rgba(118, 75, 162, 0.92) 100%);
+            color: #f9fafb;
+            box-shadow: var(--shadow);
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: -20% 40% auto -40%;
+            height: 140%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.35) 0%, transparent 60%);
+            opacity: 0.55;
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 1;
+            max-width: 620px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85em;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.18);
+            width: fit-content;
+            padding: 6px 12px;
+            border-radius: 999px;
+        }
+
+        .hero-title {
+            font-size: 2.3em;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .hero-description {
+            font-size: 1em;
+            color: rgba(249, 250, 251, 0.92);
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .hero-btn {
+            border: none;
+            border-radius: 999px;
+            padding: 12px 24px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .hero-btn.primary {
+            background: #0f172a;
+            color: white;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.25);
+        }
+
+        .hero-btn.primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .hero-btn.secondary {
+            background: rgba(15, 23, 42, 0.18);
+            color: #f9fafb;
         }
 
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
+        .hero-btn.secondary:hover {
+            background: rgba(15, 23, 42, 0.28);
         }
 
-        .placeholder-text {
-            color: #999;
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        [data-nav-section] {
+            scroll-margin-top: 96px;
+        }
+
+        .section {
+            background: var(--surface);
+            border-radius: calc(var(--radius-lg) + 2px);
+            padding: 28px 32px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .section-title-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .section-desc {
             font-size: 0.9em;
-            margin-top: 5px;
+            color: var(--text-light);
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.75em;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            background: rgba(99, 102, 241, 0.12);
+            color: var(--primary-dark);
+        }
+
+        .step-badge.muted {
+            background: rgba(148, 163, 184, 0.18);
+            color: var(--text-light);
+        }
+
+        .section h2 {
+            font-size: 1.28em;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
         }
 
         .collapsible {
@@ -272,55 +306,415 @@
             user-select: none;
         }
 
-        .collapsible::after {
-            content: " ▼";
-            font-size: 0.8em;
-            opacity: 0.6;
+        .collapsible-label {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        .collapsible.collapsed::after {
-            content: " ▶";
+        .collapsible-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .collapsible-title small {
+            font-size: 0.8em;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+
+        .collapse-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: rgba(99, 102, 241, 0.12);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85em;
+            color: var(--primary-dark);
+            transition: transform 0.25s ease;
+        }
+
+        .collapsible.collapsed .collapse-icon {
+            transform: rotate(-90deg);
         }
 
         .collapse-content {
-            max-height: none;
-            overflow: visible;
-            transition: opacity 0.3s ease-out;
-            opacity: 1;
+            border-top: 1px dashed rgba(148, 163, 184, 0.35);
+            padding-top: 20px;
+            display: grid;
+            gap: 18px;
         }
 
         .collapse-content.collapsed {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
+            display: none;
+        }
+
+        .section h3 {
+            color: var(--text);
+            font-size: 1.1em;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            border-radius: 12px;
+            background: rgba(248, 250, 252, 0.9);
+            font-size: 0.95em;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.18);
+            background: #ffffff;
+        }
+
+        textarea {
+            min-height: 160px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: rgba(255, 255, 255, 0.92);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            border-color: rgba(99, 102, 241, 0.45);
+            box-shadow: 0 12px 25px rgba(99, 102, 241, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            font-weight: 500;
+            color: var(--text);
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .character-card,
+        .variable-card {
+            background: rgba(248, 250, 252, 0.9);
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            padding: 20px;
+            display: grid;
+            gap: 18px;
+        }
+
+        .variable-card {
+            grid-template-columns: minmax(180px, 240px) 1fr auto;
+            align-items: start;
+        }
+
+        .variable-card .form-group {
+            gap: 6px;
+        }
+
+        .variable-card .variable-name-group {
+            min-width: 0;
+        }
+
+        .variable-card textarea {
+            min-height: 110px;
+        }
+
+        .variable-card .remove-btn-container {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .add-character-btn {
+            align-self: flex-start;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 999px;
+            padding: 10px 22px;
+            background: rgba(99, 102, 241, 0.12);
+            color: var(--primary-dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+        }
+
+        .add-character-btn:hover {
+            background: rgba(99, 102, 241, 0.22);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 18px rgba(99, 102, 241, 0.2);
+        }
+
+        .add-character-btn.success {
+            background: rgba(34, 197, 94, 0.16);
+            color: #047857;
+            border-color: rgba(34, 197, 94, 0.28);
+        }
+
+        .add-character-btn.success:hover {
+            background: rgba(34, 197, 94, 0.26);
+            color: #04543c;
+            box-shadow: 0 12px 22px rgba(34, 197, 94, 0.22);
+        }
+
+        .add-character-btn.danger {
+            background: rgba(239, 68, 68, 0.16);
+            color: #b91c1c;
+            border-color: rgba(239, 68, 68, 0.28);
+        }
+
+        .add-character-btn.danger:hover {
+            background: rgba(239, 68, 68, 0.26);
+            color: #991b1b;
+            box-shadow: 0 12px 22px rgba(239, 68, 68, 0.22);
+        }
+
+        .remove-character-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 8px 16px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .remove-character-btn:hover {
+            background: #dc2626;
+        }
+
+        .action-buttons {
+            position: sticky;
+            bottom: 24px;
+            z-index: 10;
+            border-radius: 18px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 14px;
+            padding: 13px 28px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            color: white;
+            box-shadow: 0 14px 30px rgba(79, 70, 229, 0.35);
+        }
+
+        .btn-secondary {
+            background: rgba(99, 102, 241, 0.12);
+            color: var(--primary-dark);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(99, 102, 241, 0.22);
+        }
+
+        .placeholder-text {
+            color: var(--text-light);
+            font-size: 0.85em;
+        }
+
+        @media (max-width: 1100px) {
+            .app-shell {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: static;
+                width: 100%;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+
+            .sidebar-nav {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .nav-link {
+                flex: 1 1 180px;
+            }
         }
 
         @media (max-width: 768px) {
-            .container {
-                margin: 10px;
+            body {
+                padding: 24px 16px 48px;
             }
 
-            .content {
-                padding: 20px;
+            .hero {
+                padding: 32px 24px;
             }
 
             .section {
-                padding: 20px;
+                padding: 24px;
+            }
+
+            .variable-card {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                position: static;
+                justify-content: center;
             }
         }
-    </style>
+
+        @media (max-width: 540px) {
+            .sidebar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .sidebar-nav {
+                width: 100%;
+            }
+
+            .nav-link {
+                flex: 1 1 100%;
+            }
+
+            .hero-title {
+                font-size: 1.85em;
+            }
+
+            .content {
+                gap: 18px;
+            }
+        }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎭 角色卡创作任务清单生成器</h1>
-            <p>填写信息后一键生成 Markdown 格式的任务清单</p>
-        </div>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-logo">Nova Creator</span>
+                <p class="sidebar-intro">按步骤填写信息，随时生成结构化的创作待办。</p>
+            </div>
+            <nav class="sidebar-nav">
+                <button type="button" class="nav-link active" data-target="basic-info">
+                    <span class="nav-index">01</span>
+                    <span>基本信息</span>
+                </button>
+                <button type="button" class="nav-link" data-target="step-1">
+                    <span class="nav-index">02</span>
+                    <span>世界观构建</span>
+                </button>
+                <button type="button" class="nav-link" data-target="step-2">
+                    <span class="nav-index">03</span>
+                    <span>角色设定</span>
+                </button>
+                <button type="button" class="nav-link" data-target="step-3">
+                    <span class="nav-index">04</span>
+                    <span>开场白</span>
+                </button>
+                <button type="button" class="nav-link" data-target="step-4">
+                    <span class="nav-index">05</span>
+                    <span>对话补充</span>
+                </button>
+                <button type="button" class="nav-link" data-target="step-5">
+                    <span class="nav-index">06</span>
+                    <span>角色采访</span>
+                </button>
+                <button type="button" class="nav-link" data-target="step-6">
+                    <span class="nav-index">07</span>
+                    <span>玩家角色</span>
+                </button>
+                <button type="button" class="nav-link" data-target="step-7">
+                    <span class="nav-index">08</span>
+                    <span>MVU 组件</span>
+                </button>
+                <button type="button" class="nav-link" data-target="step-extra">
+                    <span class="nav-index">09</span>
+                    <span>额外需求</span>
+                </button>
+            </nav>
+            <div class="sidebar-tips">
+                🌟 小贴士：随时折叠暂不处理的卡片；侧边栏可在任意阶段快速跳转到目标步骤。
+            </div>
+        </aside>
 
-        <div class="content">
+        <div class="workspace">
+            <header class="hero">
+                <div class="hero-text">
+                    <span class="hero-eyebrow">角色卡工作台</span>
+                    <h1 class="hero-title">角色卡创作任务清单生成器</h1>
+                    <p class="hero-description">聚焦关键步骤，快速整理世界观、角色、开场白与 MVU 需求，一键导出 Markdown 待办。</p>
+                    <div class="hero-actions">
+                        <button type="button" class="hero-btn primary" onclick="generateMarkdown()">立即生成 Markdown</button>
+                        <button type="button" class="hero-btn secondary" onclick="resetForm()">重置所有输入</button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
             <!-- 基本信息 -->
-            <div class="section">
-                <h2>基本信息</h2>
+            <div class="section" id="basic-info" data-nav-section>
+                <div class="section-heading">
+                    <span class="step-badge muted">准备</span>
+                    <div class="section-title-wrap">
+                        <h2>基本信息</h2>
+                        <p class="section-desc">先确认作品名称与类型，后续生成的 Markdown 会自动引用这些信息。</p>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="workName">作品名称</label>
                     <input type="text" id="workName" placeholder="例如：废土幸存者、魔法学院日常">
@@ -332,8 +726,17 @@
             </div>
 
             <!-- 第一步：世界观构建 -->
-            <div class="section">
-                <h2 class="collapsible" onclick="toggleCollapse(this)">第一步：世界观构建</h2>
+            <div class="section" id="step-1" data-nav-section>
+                <h2 class="collapsible" onclick="toggleCollapse(this)">
+                    <span class="collapsible-label">
+                        <span class="step-badge">Step 01</span>
+                        <span class="collapsible-title">
+                            <span>世界观构建</span>
+                            <small>梳理背景设定和世界规则，明确所需资料。</small>
+                        </span>
+                    </span>
+                    <span class="collapse-icon" aria-hidden="true">&#9662;</span>
+                </h2>
                 <div class="collapse-content">
                     <div class="form-group">
                         <label>背景设定需求</label>
@@ -403,8 +806,17 @@
             </div>
 
             <!-- 第二步：角色设定 -->
-            <div class="section">
-                <h2 class="collapsible" onclick="toggleCollapse(this)">第二步：角色设定</h2>
+            <div class="section" id="step-2" data-nav-section>
+                <h2 class="collapsible" onclick="toggleCollapse(this)">
+                    <span class="collapsible-label">
+                        <span class="step-badge">Step 02</span>
+                        <span class="collapsible-title">
+                            <span>角色设定</span>
+                            <small>搭建角色档案，补充定位、外观与动机。</small>
+                        </span>
+                    </span>
+                    <span class="collapse-icon" aria-hidden="true">&#9662;</span>
+                </h2>
                 <div class="collapse-content">
                     <div id="charactersContainer"></div>
                     <button class="add-character-btn" onclick="addCharacter()">➕ 添加角色</button>
@@ -412,8 +824,17 @@
             </div>
 
             <!-- 第三步：开场白 -->
-            <div class="section">
-                <h2 class="collapsible" onclick="toggleCollapse(this)">第三步：开场白</h2>
+            <div class="section" id="step-3" data-nav-section>
+                <h2 class="collapsible" onclick="toggleCollapse(this)">
+                    <span class="collapsible-label">
+                        <span class="step-badge">Step 03</span>
+                        <span class="collapsible-title">
+                            <span>开场白</span>
+                            <small>定义开场场景与篇幅，为剧情定下基调。</small>
+                        </span>
+                    </span>
+                    <span class="collapse-icon" aria-hidden="true">&#9662;</span>
+                </h2>
                 <div class="collapse-content">
                     <div class="form-group">
                         <label>开场白需求</label>
@@ -460,8 +881,17 @@
             </div>
 
             <!-- 第四步：对话补充 -->
-            <div class="section">
-                <h2 class="collapsible" onclick="toggleCollapse(this)">第四步：对话补充（可选）</h2>
+            <div class="section" id="step-4" data-nav-section>
+                <h2 class="collapsible" onclick="toggleCollapse(this)">
+                    <span class="collapsible-label">
+                        <span class="step-badge">Step 04</span>
+                        <span class="collapsible-title">
+                            <span>对话补充</span>
+                            <small>可选：补全关键情境下的范例对话。</small>
+                        </span>
+                    </span>
+                    <span class="collapse-icon" aria-hidden="true">&#9662;</span>
+                </h2>
                 <div class="collapse-content">
                     <div class="form-group">
                         <label>是否需要对话补充</label>
@@ -511,8 +941,17 @@
             </div>
 
             <!-- 第五步：角色采访 -->
-            <div class="section">
-                <h2 class="collapsible" onclick="toggleCollapse(this)">第五步：角色采访（可选）</h2>
+            <div class="section" id="step-5" data-nav-section>
+                <h2 class="collapsible" onclick="toggleCollapse(this)">
+                    <span class="collapsible-label">
+                        <span class="step-badge">Step 05</span>
+                        <span class="collapsible-title">
+                            <span>角色采访</span>
+                            <small>可选：设计问答，挖掘角色的深层细节。</small>
+                        </span>
+                    </span>
+                    <span class="collapse-icon" aria-hidden="true">&#9662;</span>
+                </h2>
                 <div class="collapse-content">
                     <div class="form-group">
                         <label>是否需要角色采访</label>
@@ -541,8 +980,17 @@
             </div>
 
             <!-- 第六步：玩家角色设定 -->
-            <div class="section">
-                <h2 class="collapsible" onclick="toggleCollapse(this)">第六步：玩家角色设定（可选）</h2>
+            <div class="section" id="step-6" data-nav-section>
+                <h2 class="collapsible" onclick="toggleCollapse(this)">
+                    <span class="collapsible-label">
+                        <span class="step-badge">Step 06</span>
+                        <span class="collapsible-title">
+                            <span>玩家角色设定</span>
+                            <small>可选：梳理{{user}}的背景、动机与互动重点。</small>
+                        </span>
+                    </span>
+                    <span class="collapse-icon" aria-hidden="true">&#9662;</span>
+                </h2>
                 <div class="collapse-content">
                     <div class="form-group">
                         <label>是否需要玩家设定</label>
@@ -584,8 +1032,17 @@
             </div>
 
             <!-- 第七步：MVU 组件包 -->
-            <div class="section">
-                <h2 class="collapsible" onclick="toggleCollapse(this)">第七步：MVU 组件包（可选）</h2>
+            <div class="section" id="step-7" data-nav-section>
+                <h2 class="collapsible" onclick="toggleCollapse(this)">
+                    <span class="collapsible-label">
+                        <span class="step-badge">Step 07</span>
+                        <span class="collapsible-title">
+                            <span>MVU 组件包</span>
+                            <small>可选：配置变量、动态世界与 UI 展示。</small>
+                        </span>
+                    </span>
+                    <span class="collapse-icon" aria-hidden="true">&#9662;</span>
+                </h2>
                 <div class="collapse-content">
                     <div class="form-group">
                         <label>是否使用 MVU 组件包</label>
@@ -646,8 +1103,8 @@
                         <div id="mvuVariablesContainer"></div>
                         <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
                             <button class="add-character-btn" onclick="addVariable()">➕ 添加变量</button>
-                            <button class="add-character-btn" style="background: #28a745;" onclick="loadPresetVariables()">📋 加载预设变量</button>
-                            <button class="add-character-btn" style="background: #dc3545;" onclick="clearAllVariables()">🗑️ 清空所有变量</button>
+                            <button class="add-character-btn success" onclick="loadPresetVariables()">📋 加载预设变量</button>
+                            <button class="add-character-btn danger" onclick="clearAllVariables()">🗑️ 清空所有变量</button>
                         </div>
                     </div>
 
@@ -674,8 +1131,17 @@
             </div>
 
             <!-- 额外需求 -->
-            <div class="section">
-                <h2 class="collapsible" onclick="toggleCollapse(this)">额外需求</h2>
+            <div class="section" id="step-extra" data-nav-section>
+                <h2 class="collapsible" onclick="toggleCollapse(this)">
+                    <span class="collapsible-label">
+                        <span class="step-badge muted">Extra</span>
+                        <span class="collapsible-title">
+                            <span>额外需求</span>
+                            <small>记录特别说明、禁忌或灵感补充。</small>
+                        </span>
+                    </span>
+                    <span class="collapse-icon" aria-hidden="true">&#9662;</span>
+                </h2>
                 <div class="collapse-content">
                     <div class="form-group">
                         <label for="extraRequirements">特殊要求或补充说明</label>
@@ -689,10 +1155,91 @@
                 <button class="btn btn-primary" onclick="generateMarkdown()">📄 生成 Markdown</button>
                 <button class="btn btn-secondary" onclick="resetForm()">🔄 重置表单</button>
             </div>
+            </div>
         </div>
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navButtons = Array.from(document.querySelectorAll('.nav-link'));
+            const sections = Array.from(document.querySelectorAll('[data-nav-section]'));
+
+            if (!navButtons.length || !sections.length) {
+                return;
+            }
+
+            const updateActive = (activeId) => {
+                navButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.target === activeId);
+                });
+            };
+
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = document.getElementById(btn.dataset.target);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        updateActive(btn.dataset.target);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.collapsible').forEach(header => {
+                header.setAttribute('aria-expanded', 'true');
+                header.setAttribute('role', 'button');
+                header.setAttribute('tabindex', '0');
+                const content = header.nextElementSibling;
+                if (content) {
+                    content.setAttribute('aria-hidden', 'false');
+                }
+                header.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        toggleCollapse(header);
+                    }
+                });
+            });
+
+            updateActive(sections[0].id);
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    const visible = entries
+                        .filter(entry => entry.isIntersecting)
+                        .sort((a, b) => {
+                            if (b.intersectionRatio !== a.intersectionRatio) {
+                                return b.intersectionRatio - a.intersectionRatio;
+                            }
+                            return a.boundingClientRect.top - b.boundingClientRect.top;
+                        });
+
+                    if (visible.length) {
+                        updateActive(visible[0].target.id);
+                    }
+                }, {
+                    root: null,
+                    threshold: 0.35,
+                    rootMargin: '-20% 0px -45% 0px'
+                });
+
+                sections.forEach(section => observer.observe(section));
+            } else {
+                const handleScroll = () => {
+                    const scrollTop = window.scrollY;
+                    let currentId = sections[0].id;
+                    sections.forEach(section => {
+                        if (section.offsetTop - 180 <= scrollTop) {
+                            currentId = section.id;
+                        }
+                    });
+                    updateActive(currentId);
+                };
+
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                handleScroll();
+            }
+        });
+
         let characterCount = 0;
         let variableCount = 0;
 
@@ -763,7 +1310,7 @@
                 </div>
                 <div class="form-group">
                     <label>说明/要求</label>
-                    <textarea class="var-desc" placeholder="例如：数值范围 0-100，影响角色对话风格" style="min-height: 60px; resize: vertical;"></textarea>
+                    <textarea class="var-desc" placeholder="例如：数值范围 0-100，影响角色对话风格"></textarea>
                 </div>
                 ${variableCount > 1 ? '<div class="remove-btn-container"><button class="remove-character-btn" onclick="removeVariable(' + variableCount + ')">删除</button></div>' : ''}
             `;
@@ -842,7 +1389,7 @@
                         </div>
                         <div class="form-group">
                             <label>说明/要求</label>
-                            <textarea class="var-desc" placeholder="例如：数值范围 0-100，影响角色对话风格" style="min-height: 60px; resize: vertical;">${preset.desc}</textarea>
+                            <textarea class="var-desc" placeholder="例如：数值范围 0-100，影响角色对话风格">${preset.desc}</textarea>
                         </div>
                         <div class="remove-btn-container"><button class="remove-character-btn" onclick="removeVariable(${variableCount})">删除</button></div>
                     `;
@@ -857,7 +1404,12 @@
         function toggleCollapse(element) {
             element.classList.toggle('collapsed');
             const content = element.nextElementSibling;
-            content.classList.toggle('collapsed');
+            if (content) {
+                content.classList.toggle('collapsed');
+                const isCollapsed = content.classList.contains('collapsed');
+                element.setAttribute('aria-expanded', (!isCollapsed).toString());
+                content.setAttribute('aria-hidden', isCollapsed.toString());
+            }
         }
 
         // 单选checkbox处理
