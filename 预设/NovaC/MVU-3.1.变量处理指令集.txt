@@ -1,0 +1,60 @@
+### 模块3：变量处理指令集生成
+
+本模块负责生成一套标准的"变量处理指令集"。该指令集基于模块1（变量初始化）和模块2（变量更新规则），用于指导AI系统如何观察、分析并请求更新当前上下文中的动态变量。
+
+请严格按照下方提供的模板，输出完整的指令集内容。此阶段的目标是生成指令结构本身，而非执行变量更新。
+
+指令集模板如下：
+
+<example>
+```yaml
+---
+<status_current_variables>
+{{get_message_variable::stat_data}}
+</status_current_variables>
+rule:
+  - You should output the update analysis in the end of the next reply
+  - if dest element is an array, only update and only output the first element, not `[]` block
+format: |-
+  <UpdateVariable>
+    <Analysis>
+      ${variable_path}: ${Whether the variable should be updated: 'Yes' or 'No'}
+      ...
+    </Analysis>
+    _.set('${path_of_changed_variable}', ${old_value}, ${new_value}); // ${brief reason for change}
+    ...
+  </UpdateVariable>
+example: |-
+  <UpdateVariable>
+    <Analysis>
+      诗织.与平云的好感度: Yes
+      世界.当前时间段: Yes
+      诗织.内心迷茫指数: No
+    </Analysis>
+    _.set('诗织.与平云的好感度', 45, 52); // 平云的关心让诗织感到温暖
+    _.set('世界.当前时间段', '放学后', '晚上'); // 时间流逝，进入夜晚
+  </UpdateVariable>
+```
+</example>
+
+### 输出要求
+
+1. 结构一致性：最终输出必须与上述模板的结构和格式完全一致。
+
+2. `example`内容填充规则：
+   - 变量替换：示例中的变量名（如`诗织.与平云的好感度`）仅为占位符。请将其替换为模块1中定义的实际变量。
+   - `Analysis`部分：应列出所有在模块1中初始化的变量。
+   - 更新标记：在`Analysis`部分列出的所有变量中，标记为 'Yes' 的更新项不应超过3个。
+   - 规则引用：应结合模块2中定义的更新规则来指导变量更新判断。
+
+3. 部署说明：在完整输出指令集后，请附加以下说明文字：
+
+   a. 使用位置："此内容块应被放置在世界书的适当条目中（如[蓝灯 D1]），其作用是向AI提供当前变量列表，并说明变量更新的规则与格式。"
+
+   b. 系统集成："该指令集整合了模块1的变量定义和模块2的更新规则，为AI提供完整的变量操作指导，是MVU系统运行的核心组件。"
+
+   c. 维护提示："当模块1或模块2发生变化时，需要相应更新此指令集以保持系统一致性。"
+
+### CLI指令
+
+生成内容后，请使用Write工具将指令集内容保存到 `变量处理指令集.xyaml` 文件中。

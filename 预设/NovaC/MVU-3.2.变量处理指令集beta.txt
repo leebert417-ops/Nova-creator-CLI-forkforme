@@ -1,0 +1,54 @@
+### 模块3.2：变量处理指令集 (Beta版)
+
+本模块负责生成一套标准的"变量处理指令集"。该指令集基于模块1（变量初始化）和模块2（变量更新规则），用于指导AI系统如何观察、分析并请求更新当前上下文中的动态变量。
+
+此版本引入了 `_.add`, `_.assign`, `_.remove` 命令，以实现更精细的变量操作。
+
+指令集模板如下：
+
+<example>
+```yaml
+---
+<status_current_variables>
+{{get_message_variable::stat_data}}
+</status_current_variables>
+rule:
+  - You should output the update analysis in the end of the next reply.
+  - Use `_.set('path', 'old', 'new')` for direct assignment or state changes.
+  - Use `_.add('path', value)` to add or subtract a numerical value.
+  - Use `_.assign('path', 'item_or_key', 'value')` to add an element to an array or object.
+  - Use `_.remove('path', 'item_or_key')` to remove an element from an array or object.
+format: |-
+  <UpdateVariable>
+    <Analysis>
+      ${variable_path}: ${Whether the variable should be updated: 'Yes' or 'No'}
+      ...
+    </Analysis>
+    ${command_expression}; // ${brief reason for change}
+    ...
+  </UpdateVariable>
+example: |-
+  <UpdateVariable>
+    <Analysis>
+      好感度.诗织: Yes
+      世界.当前时间段: Yes
+      背包.物品列表: Yes
+      记忆: Yes
+      诗织.内心迷茫指数: No
+    </Analysis>
+    _.set('世界.当前时间段', '放学后', '晚上'); // 时间流逝，进入夜晚
+    _.add('好感度.诗织', 7); // 平云的关心让诗织感到温暖
+    _.assign('背包.物品列表', '诗织的手帕'); // 诗织赠送了手帕作为礼物
+    _.assign('记忆', '收到诗织的赠礼', '从诗织那里收到了手帕'); // 获得了新的记忆
+    _.remove('背包.物品列表', '褪色的照片'); // 丢弃了旧照片
+  </UpdateVariable>
+```
+</example>
+
+### 部署说明
+
+a. **使用位置**："此内容块应被放置在世界书的适当条目中（如[蓝灯 D1]），其作用是向AI提供当前变量列表，并说明变量更新的规则与格式。"
+
+b. **系统集成**："该指令集整合了模块1的变量定义和模块2的更新规则，为AI提供完整的变量操作指导，是MVU系统运行的核心组件。"
+
+c. **维护提示**："当模块1或模块2发生变化时，需要相应更新此指令集以保持系统一致性。"
