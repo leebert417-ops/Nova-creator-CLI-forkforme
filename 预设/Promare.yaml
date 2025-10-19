@@ -69,4 +69,14 @@
     角色: 系统
     文件: Promare\Post-History_Instructions
 
+  - 名称: 用户指令
+    启用: true
+    角色: AI
+    文件: Promare\用户指令
+
+  - 名称: 继续
+    启用: true
+    角色: 用户
+    文件: Promare\继续
+
 未添加的提示词: []
