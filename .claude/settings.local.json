@@ -9,7 +9,8 @@
       "Bash(node:*)",
       "Bash(mkdir:*)",
       "Bash(mv:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(xxd:*)"
     ],
     "deny": [],
     "ask": []

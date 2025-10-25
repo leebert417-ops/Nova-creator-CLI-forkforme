@@ -553,7 +553,7 @@ function generateMarkdown() {
         const $characterCards = $('.character-card');
         md += `**主要角色数量：** ${$characterCards.length}\n\n`;
 
-    $characterCards.each(function(index) {
+        $characterCards.each(function(index) {
         const $card = $(this);
         md += `#### 角色 ${index + 1}\n\n`;
 
@@ -575,6 +575,7 @@ function generateMarkdown() {
             md += `**角色名称：** ${name || '_[待填写]_'}\n\n`;
             md += '**人物设定大纲：**\n\n';
             md += '```\n' + outline + '\n```\n\n';
+            md += '**参考模板：** `基础模板/Z.2.人物模板.md`\n\n';
         } else {
             // 使用详细模式的数据
             const $detailedDiv = $card.find('#character-' + charId + '-detailed');
@@ -701,10 +702,8 @@ function generateMarkdown() {
         }
 
         md += '**参考模板：** `基础模板/Z.2.人物模板.md`\n\n';
-    }
-    }
-        md += '---\n\n';
     });
+    }
 
     // 第三步：开场白
     md += '### ✅ 第三步：开场白\n\n';
@@ -787,7 +786,7 @@ function generateMarkdown() {
         md += `- [${document.getElementById('scene4').checked ? 'x' : ' '}] 亲密互动\n`;
         md += `- [${document.getElementById('scene5').checked ? 'x' : ' '}] 情绪波动（高兴/愤怒/悲伤）\n\n`;
 
-    md += '**参考模板：** `基础模板/Z.4.对话补充.md`\n\n`;
+    md += '**参考模板：** `基础模板/Z.4.对话补充.md`\n\n';
     }
     md += '---\n\n';
 
@@ -813,8 +812,7 @@ function generateMarkdown() {
         }
     }
 
-    md += '**参考模板：** `基础模板/Z.5.角色采访.md`\n\n`;
-    }
+    md += '**参考模板：** `基础模板/Z.5.角色采访.md`\n\n';
     md += '---\n\n';
 
     // 第六步：玩家角色设定
@@ -842,8 +840,7 @@ function generateMarkdown() {
         }
     }
 
-    md += '**参考模板：** `基础模板/Z.6.玩家模板.md`\n\n`;
-    }
+    md += '**参考模板：** `基础模板/Z.6.玩家模板.md`\n\n';
     md += '---\n\n';
 
     // 第七步：MVU 组件包
@@ -918,8 +915,7 @@ function generateMarkdown() {
         md += '_[待填写]_\n\n';
     }
 
-    md += '**参考模板：** `MVU组件包/` 目录下的相关文件\n\n`;
-    }
+    md += '**参考模板：** `MVU组件包/` 目录下的相关文件\n\n';
     md += '---\n\n';
 
     // 额外需求
@@ -1063,6 +1059,7 @@ function generateMarkdown() {
 
     // 下载文件
     downloadMarkdown(md);
+}
 }
 
 // 下载 Markdown 文件
