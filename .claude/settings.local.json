@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(*)"
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(node build-card.js:*)"
     ],
     "deny": [],
     "ask": []
