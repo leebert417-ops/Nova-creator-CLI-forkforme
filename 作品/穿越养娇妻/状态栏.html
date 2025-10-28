@@ -22,7 +22,6 @@
             box-sizing: border-box;
         }
         body {
-            font-family: "STKaiti", "KaiTi", "楷体", "Microsoft YaHei", serif;
             background: transparent;
             color: var(--text-main);
             padding: 14px;
@@ -222,6 +221,7 @@
         .list-item {
             padding: 6px 0;
             border-bottom: 1px dotted var(--border);
+            list-style: none;
         }
         .list-item:last-child {
             border-bottom: none;
@@ -376,12 +376,12 @@
         if (valueDescDisplay) {
             let desc = '';
             if (!isNaN(numericValue)) {
-                if (numericValue < 10) desc = '陌生';
-                else if (numericValue < 30) desc = '初识';
-                else if (numericValue < 50) desc = '渐熟';
-                else if (numericValue < 70) desc = '信赖';
-                else if (numericValue < 90) desc = '深情';
-                else desc = '相守终生';
+                if (numericValue < 15) desc = '惊惧难安';
+                else if (numericValue < 36) desc = '畏缩戒备';
+                else if (numericValue < 50) desc = '谨慎试探';
+                else if (numericValue < 70) desc = '渐生依赖';
+                else if (numericValue < 85) desc = '深情相守';
+                else desc = '至死不渝';
             }
             valueDescDisplay.innerText = desc;
         }
@@ -434,12 +434,18 @@
             const itemsListElem = document.getElementById('items-list');
             if (itemsListElem) {
                 const itemsList = characterData['玩家'] ? characterData['玩家']['物品列表'] : null;
-                if (Array.isArray(itemsList) && itemsList.length > 0) {
+                if (itemsList && typeof itemsList === 'object') {
                     let itemsHtml = '';
-                    itemsList.forEach((item, index) => {
-                        itemsHtml += `<div class="list-item">${index + 1}. ${item}</div>`;
-                    });
-                    itemsListElem.innerHTML = itemsHtml;
+                    let index = 1;
+                    for (const itemKey in itemsList) {
+                        if (!Object.prototype.hasOwnProperty.call(itemsList, itemKey)) {
+                            continue;
+                        }
+                        const itemDesc = itemsList[itemKey];
+                        itemsHtml += `<div class="list-item"><strong>${itemKey}</strong>：${itemDesc}</div>`;
+                        index++;
+                    }
+                    itemsListElem.innerHTML = itemsHtml || '<div class="empty-tip">身无长物</div>';
                 } else {
                     itemsListElem.innerHTML = '<div class="empty-tip">身无长物</div>';
                 }

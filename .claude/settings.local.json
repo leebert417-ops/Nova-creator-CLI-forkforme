@@ -3,7 +3,10 @@
     "allow": [
       "Bash(mkdir:*)",
       "Bash(mv:*)",
-      "Bash(node build-card.js:*)"
+      "Bash(node build-card.js:*)",
+      "mcp__browsermcp__browser_snapshot",
+      "mcp__browsermcp__browser_screenshot",
+      "mcp__browsermcp__browser_press_key"
     ],
     "deny": [],
     "ask": []
