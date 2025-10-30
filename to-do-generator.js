@@ -481,75 +481,57 @@ function generateMarkdown() {
     md += '---\n\n';
 
     // 第一步：世界观构建
-    md += '## 创作任务清单\n\n';
-    md += '### ✅ 第一步：世界观构建\n\n';
-
     const needBackground = $('#needBackground').prop('checked');
-    const noBackground = $('#noBackground').prop('checked');
+    if (needBackground) {
+        md += '## 创作任务清单\n\n';
+        md += '### ✅ 第一步：世界观构建\n\n';
 
-    md += '**背景设定需求：**\n';
-    md += `- [${needBackground ? 'x' : ' '}] 需要\n`;
-    md += `- [${noBackground ? 'x' : ' '}] 不需要\n\n`;
+        // 背景设定信息（检查简略和详细模式）
+        const bgSimpleMode = $('#background-simple').hasClass('active');
+        const bgOutlineSimple = $('#backgroundOutlineSimple').val();
 
-    if (noBackground) {
-        md += '**状态：** 不需要\n\n';
-    } else {
-
-    // 背景设定信息（检查简略和详细模式）
-    const bgSimpleMode = $('#background-simple').hasClass('active');
-    const bgOutlineSimple = $('#backgroundOutlineSimple').val();
-
-    if (bgSimpleMode && bgOutlineSimple) {
-        // 使用简略模式的数据
-        md += '**📋 背景设定大纲：**\n\n';
-        md += '```\n' + bgOutlineSimple + '\n```\n\n';
-    } else {
-        // 使用详细模式的数据
-        const bgEra = $('#bgEra').val();
-        const bgLocation = $('#bgLocation').val();
-        const bgDescription = $('#bgDescription').val();
-        const bgSpecialRules = $('#bgSpecialRules').val();
-        const bgOutline = $('#backgroundOutline').val();
-
-        md += '**📋 背景设定详细信息：**\n\n';
-        md += `- **时代/时期：** ${bgEra || '_[待填写]_'}\n`;
-        md += `- **主要地点：** ${bgLocation || '_[待填写]_'}\n\n`;
-
-        md += '- **背景描述：**\n';
-        if (bgDescription) {
-            md += '```\n' + bgDescription + '\n```\n\n';
+        if (bgSimpleMode && bgOutlineSimple) {
+            // 使用简略模式的数据
+            md += '**📋 背景设定大纲：**\n\n';
+            md += '```\n' + bgOutlineSimple + '\n```\n\n';
         } else {
-            md += '_[待填写]_\n\n';
+            // 使用详细模式的数据
+            const bgEra = $('#bgEra').val();
+            const bgLocation = $('#bgLocation').val();
+            const bgDescription = $('#bgDescription').val();
+            const bgSpecialRules = $('#bgSpecialRules').val();
+            const bgOutline = $('#backgroundOutline').val();
+
+            md += '**📋 背景设定详细信息：**\n\n';
+            md += `- **时代/时期：** ${bgEra || '_[待填写]_'}\n`;
+            md += `- **主要地点：** ${bgLocation || '_[待填写]_'}\n\n`;
+
+            md += '- **背景描述：**\n';
+            if (bgDescription) {
+                md += '```\n' + bgDescription + '\n```\n\n';
+            } else {
+                md += '_[待填写]_\n\n';
+            }
+
+            if (bgSpecialRules) {
+                md += '- **特殊规则/系统：**\n';
+                md += '```\n' + bgSpecialRules + '\n```\n\n';
+            }
+
+            if (bgOutline) {
+                md += '- **补充说明：**\n';
+                md += '```\n' + bgOutline + '\n```\n\n';
+            }
         }
 
-        if (bgSpecialRules) {
-            md += '- **特殊规则/系统：**\n';
-            md += '```\n' + bgSpecialRules + '\n```\n\n';
-        }
-
-        if (bgOutline) {
-            md += '- **补充说明：**\n';
-            md += '```\n' + bgOutline + '\n```\n\n';
-        }
+        md += '**参考模板：** `基础模板/Z.1.背景模板.md`\n\n';
+        md += '---\n\n';
     }
-
-    md += '**参考模板：** `基础模板/Z.1.背景模板.md`\n\n';
-    }
-    md += '---\n\n';
 
     // 第二步：角色设定
-    md += '### ✅ 第二步：角色设定\n\n';
-
     const needCharacter = $('#needCharacter').prop('checked');
-    const noCharacter = $('#noCharacter').prop('checked');
-
-    md += '**角色设定需求：**\n';
-    md += `- [${needCharacter ? 'x' : ' '}] 需要\n`;
-    md += `- [${noCharacter ? 'x' : ' '}] 不需要\n\n`;
-
-    if (noCharacter) {
-        md += '**状态：** 不需要\n\n';
-    } else {
+    if (needCharacter) {
+        md += '### ✅ 第二步：角色设定\n\n';
         const $characterCards = $('.character-card');
         md += `**主要角色数量：** ${$characterCards.length}\n\n`;
 
@@ -706,17 +688,9 @@ function generateMarkdown() {
     }
 
     // 第三步：开场白
-    md += '### ✅ 第三步：开场白\n\n';
     const needOpening = $('#needOpening').prop('checked');
-    const noOpening = $('#noOpening').prop('checked');
-
-    md += '**开场白需求：**\n';
-    md += `- [${needOpening ? 'x' : ' '}] 需要\n`;
-    md += `- [${noOpening ? 'x' : ' '}] 不需要\n\n`;
-
-    if (noOpening) {
-        md += '**状态：** 不需要\n\n';
-    } else {
+    if (needOpening) {
+        md += '### ✅ 第三步：开场白\n\n';
         md += `**开场场景：** ${$('#openingScene').val() || '_[待填写]_'}\n\n`;
 
         md += '**目标篇幅：**\n';
@@ -763,20 +737,13 @@ function generateMarkdown() {
     }
 
     md += '**参考模板：** `基础模板/Z.3.开场白.md`\n\n';
-    }
     md += '---\n\n';
+    }
 
     // 第四步：对话补充
-    md += '### ✅ 第四步：对话补充（可选）\n\n';
     const needDialogue = document.getElementById('needDialogue').checked;
-    const noDialogue = document.getElementById('noDialogue').checked;
-    md += '**是否需要对话补充：**\n';
-    md += `- [${needDialogue ? 'x' : ' '}] 需要\n`;
-    md += `- [${noDialogue ? 'x' : ' '}] 不需要\n\n`;
-
-    if (noDialogue) {
-        md += '**状态：** 不需要\n\n';
-    } else {
+    if (needDialogue) {
+        md += '### ✅ 第四步：对话补充（可选）\n\n';
         md += `**对应角色：** ${document.getElementById('dialogueCharacter').value || '_[待填写]_'}\n\n`;
 
         md += '**场景需求：**\n';
@@ -786,21 +753,14 @@ function generateMarkdown() {
         md += `- [${document.getElementById('scene4').checked ? 'x' : ' '}] 亲密互动\n`;
         md += `- [${document.getElementById('scene5').checked ? 'x' : ' '}] 情绪波动（高兴/愤怒/悲伤）\n\n`;
 
-    md += '**参考模板：** `基础模板/Z.4.对话补充.md`\n\n';
+        md += '**参考模板：** `基础模板/Z.4.对话补充.md`\n\n';
+        md += '---\n\n';
     }
-    md += '---\n\n';
 
     // 第五步：角色采访
-    md += '### ✅ 第五步：角色采访（可选）\n\n';
     const needInterview = document.getElementById('needInterview').checked;
-    const noInterview = document.getElementById('noInterview').checked;
-    md += '**是否需要角色采访：**\n';
-    md += `- [${needInterview ? 'x' : ' '}] 需要\n`;
-    md += `- [${noInterview ? 'x' : ' '}] 不需要\n\n`;
-
-    if (noInterview) {
-        md += '**状态：** 不需要\n\n';
-    } else {
+    if (needInterview) {
+        md += '### ✅ 第五步：角色采访（可选）\n\n';
         md += `**对应角色：** ${document.getElementById('interviewCharacter').value || '_[待填写]_'}\n\n`;
 
         const interviewTopics = document.getElementById('interviewTopics').value;
@@ -810,22 +770,15 @@ function generateMarkdown() {
         } else {
             md += '_[待填写]_\n\n';
         }
+
+        md += '**参考模板：** `基础模板/Z.5.角色采访.md`\n\n';
+        md += '---\n\n';
     }
 
-    md += '**参考模板：** `基础模板/Z.5.角色采访.md`\n\n';
-    md += '---\n\n';
-
     // 第六步：玩家角色设定
-    md += '### ✅ 第六步：玩家角色设定（可选）\n\n';
     const needPlayer = document.getElementById('needPlayer').checked;
-    const noPlayer = document.getElementById('noPlayer').checked;
-    md += '**是否需要玩家设定：**\n';
-    md += `- [${needPlayer ? 'x' : ' '}] 需要\n`;
-    md += `- [${noPlayer ? 'x' : ' '}] 不需要\n\n`;
-
-    if (noPlayer) {
-        md += '**状态：** 不需要\n\n';
-    } else {
+    if (needPlayer) {
+        md += '### ✅ 第六步：玩家角色设定（可选）\n\n';
         md += '**设定深度：**\n';
         md += `- [${document.getElementById('depth1').checked ? 'x' : ' '}] 极简设定（最大自由度）\n`;
         md += `- [${document.getElementById('depth2').checked ? 'x' : ' '}] 简化设定（有基本框架）\n`;
@@ -838,106 +791,113 @@ function generateMarkdown() {
         } else {
             md += '_[待填写]_\n\n';
         }
-    }
 
-    md += '**参考模板：** `基础模板/Z.6.玩家模板.md`\n\n';
-    md += '---\n\n';
+        md += '**参考模板：** `基础模板/Z.6.玩家模板.md`\n\n';
+        md += '---\n\n';
+    }
 
     // 第七步：MVU 组件包
-    md += '### ✅ 第七步：MVU 组件包（可选）\n\n';
     const needMVU = document.getElementById('needMVU').checked;
-    const noMVU = document.getElementById('noMVU').checked;
-    md += '**是否使用 MVU 组件包：**\n';
-    md += `- [${needMVU ? 'x' : ' '}] 需要\n`;
-    md += `- [${noMVU ? 'x' : ' '}] 不需要\n\n`;
+    if (needMVU) {
+        md += '### ✅ 第七步：MVU 组件包（可选）\n\n';
+        md += '**组件选择：**\n';
+        md += `- [${document.getElementById('mvu1').checked ? 'x' : ' '}] 变量初始化条目（稳定版）\n`;
+        md += `- [${document.getElementById('mvu2').checked ? 'x' : ' '}] 变量初始化条目（Beta版）\n`;
+        md += `- [${document.getElementById('mvu3').checked ? 'x' : ' '}] 变量更新规则\n`;
+        md += `- [${document.getElementById('mvu4').checked ? 'x' : ' '}] 变量处理指令集（稳定版）\n`;
+        md += `- [${document.getElementById('mvu5').checked ? 'x' : ' '}] 变量处理指令集（Beta版）\n`;
+        md += `- [${document.getElementById('mvu6').checked ? 'x' : ' '}] 分阶段角色设定\n`;
+        md += `- [${document.getElementById('mvu7').checked ? 'x' : ' '}] 动态世界内容\n`;
+        md += `- [${document.getElementById('mvu8').checked ? 'x' : ' '}] HTML状态栏\n\n`;
 
-    if (noMVU) {
-        md += '**状态：** 不需要\n\n';
-    } else {
-    md += '**组件选择：**\n';
-    md += `- [${document.getElementById('mvu1').checked ? 'x' : ' '}] 变量初始化条目（稳定版）\n`;
-    md += `- [${document.getElementById('mvu2').checked ? 'x' : ' '}] 变量初始化条目（Beta版）\n`;
-    md += `- [${document.getElementById('mvu3').checked ? 'x' : ' '}] 变量更新规则\n`;
-    md += `- [${document.getElementById('mvu4').checked ? 'x' : ' '}] 变量处理指令集（稳定版）\n`;
-    md += `- [${document.getElementById('mvu5').checked ? 'x' : ' '}] 变量处理指令集（Beta版）\n`;
-    md += `- [${document.getElementById('mvu6').checked ? 'x' : ' '}] 分阶段角色设定\n`;
-    md += `- [${document.getElementById('mvu7').checked ? 'x' : ' '}] 动态世界内容\n`;
-    md += `- [${document.getElementById('mvu8').checked ? 'x' : ' '}] HTML状态栏\n\n`;
+        // 收集变量信息
+        const variableCards = document.querySelectorAll('.variable-card');
+        md += '**需要追踪的变量：**\n\n';
+        if (variableCards.length > 0) {
+            variableCards.forEach((card, index) => {
+                const varName = card.querySelector('.var-name').value || '_[待填写]_';
+                const varDesc = card.querySelector('.var-desc').value || '_[待填写]_';
+                md += `${index + 1}. **${varName}**：${varDesc}\n`;
+            });
+            md += '\n';
+        } else {
+            md += '_[待填写]_\n\n';
+        }
 
-    // 收集变量信息
-    const variableCards = document.querySelectorAll('.variable-card');
-    md += '**需要追踪的变量：**\n\n';
-    if (variableCards.length > 0) {
-        variableCards.forEach((card, index) => {
-            const varName = card.querySelector('.var-name').value || '_[待填写]_';
-            const varDesc = card.querySelector('.var-desc').value || '_[待填写]_';
-            md += `${index + 1}. **${varName}**：${varDesc}\n`;
-        });
-        md += '\n';
-    } else {
-        md += '_[待填写]_\n\n';
-    }
+        // 分阶段角色设定
+        const stageSettings = document.getElementById('mvuStageSettings').value;
+        md += '**分阶段角色设定说明：**\n';
+        if (stageSettings) {
+            md += '```\n' + stageSettings + '\n```\n\n';
+        } else {
+            md += '_[待填写]_\n\n';
+        }
 
-    // 分阶段角色设定
-    const stageSettings = document.getElementById('mvuStageSettings').value;
-    md += '**分阶段角色设定说明：**\n';
-    if (stageSettings) {
-        md += '```\n' + stageSettings + '\n```\n\n';
-    } else {
-        md += '_[待填写]_\n\n';
-    }
+        // 动态世界内容
+        const dynamicWorld = document.getElementById('mvuDynamicWorld').value;
+        md += '**动态世界内容说明：**\n';
+        if (dynamicWorld) {
+            md += '```\n' + dynamicWorld + '\n```\n\n';
+        } else {
+            md += '_[待填写]_\n\n';
+        }
 
-    // 动态世界内容
-    const dynamicWorld = document.getElementById('mvuDynamicWorld').value;
-    md += '**动态世界内容说明：**\n';
-    if (dynamicWorld) {
-        md += '```\n' + dynamicWorld + '\n```\n\n';
-    } else {
-        md += '_[待填写]_\n\n';
-    }
+        // HTML 状态栏
+        const htmlDisplay = document.getElementById('mvuHtmlDisplay').value;
+        md += '**HTML 状态栏显示需求：**\n';
+        if (htmlDisplay) {
+            md += '```\n' + htmlDisplay + '\n```\n\n';
+        } else {
+            md += '_[待填写]_\n\n';
+        }
 
-    // HTML 状态栏
-    const htmlDisplay = document.getElementById('mvuHtmlDisplay').value;
-    md += '**HTML 状态栏显示需求：**\n';
-    if (htmlDisplay) {
-        md += '```\n' + htmlDisplay + '\n```\n\n';
-    } else {
-        md += '_[待填写]_\n\n';
-    }
+        // 其他特殊说明
+        const mvuNotes = document.getElementById('mvuNotes').value;
+        md += '**其他特殊说明：**\n';
+        if (mvuNotes) {
+            md += '```\n' + mvuNotes + '\n```\n\n';
+        } else {
+            md += '_[待填写]_\n\n';
+        }
 
-    // 其他特殊说明
-    const mvuNotes = document.getElementById('mvuNotes').value;
-    md += '**其他特殊说明：**\n';
-    if (mvuNotes) {
-        md += '```\n' + mvuNotes + '\n```\n\n';
-    } else {
-        md += '_[待填写]_\n\n';
-    }
-
-    md += '**参考模板：** `MVU组件包/` 目录下的相关文件\n\n';
-    md += '---\n\n';
+        md += '**参考模板：** `MVU组件包/` 目录下的相关文件\n\n';
+        md += '---\n\n';
     }
 
     // 额外需求
-    md += '## 额外需求\n\n';
     const extraReq = document.getElementById('extraRequirements').value;
-    md += '**特殊要求或补充说明：**\n';
-    if (extraReq) {
+    if (extraReq.trim()) {
+        md += '## 额外需求\n\n';
+        md += '**特殊要求或补充说明：**\n';
         md += '```\n' + extraReq + '\n```\n\n';
-    } else {
-        md += '_[待填写]_\n\n';
+        md += '---\n\n';
     }
-    md += '---\n\n';
 
     // 创作进度跟踪
     md += '## 创作进度跟踪\n\n';
-    md += '- [ ] 背景设定完成\n';
-    md += '- [ ] 角色设定完成\n';
-    md += '- [ ] 开场白完成\n';
-    md += '- [ ] 对话补充完成（如需要）\n';
-    md += '- [ ] 角色采访完成（如需要）\n';
-    md += '- [ ] 玩家角色完成（如需要）\n';
-    md += '- [ ] MVU 组件包配置完成（如需要）\n';
+
+    // 根据各步骤是否需要动态生成进度跟踪项
+    if ($('#needBackground').prop('checked')) {
+        md += '- [ ] 背景设定完成\n';
+    }
+    if ($('#needCharacter').prop('checked')) {
+        md += '- [ ] 角色设定完成\n';
+    }
+    if ($('#needOpening').prop('checked')) {
+        md += '- [ ] 开场白完成\n';
+    }
+    if (document.getElementById('needDialogue').checked) {
+        md += '- [ ] 对话补充完成\n';
+    }
+    if (document.getElementById('needInterview').checked) {
+        md += '- [ ] 角色采访完成\n';
+    }
+    if (document.getElementById('needPlayer').checked) {
+        md += '- [ ] 玩家角色完成\n';
+    }
+    if (document.getElementById('needMVU').checked) {
+        md += '- [ ] MVU 组件包配置完成\n';
+    }
     md += '- [ ] 编写打包配置文件\n';
     md += '- [ ] 运行打包程序生成角色卡\n\n';
     md += '---\n\n';
@@ -973,46 +933,59 @@ function generateMarkdown() {
     md += 'character_book:\n';
     md += '  name: ' + workName + '\n';
     md += '  entries:\n';
-    md += '    # [InitVar]初始化条目\n';
-    md += '    - comment: "[InitVar]初始化"\n';
-    md += '      content: 作品/' + workName + '/变量初始化_beta.xyaml\n';
-    md += '      enabled: false\n';
-    md += '      position: before_char\n';
-    md += '      insertion_order: 100\n';
-    md += '      depth: 4\n';
-    md += '      role: 0\n\n';
-    md += '    # 变量更新规则\n';
-    md += '    - comment: "变量更新规则"\n';
-    md += '      content: 作品/' + workName + '/变量更新规则.xyaml\n';
-    md += '      enabled: true\n';
-    md += '      position: at_depth\n';
-    md += '      insertion_order: 1\n';
-    md += '      depth: 1\n';
-    md += '      role: 0\n\n';
-    md += '    # 变量处理指令集\n';
-    md += '    - comment: "变量处理指令集"\n';
-    md += '      content: 作品/' + workName + '/变量处理指令集_beta.xyaml\n';
-    md += '      enabled: true\n';
-    md += '      position: at_depth\n';
-    md += '      insertion_order: 2\n';
-    md += '      depth: 1\n';
-    md += '      role: 0\n\n';
-    md += '    # 背景设定\n';
-    md += '    - comment: "背景设定"\n';
-    md += '      content: 作品/' + workName + '/背景设定.xyaml\n';
-    md += '      enabled: true\n';
-    md += '      position: before_char\n';
-    md += '      insertion_order: 1\n';
-    md += '      depth: 4\n';
-    md += '      role: 0\n\n';
-    md += '    # 玩家角色\n';
-    md += '    - comment: "玩家角色_{{user}}"\n';
-    md += '      content: 作品/' + workName + '/玩家角色_{{user}}.xyaml\n';
-    md += '      enabled: true\n';
-    md += '      position: before_char\n';
-    md += '      insertion_order: 2\n';
-    md += '      depth: 4\n';
-    md += '      role: 0\n\n';
+    if (document.getElementById('needMVU').checked) {
+        md += '    # [InitVar]初始化条目\n';
+        md += '    - comment: "[InitVar]初始化"\n';
+        md += '      content: 作品/' + workName + '/变量初始化_beta.xyaml\n';
+        md += '      enabled: false\n';
+        md += '      position: before_char\n';
+        md += '      insertion_order: 100\n';
+        md += '      depth: 4\n';
+        md += '      role: 0\n\n';
+        md += '    # 变量更新规则\n';
+        md += '    - comment: "变量更新规则"\n';
+        md += '      content: 作品/' + workName + '/变量更新规则.xyaml\n';
+        md += '      enabled: true\n';
+        md += '      position: at_depth\n';
+        md += '      insertion_order: 1\n';
+        md += '      depth: 1\n';
+        md += '      role: 0\n\n';
+        md += '    # 变量处理指令集\n';
+        md += '    - comment: "变量处理指令集"\n';
+        md += '      content: 作品/' + workName + '/变量处理指令集_beta.xyaml\n';
+        md += '      enabled: true\n';
+        md += '      position: at_depth\n';
+        md += '      insertion_order: 2\n';
+        md += '      depth: 1\n';
+        md += '      role: 0\n\n';
+    }
+    // 根据各步骤是否需要动态生成配置文件条目
+    let insertionOrder = 1;
+
+    if ($('#needBackground').prop('checked')) {
+        md += '    # 背景设定\n';
+        md += '    - comment: "背景设定"\n';
+        md += '      content: 作品/' + workName + '/背景设定.xyaml\n';
+        md += '      enabled: true\n';
+        md += '      position: before_char\n';
+        md += '      insertion_order: ' + insertionOrder + '\n';
+        md += '      depth: 4\n';
+        md += '      role: 0\n\n';
+        insertionOrder++;
+    }
+
+    if (document.getElementById('needPlayer').checked) {
+        md += '    # 玩家角色\n';
+        md += '    - comment: "玩家角色_{{user}}"\n';
+        md += '      content: 作品/' + workName + '/玩家角色_{{user}}.xyaml\n';
+        md += '      enabled: true\n';
+        md += '      position: before_char\n';
+        md += '      insertion_order: ' + insertionOrder + '\n';
+        md += '      depth: 4\n';
+        md += '      role: 0\n\n';
+        insertionOrder++;
+    }
+
     md += '    # 其他设定条目（可添加多个）\n';
     md += '    - comment: "其他设定条目1"\n';
     md += '      content: 作品/' + workName + '/其他设定1.xyaml\n';
