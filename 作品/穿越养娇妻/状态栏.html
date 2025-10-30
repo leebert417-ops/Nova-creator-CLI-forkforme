@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>穿越养娇妻 状态</title>
+    <style>
+        :root {
+            --ancient-gold: #d4a574;
+            --ancient-red: #c8545d;
+            --ancient-green: #5a7c5b;
+            --ancient-blue: #5b8a9f;
+            --surface: #faf9f5;
+            --surface-strong: #ffffff;
+            --border: rgba(212, 165, 116, 0.2);
+            --text-main: #3d3027;
+            --text-muted: #8b7355;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: transparent;
+            color: var(--text-main);
+            padding: 14px;
+        }
+        .status-card {
+            max-width: 860px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 16px;
+            border: 2px solid var(--border);
+            box-shadow: 0 8px 24px rgba(61, 48, 39, 0.08);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .status-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .status-title h1 {
+            font-size: 1.7rem;
+            letter-spacing: 0.1em;
+            color: var(--ancient-red);
+            font-weight: 600;
+        }
+        .status-subtitle {
+            margin-top: 6px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+        .status-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+        .meta-item {
+            background: var(--surface);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .meta-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+        .meta-value {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-main);
+            word-break: break-word;
+        }
+        .panel-block {
+            background: var(--surface);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--ancient-gold);
+            letter-spacing: 0.08em;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border);
+        }
+        .metric-card {
+            background: var(--surface-strong);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .metric-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .metric-value {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--ancient-red);
+        }
+        .metric-value span {
+            display: inline-flex;
+        }
+        .metric-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #f0ebe3;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .progress-bar-value {
+            height: 100%;
+            background: linear-gradient(90deg, var(--ancient-gold), var(--ancient-red));
+            transition: width 0.4s ease;
+            border-radius: 999px;
+        }
+        .text-group {
+            display: grid;
+            gap: 12px;
+        }
+        .text-item {
+            background: var(--surface-strong);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+        }
+        .info-text {
+            color: var(--text-main);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        .info-card {
+            background: var(--surface-strong);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .info-card .info-label {
+            font-size: 0.78rem;
+        }
+        .info-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            word-break: break-word;
+        }
+        .list-container {
+            background: var(--surface-strong);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .list-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            padding-bottom: 6px;
+            border-bottom: 1px dashed var(--border);
+        }
+        .list-content {
+            color: var(--text-main);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        .list-item {
+            padding: 6px 0;
+            border-bottom: 1px dotted var(--border);
+            list-style: none;
+        }
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        .empty-tip {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 14px 12px;
+            font-size: 0.92rem;
+            font-style: italic;
+        }
+        .error-tip {
+            color: #9d3939;
+            background: #ffeaea;
+            border: 1px solid #ffc9c9;
+            border-radius: 12px;
+            padding: 16px;
+            line-height: 1.6;
+        }
+        @media (max-width: 640px) {
+            body {
+                padding: 10px;
+            }
+            .status-card {
+                padding: 16px;
+                border-radius: 14px;
+            }
+            .status-title h1 {
+                font-size: 1.5rem;
+            }
+            .metric-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="status-card" id="status-card">
+    <header class="status-header">
+        <div class="status-title">
+            <h1>穿越养娇妻</h1>
+            <p class="status-subtitle">白手起家 良人相守</p>
+        </div>
+        <div class="status-meta">
+            <div class="meta-item">
+                <span class="meta-label">当前时间</span>
+                <span class="meta-value" id="current-time">N/A</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">当前地点</span>
+                <span class="meta-value" id="current-location">N/A</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="panel-block">
+        <h3 class="panel-title">柳婉儿</h3>
+        <div class="metric-card">
+            <div class="metric-header">
+                <span class="metric-label">好感度</span>
+                <span class="metric-value">
+                    <span id="waner-affection">0</span>
+                    <span class="metric-desc" id="waner-affection-desc"></span>
+                </span>
+            </div>
+            <div class="progress-bar-container">
+                <div id="waner-affection-bar" class="progress-bar-value" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="text-group">
+            <div class="text-item">
+                <span class="info-label">当前着装</span>
+                <p class="info-text" id="waner-outfit">N/A</p>
+            </div>
+            <div class="text-item">
+                <span class="info-label">当前姿势</span>
+                <p class="info-text" id="waner-pose">N/A</p>
+            </div>
+            <div class="text-item">
+                <span class="info-label">当前想法</span>
+                <p class="info-text" id="waner-thoughts">N/A</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel-block">
+        <h3 class="panel-title">家业情况</h3>
+        <div class="list-container">
+            <div class="list-title">持有物品</div>
+            <div class="list-content" id="items-list">N/A</div>
+        </div>
+        <div class="list-container">
+            <div class="list-title">名下资产</div>
+            <div class="list-content" id="assets-list">N/A</div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function SafeGetValue(obj, path, defaultValue = "N/A") {
+        let keys = Array.isArray(path) ? path : path.split('.');
+        let current = obj;
+        for (let i = 0; i < keys.length; i++) {
+            if (current === undefined || current === null || typeof current !== 'object' || !current.hasOwnProperty(keys[i])) {
+                return defaultValue;
+            }
+            current = current[keys[i]];
+        }
+        if (current === undefined || current === null) {
+            return defaultValue;
+        }
+        if (Array.isArray(current)) {
+            if (current.length > 0) {
+                const actualValue = current[0];
+                if (typeof actualValue === 'boolean') {
+                    return actualValue;
+                }
+                return String(actualValue);
+            } else {
+                return defaultValue;
+            }
+        }
+        if (typeof current === 'boolean') {
+            return current;
+        }
+        if (typeof current === 'number') {
+            return current;
+        }
+        if (typeof current === 'string') {
+            return current;
+        }
+        return JSON.stringify(current);
+    }
+
+    function updateProgressBar(barId, valueMainId, valueDescId, rawValue, min = 0, max = 100, color) {
+        const progressBar = document.getElementById(barId);
+        const valueMainDisplay = document.getElementById(valueMainId);
+        const valueDescDisplay = document.getElementById(valueDescId);
+        if (!progressBar || !valueMainDisplay) {
+            return;
+        }
+        let numericValue = parseFloat(rawValue);
+        if (isNaN(numericValue)) {
+            numericValue = parseFloat(String(rawValue).replace(/[^0-9.-]/g, ''));
+        }
+        if (!isNaN(numericValue)) {
+            valueMainDisplay.innerText = numericValue;
+        } else {
+            valueMainDisplay.innerText = rawValue;
+        }
+        if (valueDescDisplay) {
+            let desc = '';
+            if (!isNaN(numericValue)) {
+                if (numericValue < 15) desc = '惊惧难安';
+                else if (numericValue < 36) desc = '畏缩戒备';
+                else if (numericValue < 50) desc = '谨慎试探';
+                else if (numericValue < 70) desc = '渐生依赖';
+                else if (numericValue < 85) desc = '深情相守';
+                else desc = '至死不渝';
+            }
+            valueDescDisplay.innerText = desc;
+        }
+        if (!isNaN(numericValue)) {
+            numericValue = Math.max(min, Math.min(max, numericValue));
+            const range = max - min;
+            const percentage = range === 0 ? (numericValue >= max ? 100 : 0) : ((numericValue - min) / range) * 100;
+            progressBar.style.width = `${Math.max(0, Math.min(100, percentage))}%`;
+            progressBar.style.backgroundColor = color ? color : '#d4a574';
+        }
+    }
+
+    async function initDisplay() {
+        try {
+            const messages = await getChatMessages(getCurrentMessageId());
+            if (!messages || messages.length === 0 || !messages[0].data) {
+                document.getElementById('status-card').innerHTML = "<div class='error-tip'>无法加载状态数据 (messages empty)</div>";
+                return;
+            }
+            const gameData = messages[0].data;
+            const characterData = gameData.stat_data;
+            if (!characterData) {
+                document.getElementById('status-card').innerHTML = "<div class='error-tip'>无法加载状态数据 (characterData missing)</div>";
+                return;
+            }
+
+            const timeElem = document.getElementById('current-time');
+            if (timeElem) timeElem.innerText = SafeGetValue(characterData, '世界.当前时间');
+
+            const locationElem = document.getElementById('current-location');
+            if (locationElem) locationElem.innerText = SafeGetValue(characterData, '世界.当前地点');
+
+            updateProgressBar(
+                'waner-affection-bar',
+                'waner-affection',
+                'waner-affection-desc',
+                SafeGetValue(characterData, '柳婉儿.好感度', 0),
+                0, 100
+            );
+
+            const wanerOutfit = document.getElementById('waner-outfit');
+            if (wanerOutfit) wanerOutfit.innerText = SafeGetValue(characterData, '柳婉儿.当前着装');
+
+            const wanerPose = document.getElementById('waner-pose');
+            if (wanerPose) wanerPose.innerText = SafeGetValue(characterData, '柳婉儿.当前姿势');
+
+            const wanerThoughts = document.getElementById('waner-thoughts');
+            if (wanerThoughts) wanerThoughts.innerText = SafeGetValue(characterData, '柳婉儿.当前想法');
+
+            const itemsListElem = document.getElementById('items-list');
+            if (itemsListElem) {
+                const itemsList = characterData['玩家'] ? characterData['玩家']['物品列表'] : null;
+                if (itemsList && typeof itemsList === 'object') {
+                    let itemsHtml = '';
+                    let index = 1;
+                    for (const itemKey in itemsList) {
+                        if (!Object.prototype.hasOwnProperty.call(itemsList, itemKey)) {
+                            continue;
+                        }
+                        const itemDesc = itemsList[itemKey];
+                        itemsHtml += `<div class="list-item"><strong>${itemKey}</strong>：${itemDesc}</div>`;
+                        index++;
+                    }
+                    itemsListElem.innerHTML = itemsHtml || '<div class="empty-tip">身无长物</div>';
+                } else {
+                    itemsListElem.innerHTML = '<div class="empty-tip">身无长物</div>';
+                }
+            }
+
+            const assetsListElem = document.getElementById('assets-list');
+            if (assetsListElem) {
+                const assetsList = characterData['玩家'] ? characterData['玩家']['资产列表'] : null;
+                if (assetsList && typeof assetsList === 'object') {
+                    let assetsHtml = '';
+                    let index = 1;
+                    for (const assetKey in assetsList) {
+                        if (!Object.prototype.hasOwnProperty.call(assetsList, assetKey)) {
+                            continue;
+                        }
+                        const assetDesc = assetsList[assetKey];
+                        assetsHtml += `<div class="list-item"><strong>${assetKey}</strong>：${assetDesc}</div>`;
+                        index++;
+                    }
+                    assetsListElem.innerHTML = assetsHtml || '<div class="empty-tip">暂无资产</div>';
+                } else {
+                    assetsListElem.innerHTML = '<div class="empty-tip">暂无资产</div>';
+                }
+            }
+        } catch (error) {
+            document.getElementById('status-card').innerHTML = `<div class='error-tip'>状态栏加载出错: ${error.message}</div>`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initDisplay);
+</script>
+</body>
+</html>

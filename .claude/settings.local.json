@@ -1,16 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir:*)",
-      "Bash(move:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(start to-do-generator.html)",
-      "Bash(node:*)",
       "Bash(mkdir:*)",
       "Bash(mv:*)",
-      "Bash(cat:*)",
-      "Bash(xxd:*)"
+      "Bash(node build-card.js:*)",
+      "mcp__browsermcp__browser_snapshot",
+      "mcp__browsermcp__browser_screenshot",
+      "mcp__browsermcp__browser_press_key"
     ],
     "deny": [],
     "ask": []
