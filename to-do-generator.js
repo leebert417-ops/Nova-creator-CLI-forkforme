@@ -129,16 +129,31 @@ function addCharacter() {
             <label>📍 角色定位</label>
             <div class="checkbox-group">
                 <div class="checkbox-item">
-                    <input type="checkbox" class="char-role-main" value="主角（NPC）">
-                    <label>主角（NPC）</label>
+                    <input type="radio" id="char-${characterCount}-role-main" name="char-role-${characterCount}" class="char-role-main" value="主角（NPC）">
+                    <label for="char-${characterCount}-role-main">主角（NPC）</label>
                 </div>
                 <div class="checkbox-item">
-                    <input type="checkbox" class="char-role-important" value="重要配角">
-                    <label>重要配角</label>
+                    <input type="radio" id="char-${characterCount}-role-important" name="char-role-${characterCount}" class="char-role-important" value="重要配角">
+                    <label for="char-${characterCount}-role-important">重要配角</label>
                 </div>
                 <div class="checkbox-item">
-                    <input type="checkbox" class="char-role-normal" value="普通 NPC">
-                    <label>普通 NPC</label>
+                    <input type="radio" id="char-${characterCount}-role-normal" name="char-role-${characterCount}" class="char-role-normal" value="普通 NPC">
+                    <label for="char-${characterCount}-role-normal">普通 NPC</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模板选择 -->
+        <div class="form-group">
+            <label>📋 使用模板</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="radio" id="char-${characterCount}-template-full" name="char-template-${characterCount}" class="char-template-full" value="原版模板" checked>
+                    <label for="char-${characterCount}-template-full">原版模板（完整版）</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="radio" id="char-${characterCount}-template-simple" name="char-template-${characterCount}" class="char-template-simple" value="简要版模板">
+                    <label for="char-${characterCount}-template-simple">简要版模板（精简版）</label>
                 </div>
             </div>
         </div>
@@ -540,10 +555,21 @@ function generateMarkdown() {
         md += `#### 角色 ${index + 1}\n\n`;
 
         // 角色定位
+        const roleMain = $card.find('.char-role-main').prop('checked');
+        const roleImportant = $card.find('.char-role-important').prop('checked');
+        const roleNormal = $card.find('.char-role-normal').prop('checked');
+
         md += '**📍 角色定位：**\n';
-        md += `- [${$card.find('.char-role-main').prop('checked') ? 'x' : ' '}] 主角（NPC）\n`;
-        md += `- [${$card.find('.char-role-important').prop('checked') ? 'x' : ' '}] 重要配角\n`;
-        md += `- [${$card.find('.char-role-normal').prop('checked') ? 'x' : ' '}] 普通 NPC\n\n`;
+        md += `- [${roleMain ? 'x' : ' '}] 主角（NPC）\n`;
+        md += `- [${roleImportant ? 'x' : ' '}] 重要配角\n`;
+        md += `- [${roleNormal ? 'x' : ' '}] 普通 NPC\n\n`;
+
+        // 模板选择
+        const useSimpleTemplate = $card.find('.char-template-simple').prop('checked');
+        const useFullTemplate = $card.find('.char-template-full').prop('checked');
+        md += '**📋 使用模板：**\n';
+        md += `- [${useFullTemplate ? 'x' : ' '}] 原版模板（完整版）\n`;
+        md += `- [${useSimpleTemplate ? 'x' : ' '}] 简要版模板（精简版）\n\n`;
 
         // 检查是否使用简略模式
         const charId = $card.attr('id').replace('character-', '');
@@ -557,7 +583,12 @@ function generateMarkdown() {
             md += `**角色名称：** ${name || '_[待填写]_'}\n\n`;
             md += '**人物设定大纲：**\n\n';
             md += '```\n' + outline + '\n```\n\n';
-            md += '**参考模板：** `基础模板/Z.2.人物模板.md`\n\n';
+            // 根据选择的模板类型显示对应的参考模板
+            if (useSimpleTemplate) {
+                md += '**参考模板：** `基础模板/Z.2.人物模板-简要版.md`\n\n';
+            } else {
+                md += '**参考模板：** `基础模板/Z.2.人物模板.md`\n\n';
+            }
         } else {
             // 使用详细模式的数据
             const $detailedDiv = $card.find('#character-' + charId + '-detailed');
@@ -681,9 +712,14 @@ function generateMarkdown() {
                 md += '**📝 补充说明：**\n\n';
                 md += '```\n' + notes + '\n```\n\n';
             }
-        }
 
-        md += '**参考模板：** `基础模板/Z.2.人物模板.md`\n\n';
+            // 根据选择的模板类型显示对应的参考模板
+            if (useSimpleTemplate) {
+                md += '**参考模板：** `基础模板/Z.2.人物模板-简要版.md`\n\n';
+            } else {
+                md += '**参考模板：** `基础模板/Z.2.人物模板.md`\n\n';
+            }
+        }
     });
     }
 
