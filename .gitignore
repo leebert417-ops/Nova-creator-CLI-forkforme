@@ -1,2 +1,14 @@
 node_modules/
 .DS_Store
+
+# Environment variables and credentials
+.env
+service-account.json
+*.local.*
+
+# Other local configuration
+*.local
+
+# Claude local settings
+.claude/settings.local.json
+.claude/*.local.*

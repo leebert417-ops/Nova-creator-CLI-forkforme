@@ -1,0 +1,28 @@
+---
+<status_current_variables>
+{{format_message_variable::stat_data}}
+</status_current_variables>
+rule:
+  - You should output the update analysis and the actual update commands in the end of the next reply
+  - The update commands must strictly follow the **JSON Patch (RFC 6902)** standard; that is, the output must be a valid JSON array containing operation objects
+format: |-
+  <UpdateVariable>
+  <Analysis>$(IN ENGLISH, no more than 80 words)
+  - ${calculate time passed: ...}
+  - ${decide whether dramatic updates are allowed as it's in a special case or the time passed is more than usual: yes/no}
+  - ${analyze every variable based on its corresponding `check`, according only to current reply instead of previous plots: ...}
+  </Analysis>
+  <JSONPatch>
+  [
+    { "op": "replace", "path": "/世界/当前时间", "value": "yyyy年mm月dd日 星期X 上午/下午 hh:mm" },
+    { "op": "replace", "path": "/世界/当前地点", "value": "具体地点名称" },
+    { "op": "add", "path": "/当前角色/角色名", "value": {"当前想法": "...", "当前状态": "...", "当前穿着": "..."} },
+    { "op": "replace", "path": "/当前角色/白鸟樱/当前想法", "value": "..." },
+    { "op": "replace", "path": "/当前角色/白鸟樱/当前状态", "value": "..." },
+    { "op": "replace", "path": "/当前角色/白鸟樱/当前穿着", "value": "..." },
+    { "op": "remove", "path": "/当前角色/角色名" },
+    { "op": "replace", "path": "/白鸟樱/好感度", "value": 30 },
+    { "op": "add", "path": "/白鸟樱/重要记忆/事件名", "value": "事件内容描述" }
+  ]
+  </JSONPatch>
+  </UpdateVariable>

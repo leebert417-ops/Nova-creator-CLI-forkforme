@@ -174,13 +174,13 @@ function createTavernHelperScripts(userScripts = []) {
       type: "script",
       value: {
         id: "1f84fa2d-cd60-4015-be1b-cc801a8092be",
-        name: "MVU Beta 脚本",
-        content: "import 'https://testingcf.jsdelivr.net/gh/MagicalAstrogy/MagVarUpdate@beta/artifact/bundle.js'",
+        name: "MVU Zod 脚本",
+        content: "import 'https://testingcf.jsdelivr.net/gh/MagicalAstrogy/MagVarUpdate/artifact/bundle.js'",
         info: "",
         buttons: [
           {
             name: "重新处理变量",
-            visible: true
+            visible: false
           },
           {
             name: "重新读取初始变量",
