@@ -168,8 +168,8 @@ function createRegexScripts(statusBarPath) {
 /**
  * 创建固定的 TavernHelper_scripts
  */
-function createTavernHelperScripts() {
-  return [
+function createTavernHelperScripts(userScripts = []) {
+  const scripts = [
     {
       type: "script",
       value: {
@@ -199,6 +199,29 @@ function createTavernHelperScripts() {
       }
     }
   ];
+
+  // 添加用户自定义脚本（如变量结构设计脚本）
+  if (userScripts && userScripts.length > 0) {
+    userScripts.forEach((scriptConfig, index) => {
+      if (scriptConfig.content) {
+        const scriptContent = readFile(normalizePath(scriptConfig.content));
+        scripts.push({
+          type: "script",
+          value: {
+            id: `user-script-${index}`,
+            name: scriptConfig.name || `用户脚本 ${index + 1}`,
+            content: scriptContent,
+            info: "",
+            buttons: [],
+            data: {},
+            enabled: scriptConfig.enabled ?? true
+          }
+        });
+      }
+    });
+  }
+
+  return scripts;
 }
 
 /**
@@ -266,7 +289,7 @@ function buildCharacterCard(configPath) {
           role: "system"
         },
         regex_scripts: createRegexScripts(config.extensions?.status_bar),
-        TavernHelper_scripts: createTavernHelperScripts()
+        TavernHelper_scripts: createTavernHelperScripts(config.scripts)
       },
       group_only_greetings: [],
       character_book: {

@@ -838,14 +838,13 @@ function generateMarkdown() {
     if (needMVU) {
         md += '### ✅ 第七步：MVU 组件包（可选）\n\n';
         md += '**组件选择：**\n';
-        md += `- [${document.getElementById('mvu1').checked ? 'x' : ' '}] 变量初始化条目（稳定版）\n`;
-        md += `- [${document.getElementById('mvu2').checked ? 'x' : ' '}] 变量初始化条目（Beta版）\n`;
+        md += `- [${document.getElementById('mvu1').checked ? 'x' : ' '}] 变量结构设计（脚本）\n`;
+        md += `- [${document.getElementById('mvu2').checked ? 'x' : ' '}] 变量初始化条目\n`;
         md += `- [${document.getElementById('mvu3').checked ? 'x' : ' '}] 变量更新规则\n`;
-        md += `- [${document.getElementById('mvu4').checked ? 'x' : ' '}] 变量处理指令集（稳定版）\n`;
-        md += `- [${document.getElementById('mvu5').checked ? 'x' : ' '}] 变量处理指令集（Beta版）\n`;
-        md += `- [${document.getElementById('mvu6').checked ? 'x' : ' '}] 分阶段角色设定\n`;
-        md += `- [${document.getElementById('mvu7').checked ? 'x' : ' '}] 动态世界内容\n`;
-        md += `- [${document.getElementById('mvu8').checked ? 'x' : ' '}] HTML状态栏\n\n`;
+        md += `- [${document.getElementById('mvu4').checked ? 'x' : ' '}] 变量处理指令集\n`;
+        md += `- [${document.getElementById('mvu5').checked ? 'x' : ' '}] 分阶段角色设定\n`;
+        md += `- [${document.getElementById('mvu6').checked ? 'x' : ' '}] 动态世界内容\n`;
+        md += `- [${document.getElementById('mvu7').checked ? 'x' : ' '}] HTML状态栏\n\n`;
 
         // 收集变量信息
         const variableCards = document.querySelectorAll('.variable-card');
@@ -967,6 +966,14 @@ function generateMarkdown() {
     md += '  fav: false\n';
     md += '  world: ' + workName + '\n';
     md += '  status_bar: 作品/' + workName + '/状态栏.html  # 可选\n\n';
+    if (document.getElementById('needMVU').checked) {
+        md += '# 脚本配置\n';
+        md += 'scripts:\n';
+        md += '  # 变量结构设计脚本（Zod Schema）\n';
+        md += '  - name: "变量结构设计"\n';
+        md += '    content: 作品/' + workName + '/变量结构.js\n';
+        md += '    enabled: true\n\n';
+    }
     md += '# 角色书配置\n';
     md += 'character_book:\n';
     md += '  name: ' + workName + '\n';
@@ -974,10 +981,10 @@ function generateMarkdown() {
     if (document.getElementById('needMVU').checked) {
         md += '    # [InitVar]初始化条目\n';
         md += '    - comment: "[InitVar]初始化"\n';
-        md += '      content: 作品/' + workName + '/变量初始化_beta.xyaml\n';
+        md += '      content: 作品/' + workName + '/变量初始化.xyaml\n';
         md += '      enabled: false\n';
         md += '      position: before_char\n';
-        md += '      insertion_order: 100\n';
+        md += '      insertion_order: 101\n';
         md += '      depth: 4\n';
         md += '      role: 0\n\n';
         md += '    # 变量更新规则\n';
@@ -990,7 +997,7 @@ function generateMarkdown() {
         md += '      role: 0\n\n';
         md += '    # 变量处理指令集\n';
         md += '    - comment: "变量处理指令集"\n';
-        md += '      content: 作品/' + workName + '/变量处理指令集_beta.xyaml\n';
+        md += '      content: 作品/' + workName + '/变量处理指令集.xyaml\n';
         md += '      enabled: true\n';
         md += '      position: at_depth\n';
         md += '      insertion_order: 2\n';

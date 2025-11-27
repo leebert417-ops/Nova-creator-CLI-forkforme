@@ -455,46 +455,42 @@
                                 <label for="noMVU">不需要</label>
                             </div>
                         </div>
-                        <p class="placeholder-text">MVU（Magical Variable Update）是一个用于实现角色和世界动态性的变量管理框架，通过变量追踪和条件触发，使角色和世界能够根据故事进展展现不同的行为模式和状态。</p>
+                        <p class="placeholder-text">MVU Zod 是一个基于 Zod Schema 的变量管理框架，用于实现角色和世界的动态性。该系统通过 Zod 提供类型安全和运行时验证，使用 JSON Patch 标准进行变量更新，使角色和世界能够根据故事进展展现不同的行为模式和状态。</p>
                     </div>
 
                     <div class="form-group">
                         <label>组件选择（可多选）</label>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" id="mvu1" value="变量初始化条目（稳定版）">
-                                <label for="mvu1">变量初始化条目（稳定版）</label>
+                                <input type="checkbox" id="mvu1" value="变量结构设计（脚本）">
+                                <label for="mvu1">变量结构设计（脚本）</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="mvu2" value="变量初始化条目（Beta版）">
-                                <label for="mvu2">变量初始化条目（Beta版）</label>
+                                <input type="checkbox" id="mvu2" value="变量初始化条目">
+                                <label for="mvu2">变量初始化条目</label>
                             </div>
                             <div class="checkbox-item">
                                 <input type="checkbox" id="mvu3" value="变量更新规则">
                                 <label for="mvu3">变量更新规则</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="mvu4" value="变量处理指令集（稳定版）">
-                                <label for="mvu4">变量处理指令集（稳定版）</label>
+                                <input type="checkbox" id="mvu4" value="变量处理指令集">
+                                <label for="mvu4">变量处理指令集</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="mvu5" value="变量处理指令集（Beta版）">
-                                <label for="mvu5">变量处理指令集（Beta版）</label>
+                                <input type="checkbox" id="mvu5" value="分阶段角色设定">
+                                <label for="mvu5">分阶段角色设定</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="mvu6" value="分阶段角色设定">
-                                <label for="mvu6">分阶段角色设定</label>
+                                <input type="checkbox" id="mvu6" value="动态世界内容">
+                                <label for="mvu6">动态世界内容</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="mvu7" value="动态世界内容">
-                                <label for="mvu7">动态世界内容</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="mvu8" value="HTML状态栏">
-                                <label for="mvu8">HTML状态栏</label>
+                                <input type="checkbox" id="mvu7" value="HTML状态栏">
+                                <label for="mvu7">HTML状态栏</label>
                             </div>
                         </div>
-                        <p class="placeholder-text">提示：如果选择了Beta版初始化，建议搭配Beta版指令集使用；如果选择了稳定版初始化，建议搭配稳定版指令集使用。</p>
+                        <p class="placeholder-text">提示：变量结构设计是 MVU Zod 系统的基础，建议首先完成。各组件按照模块编号顺序依次使用效果最佳。</p>
                     </div>
 
                     <div class="form-group">

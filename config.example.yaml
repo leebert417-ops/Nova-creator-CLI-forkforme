@@ -27,6 +27,13 @@ extensions:
   # 状态栏文件路径(可选)
   status_bar: 作品/示例作品/状态栏.html
 
+# 脚本配置
+scripts:
+  # 变量结构设计脚本（Zod Schema）
+  - name: "变量结构设计"
+    content: 作品/示例作品/变量结构.js
+    enabled: true
+
 # 角色书配置
 character_book:
   name: 示例卡片
