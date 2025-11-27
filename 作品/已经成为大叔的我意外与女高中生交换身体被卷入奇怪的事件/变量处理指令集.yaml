@@ -14,15 +14,13 @@ format: |-
   </Analysis>
   <JSONPatch>
   [
-    { "op": "replace", "path": "/世界/当前时间", "value": "yyyy年mm月dd日 星期X 上午/下午 hh:mm" },
-    { "op": "replace", "path": "/世界/当前地点", "value": "具体地点名称" },
-    { "op": "add", "path": "/当前角色/角色名", "value": {"当前想法": "...", "当前状态": "...", "当前穿着": "..."} },
-    { "op": "replace", "path": "/当前角色/白鸟樱/当前想法", "value": "..." },
-    { "op": "replace", "path": "/当前角色/白鸟樱/当前状态", "value": "..." },
-    { "op": "replace", "path": "/当前角色/白鸟樱/当前穿着", "value": "..." },
-    { "op": "remove", "path": "/当前角色/角色名" },
-    { "op": "replace", "path": "/白鸟樱/好感度", "value": 30 },
-    { "op": "add", "path": "/白鸟樱/重要记忆/事件名", "value": "事件内容描述" }
+    { "op": "replace", "path": "${/path/to/variable}", "value": "${new_value}" },
+    { "op": "add", "path": "${/path/to/array/-}", "value": "${item_to_append}" },
+    { "op": "add", "path": "${/path/to/object/newKey}", "value": "${content}" }
+    { "op": "move", "from": "${/source/list/0}", "path": "${/dest/list/-}" },
+    { "op": "remove", "path": "${/path/to/array/0}" },
+    ...
   ]
   </JSONPatch>
   </UpdateVariable>
+  
