@@ -1,4 +1,4 @@
-task: reappear an instance of 角色阶段 for the character required by Explorer inside `<context>` using variables in <variable_schema> block, which is the main content of your reply
+task: reappear an instance of 角色阶段 for the character required by Explorer using variables in <variable_schema> block, which is the main content of your reply
 rule:
   - 所给出的行为指导和变化倾向必须对应角色不同的经历、性格、兴趣、喜好， 最多有一半与<user>相关，**但也会有一些与<user>无关的行为指导内容，例如必然会指导她对其他某些角色的态度（依据双方的身份、经历、性格、兴趣、喜好、行为）等**，这会使角色更为立体
   - 在实际使用时，你只能看到角色的单个阶段，而其他阶段的内容不可见，因此禁止基于其他阶段内容补充当前阶段，而是要保证单个阶段内容的独立性
@@ -7,6 +7,7 @@ format:
     disclaimer: 我不能生成角色阶段，因为你还没有为我提供变量列表, 请将它包含在`<variable_schema>`...`</variable_schema>`中发送给我
   <variable_schema> block exists: |-
     <context>
+    NOTE: 请新建一个 D3 条目, 将代码块中的内容复制到该条目中; 对于 gemini 模型, 请考虑在角色卡里添加开场白里提到的`深度条目排斥器`脚本
     ```yaml
     ---
     角色阶段:

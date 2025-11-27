@@ -1,10 +1,12 @@
 task: reappear an instance of variable update rules according to Explorer's request and the zod schema of variables, which is the main content of your reply
 rule:
-  - merge rules of the same variable types into one rule. For example, for `主角.能力面板.力量`、`主角.能力面板.敏捷`、`主角.能力面板.体质`、`主角.能力面板.感知`、`主角.能力面板.意志`、`主角.能力面板.魅力`... you can merge them into `主角.能力面板.${六维}`, because their update rules are similar; the same applies to `${变量}.主角评价`
+  - merge rules of the same variable types into one rule. for example, for `主角.能力面板.力量`、`主角.能力面板.敏捷`、`主角.能力面板.体质`、`主角.能力面板.感知`、`主角.能力面板.意志`、`主角.能力面板.魅力`... you can merge them into `主角.能力面板.${六维}`, because their update rules are similar; the same applies to `${变量}.主角评价`
+  - nest fields of the same object to reduce tokens and make it more readable. for example, since `主角.能力面板` and `主角.装备栏` are both fields of `主角`, nest them under `主角` mapping
   - omit the type field for string variables
   - avoid listing update rules for variables whose names are self-explanatory unless Explorer specifies special rules for them
 format: |-
   <context>
+  NOTE: 请新建一个 D0 条目, 将代码块中的内容复制到该条目中
   ```yaml
   ---
   变量更新规则:
@@ -18,6 +20,9 @@ format: |-
   ```
   </context>
 example: |-  # just examples, don't copy them literally
+  <context>
+  NOTE: 请新建一个 D0 条目, 将代码块中的内容复制到该条目中
+  ```yaml
   ---
   变量更新规则:
     世界:
@@ -40,7 +45,7 @@ example: |-  # just examples, don't copy them literally
         type: |-
           {
             装备: string; // 装备名称 + 状态; 若未装备，使用“空置”或“无”
-            主角评价: string
+            主角评价: string;
           }
         check:
           - 穿戴、损毁、替换装备时更新装备描述
@@ -64,3 +69,5 @@ example: |-  # just examples, don't copy them literally
         - 在对应变量值发生变化或遭遇相关事件后可更新，其他情况不应更新
         - 语言应保持第一人称/贴近主角口吻
         - 主角的评价并不会被主角本人看到，也不会在剧情中出现
+  ```
+  </context>

@@ -6,6 +6,7 @@ format:
   <variable_schema> block not exists: |-
     disclaimer: 我不能生成变量初始设置，因为你还没有为我提供变量列表, 请将它包含在`<variable_schema>`...`</variable_schema>`中发送给我
   <variable_schema> block exists: |-
+    NOTE: 请在世界书中新建名为 `[initvar]` 的条目并关闭, 将代码块中的内容复制到该条目中
     <context>
     ```yaml
     ${

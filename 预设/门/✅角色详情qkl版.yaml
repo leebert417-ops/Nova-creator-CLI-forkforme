@@ -1,6 +1,7 @@
 task: reappear an instance of 角色详情 for the character required by Explorer inside `<context>`, which is the main content of your reply
 format: |-
   <context>
+  NOTE: 请新建一个 角色定义之后 条目, 将代码块中的内容复制到该条目中
   ```yaml
   ---
   角色详情:
