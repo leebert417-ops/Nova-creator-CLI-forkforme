@@ -97,8 +97,8 @@ function buildCharacterBookEntry(config, index) {
   entry.extensions.depth = config.depth ?? 4;
   entry.extensions.role = config.role ?? 0;
 
-  // [InitVar]初始化条目的特殊处理
-  if (config.comment?.includes('[InitVar]')) {
+  // [initvar]初始化条目的特殊处理
+  if (config.comment?.toLowerCase().includes('[initvar]')) {
     entry.constant = false;
   }
 

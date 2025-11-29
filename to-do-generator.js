@@ -838,10 +838,8 @@ function generateMarkdown() {
     if (needMVU) {
         md += '### ✅ 第七步：MVU 组件包（可选）\n\n';
         md += '**组件选择：**\n';
-        md += `- [${document.getElementById('mvu1').checked ? 'x' : ' '}] 变量结构设计（脚本）\n`;
-        md += `- [${document.getElementById('mvu2').checked ? 'x' : ' '}] 变量初始化条目\n`;
-        md += `- [${document.getElementById('mvu3').checked ? 'x' : ' '}] 变量更新规则\n`;
-        md += `- [${document.getElementById('mvu4').checked ? 'x' : ' '}] 变量处理指令集\n`;
+        md += `- [${document.getElementById('mvuCore').checked ? 'x' : ' '}] MVU核心组件（1.0-3.2）\n`;
+        md += '  - 包含：变量结构设计、变量初始化、变量更新规则、变量列表、变量输出格式\n';
         md += `- [${document.getElementById('mvu5').checked ? 'x' : ' '}] 分阶段角色设定\n`;
         md += `- [${document.getElementById('mvu6').checked ? 'x' : ' '}] 动态世界内容\n`;
         md += `- [${document.getElementById('mvu7').checked ? 'x' : ' '}] HTML状态栏\n\n`;
@@ -980,27 +978,35 @@ function generateMarkdown() {
     md += '  entries:\n';
     if (document.getElementById('needMVU').checked) {
         md += '    # [InitVar]初始化条目\n';
-        md += '    - comment: "[InitVar]初始化"\n';
-        md += '      content: 作品/' + workName + '/变量初始化.xyaml\n';
+        md += '    - comment: "[initvar]变量初始化"\n';
+        md += '      content: 作品/' + workName + '/[initvar]变量初始化.xyaml\n';
         md += '      enabled: false\n';
         md += '      position: before_char\n';
         md += '      insertion_order: 101\n';
         md += '      depth: 4\n';
         md += '      role: 0\n\n';
         md += '    # 变量更新规则\n';
-        md += '    - comment: "变量更新规则"\n';
-        md += '      content: 作品/' + workName + '/变量更新规则.xyaml\n';
+        md += '    - comment: "[mvu_update]变量更新规则"\n';
+        md += '      content: 作品/' + workName + '/[mvu_update]变量更新规则.xyaml\n';
         md += '      enabled: true\n';
         md += '      position: at_depth\n';
         md += '      insertion_order: 1\n';
         md += '      depth: 1\n';
         md += '      role: 0\n\n';
-        md += '    # 变量处理指令集\n';
-        md += '    - comment: "变量处理指令集"\n';
-        md += '      content: 作品/' + workName + '/变量处理指令集.xyaml\n';
+        md += '    # 变量列表\n';
+        md += '    - comment: "变量列表"\n';
+        md += '      content: 作品/' + workName + '/变量列表.xyaml\n';
         md += '      enabled: true\n';
         md += '      position: at_depth\n';
         md += '      insertion_order: 2\n';
+        md += '      depth: 1\n';
+        md += '      role: 0\n\n';
+        md += '    # 变量输出格式\n';
+        md += '    - comment: "[mvu_update]变量输出格式"\n';
+        md += '      content: 作品/' + workName + '/[mvu_update]变量输出格式.xyaml\n';
+        md += '      enabled: true\n';
+        md += '      position: at_depth\n';
+        md += '      insertion_order: 3\n';
         md += '      depth: 1\n';
         md += '      role: 0\n\n';
     }

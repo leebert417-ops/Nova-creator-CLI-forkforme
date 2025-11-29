@@ -462,20 +462,11 @@
                         <label>组件选择（可多选）</label>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" id="mvu1" value="变量结构设计（脚本）">
-                                <label for="mvu1">变量结构设计（脚本）</label>
+                                <input type="checkbox" id="mvuCore" value="MVU核心组件（1.0-3.2）" class="mvu-core-toggle">
+                                <label for="mvuCore">MVU核心组件（1.0-3.2）</label>
                             </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="mvu2" value="变量初始化条目">
-                                <label for="mvu2">变量初始化条目</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="mvu3" value="变量更新规则">
-                                <label for="mvu3">变量更新规则</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="mvu4" value="变量处理指令集">
-                                <label for="mvu4">变量处理指令集</label>
+                            <div style="margin-left: 24px; display: grid; gap: 8px; margin-top: 8px; margin-bottom: 8px;">
+                                <small style="color: var(--text-light);">包含：变量结构设计、变量初始化、变量更新规则、变量列表、变量输出格式</small>
                             </div>
                             <div class="checkbox-item">
                                 <input type="checkbox" id="mvu5" value="分阶段角色设定">
@@ -490,7 +481,7 @@
                                 <label for="mvu7">HTML状态栏</label>
                             </div>
                         </div>
-                        <p class="placeholder-text">提示：变量结构设计是 MVU Zod 系统的基础，建议首先完成。各组件按照模块编号顺序依次使用效果最佳。</p>
+                        <p class="placeholder-text">提示：MVU核心组件（1.0-3.2）是必选整体，包含变量系统的所有基础模块。其他组件可按需选择。</p>
                     </div>
 
                     <div class="form-group">
