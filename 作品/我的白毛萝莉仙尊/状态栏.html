@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的白毛萝莉仙尊 状态</title>
     <style>
         :root {
             --primary: #9b4dca;
@@ -291,6 +286,114 @@
             }
         }
     </style>
+    <script type="module">
+        /* 填充状态栏数据 */
+        function populateCharacterData() {
+            try {
+                const all_variables = getAllVariables();
+                const characterData = all_variables.stat_data;
+
+                if (!characterData) {
+                    $('#status-card').html("<div class='error-tip'>无法加载状态数据</div>");
+                    return;
+                }
+
+                /* 世界状态 */
+                $('#current-time').text(_.get(characterData, '世界.当前时间', 'N/A'));
+                $('#current-location').text(_.get(characterData, '世界.当前地点', 'N/A'));
+
+                /* 当前场景角色列表 */
+                const currentChars = _.get(characterData, '当前角色', {});
+                let charHtml = '';
+                _.forEach(currentChars, (char, charName) => {
+                    const thoughts = char['当前想法'] || '无';
+                    const state = char['当前状态'] || '无';
+                    const outfit = char['当前穿着'] || '无';
+                    charHtml += `<div class="character-item"><div class="character-name">${charName}</div><div class="character-desc"><strong>想法:</strong> ${thoughts}</div><div class="character-desc"><strong>状态:</strong> ${state}</div><div class="character-desc"><strong>穿着:</strong> ${outfit}</div></div>`;
+                });
+                $('#character-list').html(charHtml || '<div class="empty-tip">当前场景无其他角色</div>');
+
+                /* 苏月珑基本信息 */
+                $('#syl-xiuwei').text(_.get(characterData, '重要角色.苏月珑.修为', 'N/A'));
+                $('#syl-affection').text(_.get(characterData, '重要角色.苏月珑.好感度', 'N/A'));
+
+                /* 苏月珑功法 */
+                const sylGongfa = _.get(characterData, '重要角色.苏月珑.功法', {});
+                let sylGfHtml = '';
+                _.forEach(sylGongfa, (gf, gfName) => {
+                    const pinjie = gf['品阶'] || '未知';
+                    const desc = gf['描述'] || '无描述';
+                    sylGfHtml += `<div class="text-item"><span class="info-label">${gfName} (${pinjie})</span><p class="info-text">${desc}</p></div>`;
+                });
+                $('#syl-gongfa').html(sylGfHtml || '<div class="empty-tip">暂无功法</div>');
+
+                /* 苏月珑法宝 */
+                const sylFabao = _.get(characterData, '重要角色.苏月珑.法宝', {});
+                let sylFbHtml = '';
+                _.forEach(sylFabao, (fb, fbName) => {
+                    const pinjie = fb['品阶'] || '未知';
+                    const desc = fb['描述'] || '无描述';
+                    sylFbHtml += `<div class="text-item"><span class="info-label">${fbName} (${pinjie})</span><p class="info-text">${desc}</p></div>`;
+                });
+                $('#syl-fabao').html(sylFbHtml || '<div class="empty-tip">暂无法宝</div>');
+
+                /* {{user}}基本信息 */
+                $('#user-xiuwei').text(_.get(characterData, '重要角色.{{user}}.修为', 'N/A'));
+                $('#user-affection').text(_.get(characterData, '重要角色.{{user}}.好感度', 'N/A'));
+
+                /* {{user}}功法 */
+                const userGongfa = _.get(characterData, '重要角色.{{user}}.功法', {});
+                let userGfHtml = '';
+                _.forEach(userGongfa, (gf, gfName) => {
+                    const pinjie = gf['品阶'] || '未知';
+                    const desc = gf['描述'] || '无描述';
+                    userGfHtml += `<div class="text-item"><span class="info-label">${gfName} (${pinjie})</span><p class="info-text">${desc}</p></div>`;
+                });
+                $('#user-gongfa').html(userGfHtml || '<div class="empty-tip">暂无功法</div>');
+
+                /* {{user}}法宝 */
+                const userFabao = _.get(characterData, '重要角色.{{user}}.法宝', {});
+                let userFbHtml = '';
+                _.forEach(userFabao, (fb, fbName) => {
+                    const pinjie = fb['品阶'] || '未知';
+                    const desc = fb['描述'] || '无描述';
+                    userFbHtml += `<div class="text-item"><span class="info-label">${fbName} (${pinjie})</span><p class="info-text">${desc}</p></div>`;
+                });
+                $('#user-fabao').html(userFbHtml || '<div class="empty-tip">暂无法宝</div>');
+
+            } catch (error) {
+                $('#status-card').html(`<div class='error-tip'>状态栏加载出错: ${error.message}</div>`);
+            }
+        }
+
+        /* 切换标签 */
+        function switchTab(tabName, $tabElement) {
+            $('.tab-button').removeClass('active');
+            $('.tab-panel').removeClass('active');
+
+            if ($tabElement) {
+                $tabElement.addClass('active');
+            } else {
+                $(`[data-tab="${tabName}"]`).addClass('active');
+            }
+
+            $(`#tab-content-${tabName}`).addClass('active');
+        }
+
+        /* 初始化 */
+        async function init() {
+            await waitGlobalInitialized('Mvu');
+            populateCharacterData();
+
+            /* 绑定标签切换事件 */
+            $('.tab-button').on('click', function () {
+                const tabName = $(this).data('tab');
+                switchTab(tabName, $(this));
+            });
+        }
+
+        $(errorCatched(init));
+    </script>
 </head>
 <body>
 <div class="status-card" id="status-card">
@@ -312,9 +415,9 @@
     </header>
 
     <nav class="tab-strip" role="tablist">
-        <button type="button" class="tab-button active" data-tab="main" onclick="switchTab('main', this)">当前场景</button>
-        <button type="button" class="tab-button" data-tab="suyuelong" onclick="switchTab('suyuelong', this)">苏月珑</button>
-        <button type="button" class="tab-button" data-tab="user" onclick="switchTab('user', this)">{{user}}</button>
+        <button type="button" class="tab-button active" data-tab="main">当前场景</button>
+        <button type="button" class="tab-button" data-tab="suyuelong">苏月珑</button>
+        <button type="button" class="tab-button" data-tab="user">{{user}}</button>
     </nav>
 
     <section class="tab-panel active" id="tab-content-main">
@@ -372,229 +475,4 @@
         </div>
     </section>
 </div>
-
-<script>
-    function SafeGetValue(obj, path, defaultValue = "N/A") {
-        let keys = Array.isArray(path) ? path : path.split('.');
-        let current = obj;
-        for (let i = 0; i < keys.length; i++) {
-            if (current === undefined || current === null || typeof current !== 'object' || !current.hasOwnProperty(keys[i])) {
-                return defaultValue;
-            }
-            current = current[keys[i]];
-        }
-        if (current === undefined || current === null) {
-            return defaultValue;
-        }
-        if (Array.isArray(current)) {
-            if (current.length > 0) {
-                const actualValue = current[0];
-                if (typeof actualValue === 'boolean') {
-                    return actualValue;
-                }
-                return String(actualValue);
-            } else {
-                return defaultValue;
-            }
-        }
-        if (typeof current === 'boolean') {
-            return current;
-        }
-        if (typeof current === 'number') {
-            return current;
-        }
-        if (typeof current === 'string') {
-            return current;
-        }
-        return JSON.stringify(current);
-    }
-
-    function updateProgressBar(barId, valueMainId, valueDescId, rawValue, min = 0, max = 100, color) {
-        const progressBar = document.getElementById(barId);
-        const valueMainDisplay = document.getElementById(valueMainId);
-        const valueDescDisplay = document.getElementById(valueDescId);
-        if (!progressBar || !valueMainDisplay) {
-            return;
-        }
-        let numericValue = parseFloat(rawValue);
-        if (isNaN(numericValue)) {
-            numericValue = parseFloat(String(rawValue).replace(/[^0-9.-]/g, ''));
-        }
-        if (!isNaN(numericValue)) {
-            valueMainDisplay.innerText = numericValue;
-        } else {
-            valueMainDisplay.innerText = rawValue;
-        }
-        if (valueDescDisplay) {
-            valueDescDisplay.innerText = '';
-        }
-        if (!isNaN(numericValue)) {
-            numericValue = Math.max(min, Math.min(max, numericValue));
-            const range = max - min;
-            const percentage = range === 0 ? (numericValue >= max ? 100 : 0) : ((numericValue - min) / range) * 100;
-            progressBar.style.width = `${Math.max(0, Math.min(100, percentage))}%`;
-            progressBar.style.backgroundColor = color ? color : '#9b4dca';
-        }
-    }
-
-    async function initDisplay() {
-        try {
-            const messages = await getChatMessages(getCurrentMessageId());
-            if (!messages || messages.length === 0 || !messages[0].data) {
-                document.getElementById('status-card').innerHTML = "<div class='error-tip'>无法加载状态数据 (messages empty)</div>";
-                return;
-            }
-            const gameData = messages[0].data;
-            const characterData = gameData.stat_data;
-            if (!characterData) {
-                document.getElementById('status-card').innerHTML = "<div class='error-tip'>无法加载状态数据 (characterData missing)</div>";
-                return;
-            }
-
-            const timeElem = document.getElementById('current-time');
-            if (timeElem) timeElem.innerText = SafeGetValue(characterData, '世界.当前时间');
-
-            const locationElem = document.getElementById('current-location');
-            if (locationElem) locationElem.innerText = SafeGetValue(characterData, '世界.当前地点');
-
-            const characterListElem = document.getElementById('character-list');
-            if (characterListElem) {
-                const currentChars = characterData['当前角色'];
-                if (currentChars && typeof currentChars === 'object') {
-                    let charHtml = '';
-                    for (const charName in currentChars) {
-                        if (!Object.prototype.hasOwnProperty.call(currentChars, charName)) {
-                            continue;
-                        }
-                        const char = currentChars[charName];
-                        const thoughts = char['当前想法'] || '无';
-                        const state = char['当前状态'] || '无';
-                        const outfit = char['当前穿着'] || '无';
-                        charHtml += `<div class="character-item"><div class="character-name">${charName}</div><div class="character-desc"><strong>想法:</strong> ${thoughts}</div><div class="character-desc"><strong>状态:</strong> ${state}</div><div class="character-desc"><strong>穿着:</strong> ${outfit}</div></div>`;
-                    }
-                    characterListElem.innerHTML = charHtml || '<div class="empty-tip">当前场景无其他角色</div>';
-                } else {
-                    characterListElem.innerHTML = '<div class="empty-tip">当前场景无其他角色</div>';
-                }
-            }
-
-            const sylXiuwei = document.getElementById('syl-xiuwei');
-            if (sylXiuwei) sylXiuwei.innerText = SafeGetValue(characterData, '重要角色.苏月珑.修为');
-
-            const sylAffection = document.getElementById('syl-affection');
-            if (sylAffection) sylAffection.innerText = SafeGetValue(characterData, '重要角色.苏月珑.好感度');
-
-            const sylGongfaElem = document.getElementById('syl-gongfa');
-            if (sylGongfaElem) {
-                const gongfaPath = characterData['重要角色'] && characterData['重要角色']['苏月珑'] ? characterData['重要角色']['苏月珑']['功法'] : null;
-                if (gongfaPath && typeof gongfaPath === 'object' && Object.keys(gongfaPath).length > 0) {
-                    let gfHtml = '';
-                    for (const gfName in gongfaPath) {
-                        if (!Object.prototype.hasOwnProperty.call(gongfaPath, gfName)) {
-                            continue;
-                        }
-                        const gf = gongfaPath[gfName];
-                        const pinjie = gf['品阶'] || '未知';
-                        const desc = gf['描述'] || '无描述';
-                        gfHtml += `<div class="text-item"><span class="info-label">${gfName} (${pinjie})</span><p class="info-text">${desc}</p></div>`;
-                    }
-                    sylGongfaElem.innerHTML = gfHtml;
-                } else {
-                    sylGongfaElem.innerHTML = '<div class="empty-tip">暂无功法</div>';
-                }
-            }
-
-            const sylFabaoElem = document.getElementById('syl-fabao');
-            if (sylFabaoElem) {
-                const fabaoPath = characterData['重要角色'] && characterData['重要角色']['苏月珑'] ? characterData['重要角色']['苏月珑']['法宝'] : null;
-                if (fabaoPath && typeof fabaoPath === 'object' && Object.keys(fabaoPath).length > 0) {
-                    let fbHtml = '';
-                    for (const fbName in fabaoPath) {
-                        if (!Object.prototype.hasOwnProperty.call(fabaoPath, fbName)) {
-                            continue;
-                        }
-                        const fb = fabaoPath[fbName];
-                        const pinjie = fb['品阶'] || '未知';
-                        const desc = fb['描述'] || '无描述';
-                        fbHtml += `<div class="text-item"><span class="info-label">${fbName} (${pinjie})</span><p class="info-text">${desc}</p></div>`;
-                    }
-                    sylFabaoElem.innerHTML = fbHtml;
-                } else {
-                    sylFabaoElem.innerHTML = '<div class="empty-tip">暂无法宝</div>';
-                }
-            }
-
-            const userXiuwei = document.getElementById('user-xiuwei');
-            if (userXiuwei) userXiuwei.innerText = SafeGetValue(characterData, '重要角色.{{user}}.修为');
-
-            const userAffection = document.getElementById('user-affection');
-            if (userAffection) userAffection.innerText = SafeGetValue(characterData, '重要角色.{{user}}.好感度');
-
-            const userGongfaElem = document.getElementById('user-gongfa');
-            if (userGongfaElem) {
-                const userGongfaPath = characterData['重要角色'] && characterData['重要角色']['{{user}}'] ? characterData['重要角色']['{{user}}']['功法'] : null;
-                if (userGongfaPath && typeof userGongfaPath === 'object' && Object.keys(userGongfaPath).length > 0) {
-                    let gfHtml = '';
-                    for (const gfName in userGongfaPath) {
-                        if (!Object.prototype.hasOwnProperty.call(userGongfaPath, gfName)) {
-                            continue;
-                        }
-                        const gf = userGongfaPath[gfName];
-                        const pinjie = gf['品阶'] || '未知';
-                        const desc = gf['描述'] || '无描述';
-                        gfHtml += `<div class="text-item"><span class="info-label">${gfName} (${pinjie})</span><p class="info-text">${desc}</p></div>`;
-                    }
-                    userGongfaElem.innerHTML = gfHtml;
-                } else {
-                    userGongfaElem.innerHTML = '<div class="empty-tip">暂无功法</div>';
-                }
-            }
-
-            const userFabaoElem = document.getElementById('user-fabao');
-            if (userFabaoElem) {
-                const userFabaoPath = characterData['重要角色'] && characterData['重要角色']['{{user}}'] ? characterData['重要角色']['{{user}}']['法宝'] : null;
-                if (userFabaoPath && typeof userFabaoPath === 'object' && Object.keys(userFabaoPath).length > 0) {
-                    let fbHtml = '';
-                    for (const fbName in userFabaoPath) {
-                        if (!Object.prototype.hasOwnProperty.call(userFabaoPath, fbName)) {
-                            continue;
-                        }
-                        const fb = userFabaoPath[fbName];
-                        const pinjie = fb['品阶'] || '未知';
-                        const desc = fb['描述'] || '无描述';
-                        fbHtml += `<div class="text-item"><span class="info-label">${fbName} (${pinjie})</span><p class="info-text">${desc}</p></div>`;
-                    }
-                    userFabaoElem.innerHTML = fbHtml;
-                } else {
-                    userFabaoElem.innerHTML = '<div class="empty-tip">暂无法宝</div>';
-                }
-            }
-
-        } catch (error) {
-            document.getElementById('status-card').innerHTML = `<div class='error-tip'>状态栏加载出错: ${error.message}</div>`;
-        }
-    }
-
-    function switchTab(tabName, tabElement) {
-        const tabs = document.querySelectorAll('.tab-button');
-        const contents = document.querySelectorAll('.tab-panel');
-        tabs.forEach(tab => tab.classList.remove('active'));
-        contents.forEach(content => content.classList.remove('active'));
-        if (tabElement) {
-            tabElement.classList.add('active');
-        } else {
-            const fallback = document.querySelector('[data-tab="' + tabName + '"]');
-            if (fallback) {
-                fallback.classList.add('active');
-            }
-        }
-        const targetPanel = document.getElementById('tab-content-' + tabName);
-        if (targetPanel) {
-            targetPanel.classList.add('active');
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', initDisplay);
-</script>
 </body>
-</html>
