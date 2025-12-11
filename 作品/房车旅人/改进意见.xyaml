@@ -1,0 +1,19 @@
+#这里是该项目的改进意见，仅供参考
+- title: 添加夜间模式
+  description: 夜间模式可以减少眼睛疲劳，提升用户体验。
+  priority: 低
+- title: 设置npc模板
+  description: 规定npc的性格和行为模式，使其符合正常人的行为逻辑。
+  priority: 高
+- title: 设置主角背景设定
+  description: 为主角设计一个详细的背景故事，使故事中主角的表现更加鲜活。
+  priority: 中
+- title: 输出规则细分
+  description: 将输出规则细分为更多具体的子规则，减少正常对话的tokens。
+  priority: 低
+- title: 文风设计
+  description: 设计特定的文风（乡土文风），使叙事更加生动有趣。
+  priority: 中
+- title: 地点人物名称抗中二
+  description: 设计地点和人物名称时避免使用过于中二的名称，提升整体故事的真实感。
+  priority: 中

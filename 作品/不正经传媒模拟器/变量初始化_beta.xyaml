@@ -1,0 +1,84 @@
+{
+  "media_company": {
+    "$meta": {
+      "extensible": true,
+      "required": ["fame", "current_events", "development_suggestions", "main_artists", "moments_feed", "twitter_feed", "live_comments"],
+      "template": {
+        "main_artists": {
+          "name": "艺人姓名",
+          "fame": "新人",
+          "content": "主营内容",
+          "demand": "当前诉求",
+          "appearance": "外貌特点",
+          "personality": "性格特点",
+          "live_schedule": "19:00-21:00",
+          "live_content": "正在玩《赛博朋克2077》"
+        },
+        "moments_feed": {
+          "author": "作者",
+          "content": "动态内容",
+          "timestamp": "时间戳",
+          "comments": [
+            {
+              "author": "评论者",
+              "content": "评论内容"
+            }
+          ]
+        },
+        "twitter_feed": {
+          "author": "作者",
+          "content": "动态内容",
+          "timestamp": "时间戳",
+          "comments": [
+            {
+              "author": "评论者",
+              "content": "评论内容"
+            }
+          ]
+        },
+        "live_comments": {
+          "artist": "艺人姓名",
+          "comments": [
+            {
+              "author": "观众昵称",
+              "content": "评论内容"
+            }
+          ]
+        }
+      }
+    },
+    "fame": "岌岌无名",
+    "current_events": [
+      "$__META_EXTENSIBLE__$",
+      "公司刚刚成立，百废待兴"
+    ],
+    "development_suggestions": [
+      "$__META_EXTENSIBLE__$",
+      "建议1：签约一位有潜力的新人主播",
+      "建议2：策划一次线上推广活动",
+      "建议3：寻求第一笔天使轮投资"
+    ],
+    "main_artists": [
+      "$__META_EXTENSIBLE__$"
+    ],
+    "moments_feed": [
+      "$__META_EXTENSIBLE__$"
+    ],
+    "twitter_feed": [
+      "$__META_EXTENSIBLE__$"
+    ],
+    "live_comments": [
+      "$__META_EXTENSIBLE__$"
+    ]
+  },
+  "world_state": {
+    "$meta": {
+      "extensible": false,
+      "required": ["date", "time_period", "hour", "weather"]
+    },
+    "date": "2025/10/13",
+    "time_period": "上午",
+    "hour": 9,
+    "weather": "☀️ 天气晴朗"
+  }
+}

@@ -1,0 +1,39 @@
+---
+<status_current_variables>
+{{get_message_variable::stat_data}}
+</status_current_variables>
+rule:
+  - You should output the update analysis in the end of the next reply.
+  - Use `_.set('path', 'old', 'new')` for direct assignment or state changes.
+  - Use `_.add('path', value)` to add or subtract a numerical value.
+  - Use `_.insert('path', 'item_or_key', 'value')` to add an element to an array or object.
+  - Use `_.remove('path', 'item_or_key')` to remove an element from an array or object.
+  - When using _.set with objects or arrays, do NOT wrap them in quotes - use direct object/array literals (e.g., {key: value} or [item1, item2])
+  - When using _.set with strings, DO wrap them in quotes (e.g., 'string value')
+  - When using _.set with numbers or booleans, do NOT use quotes (e.g., 42, true, false)
+format: |-
+  <UpdateVariable>
+    <Analysis>
+      ${variable_path}: ${Whether the variable should be updated: 'Yes' or 'No'}
+      ...
+    </Analysis>
+    ${command_expression}; // ${brief reason for change}
+    ...
+  </UpdateVariable>
+example: |-
+  <UpdateVariable>
+    <Analysis>
+      地点日期时间天气: Yes
+      理智值: Yes
+      小梦已登场: Yes
+      小梦好感度: Yes
+      小梦状态.情绪: Yes
+      小梦状态.想法: Yes
+    </Analysis>
+    _.set('地点日期时间天气', '📍青山废弃医院-一楼大厅,2025/10/16,🌙深夜 23:52,🌫️阴沉有雾', '📍青山废弃医院-二楼204病房,2025/10/17,🌙凌晨 00:15,🌫️阴沉有雾'); // 玩家移动到新地点，时间推进
+    _.add('理智值', -5); // 初次遭遇清晰的超自然互动，理智值下降
+    _.set('小梦已登场', 0, 1); // 玩家意识到了小梦，激活UI显示
+    _.add('小梦好感度', 10); // 玩家友善地对待了与小梦相关的物品，好感度提升
+    _.set('小梦状态.情绪', '好奇', '欣喜'); // 小梦的情绪因玩家的友善举动而变化
+    _.set('小梦状态.想法', '这个新来的人好像和其他人不一样。', '他……触碰了我的宝物，而且没有恶意。'); // 小梦的想法发生改变
+  </UpdateVariable>

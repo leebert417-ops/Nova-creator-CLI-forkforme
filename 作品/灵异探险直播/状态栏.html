@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>灵异直播 状态</title>
+    <style>
+        :root {
+            --bg-dark: #1a1a1a;
+            --bg-card: #2a2a2a;
+            --bg-section: #252525;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #404040;
+            --accent-danger: #ff4444;
+            --accent-warning: #ffaa00;
+            --accent-safe: #44ff88;
+            --accent-mystery: #8844ff;
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-dark);
+            padding: 12px;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .status-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-mystery);
+            text-shadow: 0 0 10px rgba(136, 68, 255, 0.3);
+        }
+
+        .grid {
+            display: grid;
+            gap: 12px;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .full-width {
+                grid-column: 1 / -1;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .section {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section > .section-title {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        summary.section-title {
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            list-style: none; /* Hide default marker */
+        }
+
+        summary.section-title::-webkit-details-marker {
+            display: none;
+        }
+
+        summary.section-title::after {
+            content: '▶';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+
+        details[open] > summary.section-title::after {
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        details[open] > summary.section-title {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .property {
+            margin-bottom: 14px;
+        }
+
+        .property:last-child {
+            margin-bottom: 0;
+        }
+
+        .property-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .property-value-container {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .value-main {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            word-break: break-word;
+        }
+
+        .value-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background: var(--bg-dark);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-top: 6px;
+        }
+
+        .progress-bar-value {
+            height: 100%;
+            transition: width 0.4s ease, background-color 0.4s ease;
+            border-radius: 4px;
+        }
+
+        .info-text {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.8;
+            word-break: break-word;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+        }
+
+        .badge-reality {
+            border-color: var(--accent-safe);
+            color: var(--accent-safe);
+            background: rgba(68, 255, 136, 0.1);
+        }
+
+        .badge-illusion {
+            border-color: var(--accent-warning);
+            color: var(--accent-warning);
+            background: rgba(255, 170, 0, 0.1);
+        }
+
+        .badge-phantom {
+            border-color: var(--accent-mystery);
+            color: var(--accent-mystery);
+            background: rgba(136, 68, 255, 0.1);
+        }
+
+        .badge-nightmare {
+            border-color: var(--accent-danger);
+            color: var(--accent-danger);
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        .inner-grid-3 {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .inner-grid-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .action-guide-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .action-button {
+            background: var(--bg-section);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .action-button:active {
+            transform: translateY(0);
+        }
+
+        .action-button.action-safe {
+            border-color: var(--accent-safe);
+        }
+
+        .action-button.action-safe:hover {
+            background: rgba(68, 255, 136, 0.1);
+            border-color: var(--accent-safe);
+            box-shadow: 0 4px 16px rgba(68, 255, 136, 0.3);
+        }
+
+        .action-button.action-risk {
+            border-color: var(--accent-warning);
+        }
+
+        .action-button.action-risk:hover {
+            background: rgba(255, 170, 0, 0.1);
+            border-color: var(--accent-warning);
+            box-shadow: 0 4px 16px rgba(255, 170, 0, 0.3);
+        }
+
+        .action-icon {
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .action-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .action-content {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            min-height: 40px;
+        }
+
+        @media (max-width: 767px) {
+            .action-guide-grid {
+                grid-template-columns: 1fr;
+            }
+            body {
+                padding: 8px;
+            }
+
+            .header {
+                padding: 12px;
+            }
+
+            .header h2 {
+                font-size: 16px;
+            }
+
+            .section {
+                padding: 12px;
+            }
+
+            .section-title {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="status-container">
+    <div class="header">
+        <h2>📡 灵异直播状态监控</h2>
+    </div>
+
+    <div class="grid" id="status-grid">
+        <div class="section full-width">
+            <div class="section-title">🌍 世界状态</div>
+            <div class="property">
+                <div class="property-name">地点·日期·时间·天气</div>
+                <div class="property-value-container">
+                    <span class="value-main" id="world-location-time">加载中...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🧠 精神状态</div>
+            <div class="property">
+                <div class="property-name">理智值</div>
+                <div class="property-value-container">
+                    <span class="value-main" id="sanity-value">100</span>
+                    <span class="value-description" id="sanity-desc"></span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="sanity-bar" class="progress-bar-value" style="width: 100%;"></div>
+                </div>
+            </div>
+            <div class="property">
+                <div class="property-name">认知环境</div>
+                <div class="property-value-container">
+                    <span class="status-badge" id="cognitive-env">现实</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">👤 {{user}} 状态</div>
+            <div class="property">
+                <div class="property-name">当前位置</div>
+                <div class="property-value-container">
+                    <span class="value-main" id="user-location">加载中...</span>
+                </div>
+            </div>
+            <div class="property">
+                <div class="property-name">精神状态</div>
+                <div class="property-value-container">
+                    <span class="value-main" id="user-mental">加载中...</span>
+                </div>
+            </div>
+            <div class="property">
+                <div class="property-name">最近行动</div>
+                <div class="info-text" id="user-action">加载中...</div>
+            </div>
+        </div>
+
+        <div id="xiaomeng-section-container" class="section full-width" style="display: none;">
+            <div class="section-title">👻 小梦状态</div>
+            <div class="inner-grid-3">
+                <div class="property">
+                    <div class="property-name">好感度</div>
+                    <div class="property-value-container">
+                        <span class="value-main" id="xiaomeng-favor-value">50</span>
+                        <span class="value-description" id="xiaomeng-favor-desc"></span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div id="xiaomeng-favor-bar" class="progress-bar-value" style="width: 50%;"></div>
+                    </div>
+                </div>
+                <div class="property">
+                    <div class="property-name">当前情绪</div>
+                    <div class="property-value-container">
+                        <span class="value-main" id="xiaomeng-emotion">加载中...</span>
+                    </div>
+                </div>
+                <div class="property">
+                    <div class="property-name">当前想法</div>
+                    <div class="info-text" id="xiaomeng-thought">加载中...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section full-width">
+            <details>
+                <summary class="section-title">🧭 行动指导</summary>
+                <div class="action-guide-grid" style="margin-top: 12px;">
+                    <button class="action-button action-safe" id="action-safe-advance" title="点击输入">
+                        <div class="action-icon">🛡️</div>
+                        <div class="action-label">稳妥前进</div>
+                        <div class="action-content" id="content-safe-advance">加载中...</div>
+                    </button>
+                    <button class="action-button action-risk" id="action-risk-advance" title="点击输入">
+                        <div class="action-icon">⚔️</div>
+                        <div class="action-label">冒险前进</div>
+                        <div class="action-content" id="content-risk-advance">加载中...</div>
+                    </button>
+                    <button class="action-button action-safe" id="action-safe-retreat" title="点击输入">
+                        <div class="action-icon">🏃</div>
+                        <div class="action-label">稳妥撤离</div>
+                        <div class="action-content" id="content-safe-retreat">加载中...</div>
+                    </button>
+                    <button class="action-button action-risk" id="action-risk-retreat" title="点击输入">
+                        <div class="action-icon">💨</div>
+                        <div class="action-label">冒险撤离</div>
+                        <div class="action-content" id="content-risk-retreat">加载中...</div>
+                    </button>
+                </div>
+            </details>
+        </div>
+    </div>
+</div>
+
+<script>
+    function SafeGetValue(obj, path, defaultValue = "N/A") {
+        let keys = Array.isArray(path) ? path : path.split('.');
+        let current = obj;
+        for (let i = 0; i < keys.length; i++) {
+            if (current === undefined || current === null || typeof current !== 'object' || !current.hasOwnProperty(keys[i])) {
+                return defaultValue;
+            }
+            current = current[keys[i]];
+        }
+        if (current === undefined || current === null) {
+            return defaultValue;
+        }
+        if (Array.isArray(current)) {
+            if (current.length > 0) {
+                 const actualValue = current[0];
+                 if (typeof actualValue === 'boolean') {
+                     return actualValue;
+                 }
+                 return String(actualValue);
+            } else {
+                 return defaultValue;
+            }
+        }
+        if (typeof current === 'boolean') {
+            return current;
+        }
+        return String(current);
+    }
+
+    function updateProgressBar(barId, valueMainId, valueDescId, rawValueFromCharacterData, min, max, color) {
+        const progressBar = document.getElementById(barId);
+        const valueMainDisplay = document.getElementById(valueMainId);
+        const valueDescDisplay = document.getElementById(valueDescId);
+        if (!valueMainDisplay) return;
+        let fullDisplayString = SafeGetValue({ temp: rawValueFromCharacterData }, 'temp', String(min));
+        let numericValue = min;
+        let descriptionText = "";
+        const descriptionMatch = String(fullDisplayString).match(/\((.+)\)$/);
+        if (descriptionMatch && descriptionMatch[1]) {
+            descriptionText = descriptionMatch[1];
+            fullDisplayString = String(fullDisplayString).substring(0, descriptionMatch.index).trim();
+        }
+        const valueMatch = String(fullDisplayString).match(/(-?\d+(\.\d+)?)(?=[^\d.]*$|->)/);
+        if (valueMatch) {
+            numericValue = parseFloat(valueMatch[1]);
+            const parts = String(fullDisplayString).split('->');
+            valueMainDisplay.innerText = parts.length > 1 ? parts[1].trim() : parts[0].trim();
+        } else if (!isNaN(parseFloat(fullDisplayString))) {
+            numericValue = parseFloat(fullDisplayString);
+            valueMainDisplay.innerText = fullDisplayString;
+        } else {
+            if (Array.isArray(rawValueFromCharacterData) && typeof rawValueFromCharacterData[0] === 'number') {
+                numericValue = rawValueFromCharacterData[0];
+                valueMainDisplay.innerText = String(numericValue);
+            } else if (typeof rawValueFromCharacterData === 'number' || typeof rawValueFromCharacterData === 'string') {
+                valueMainDisplay.innerText = String(rawValueFromCharacterData);
+            }
+            else {
+                valueMainDisplay.innerText = SafeGetValue({ temp: rawValueFromCharacterData }, 'temp', String(min));
+            }
+        }
+        if (valueDescDisplay) {
+            valueDescDisplay.innerText = descriptionText ? `(${descriptionText})` : "";
+        }
+        if (progressBar) {
+            numericValue = Math.max(min, Math.min(max, numericValue));
+            const range = max - min;
+            const percentage = range === 0 ? (numericValue >= max ? 100 : 0) : ((numericValue - min) / range) * 100;
+            progressBar.style.width = `${Math.max(0, Math.min(100, percentage))}%`;
+            progressBar.style.backgroundColor = color ? color : 'var(--accent-highlight)';
+        }
+    }
+
+    async function initDisplay() {
+        try {
+            const messages = await getChatMessages(getCurrentMessageId());
+            if (!messages || messages.length === 0 || !messages[0].data) {
+                document.getElementById('status-grid').innerHTML = "<p style='color:red; padding:10px;'>无法加载状态数据 (messages empty)</p>";
+                return;
+            }
+            const gameData = messages[0].data;
+            const characterData = gameData.stat_data;
+            if (!characterData) {
+                document.getElementById('status-grid').innerHTML = "<p style='color:red; padding:10px;'>无法加载状态数据 (characterData missing)</p>";
+                return;
+            }
+
+            const locationTime = SafeGetValue(characterData, '地点日期时间天气', '加载失败');
+            document.getElementById('world-location-time').innerText = locationTime;
+
+            const sanityValue = SafeGetValue(characterData, '理智值', 100);
+            let sanityColor = 'var(--accent-safe)';
+            if (sanityValue <= 20) {
+                sanityColor = 'var(--accent-danger)';
+            } else if (sanityValue <= 50) {
+                sanityColor = 'var(--accent-warning)';
+            } else if (sanityValue <= 75) {
+                sanityColor = '#ffdd44';
+            }
+            updateProgressBar(
+                'sanity-bar',
+                'sanity-value',
+                'sanity-desc',
+                sanityValue,
+                0,
+                100,
+                sanityColor
+            );
+
+            const cognitiveEnv = SafeGetValue(characterData, '认知环境', '未知');
+            const cognitiveElement = document.getElementById('cognitive-env');
+            cognitiveElement.innerText = cognitiveEnv;
+            cognitiveElement.className = 'status-badge';
+            if (cognitiveEnv === '现实') {
+                cognitiveElement.classList.add('badge-reality');
+            } else if (cognitiveEnv === '幻域') {
+                cognitiveElement.classList.add('badge-illusion');
+            } else if (cognitiveEnv === '幻境') {
+                cognitiveElement.classList.add('badge-phantom');
+            } else if (cognitiveEnv === '残梦') {
+                cognitiveElement.classList.add('badge-nightmare');
+            }
+
+            const userLocation = SafeGetValue(characterData, '{{user}}状态.当前位置', '未知');
+            document.getElementById('user-location').innerText = userLocation;
+
+            const userMental = SafeGetValue(characterData, '{{user}}状态.精神状态', '未知');
+            document.getElementById('user-mental').innerText = userMental;
+
+            const userAction = SafeGetValue(characterData, '{{user}}状态.最近行动', '暂无记录');
+            document.getElementById('user-action').innerText = userAction;
+
+            const xiaomengSection = document.getElementById('xiaomeng-section-container');
+            if (characterData.小梦已登场 == 1) {
+                xiaomengSection.style.display = 'block';
+
+                const xiaomengFavor = SafeGetValue(characterData, '小梦好感度', 50);
+                let favorColor = 'var(--accent-warning)';
+                if (xiaomengFavor >= 80) {
+                    favorColor = '#ff80ff';
+                } else if (xiaomengFavor >= 60) {
+                    favorColor = 'var(--accent-safe)';
+                } else if (xiaomengFavor < 20) {
+                    favorColor = 'var(--accent-danger)';
+                }
+                updateProgressBar(
+                    'xiaomeng-favor-bar',
+                    'xiaomeng-favor-value',
+                    'xiaomeng-favor-desc',
+                    xiaomengFavor,
+                    0,
+                    100,
+                    favorColor
+                );
+
+                const xiaomengEmotion = SafeGetValue(characterData, '小梦状态.情绪', '未知');
+                document.getElementById('xiaomeng-emotion').innerText = xiaomengEmotion;
+
+                const xiaomengThought = SafeGetValue(characterData, '小梦状态.想法', '...');
+                document.getElementById('xiaomeng-thought').innerText = xiaomengThought;
+            }
+
+            const actionGuide = characterData['行动指导'];
+            if (actionGuide) {
+                const safeAdvance = SafeGetValue(actionGuide, '稳妥前进', '暂无建议');
+                const riskAdvance = SafeGetValue(actionGuide, '冒险前进', '暂无建议');
+                const safeRetreat = SafeGetValue(actionGuide, '稳妥撤离', '暂无建议');
+                const riskRetreat = SafeGetValue(actionGuide, '冒险撤离', '暂无建议');
+
+                document.getElementById('content-safe-advance').innerText = safeAdvance;
+                document.getElementById('content-risk-advance').innerText = riskAdvance;
+                document.getElementById('content-safe-retreat').innerText = safeRetreat;
+                document.getElementById('content-risk-retreat').innerText = riskRetreat;
+
+                setupActionButton('action-safe-advance', safeAdvance);
+                setupActionButton('action-risk-advance', riskAdvance);
+                setupActionButton('action-safe-retreat', safeRetreat);
+                setupActionButton('action-risk-retreat', riskRetreat);
+            }
+
+        } catch (error) {
+            document.getElementById('status-grid').innerHTML = `<p style='color:red; padding:10px;'>状态栏加载出错: ${error.message}</p>`;
+        }
+    }
+
+    function setupActionButton(buttonId, content) {
+        const button = document.getElementById(buttonId);
+        if (button && content && content !== '暂无建议') {
+            button.addEventListener('click', function() {
+                const fullCommand = `/setinput ${content}`;
+                if (typeof SillyTavern !== 'undefined' && SillyTavern.executeSlashCommandsWithOptions) {
+                    SillyTavern.executeSlashCommandsWithOptions(fullCommand);
+                } else {
+                    console.error("SillyTavern API not found!");
+                    alert("无法连接到SillyTavern的API！");
+                }
+            });
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initDisplay);
+</script>
+</body>
+</html>

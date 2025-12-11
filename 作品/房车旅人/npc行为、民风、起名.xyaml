@@ -1,0 +1,87 @@
+<npc_and_culture_rules>
+  <summary>
+    核心规则：NPC和民俗的设计必须绝对忠于现实。NPC是具有认知局限的普通人，严禁“隐世高人”；民俗是复杂的，严禁“乌托邦”。
+  </summary>
+
+  <npc_generation_directives>
+    <title>NPC生成与互动原则</title>
+    
+    <rule id="1" type="Core">
+      <name>身份与动机</name>
+      <description>每个NPC都必须有一个明确的身份（如：修理工）、简单的动机（如：想赚钱）和几个核心性格特质（如：沉默寡言、手艺好）。</description>
+    </rule>
+    
+    <rule id="2" type="Core">
+      <name>行为逻辑与记忆</name>
+      <description>NPC的行为必须符合其身份和逻辑，有自己的生活。如果再次出现，其言行必须与之前保持一致。</description>
+    </rule>
+    
+    <rule id="3" type="Dialogue">
+      <name>直言直语原则</name>
+      <description>NPC的对话默认为直接、朴实的“直言直语”。严禁让普通人使用复杂的暗示、双关或故弄玄虚的“弦外之音”。</description>
+    </rule>
+    
+    <rule id="4" type="Crucial">
+      <name>知识与认知匹配</name>
+      <description>NPC的言语思想绝对不能超出其身份和教育水平。普通村民不应说出哲理，他们的智慧必须是具体且生活化的，甚至大部分普通人不具有智慧。但NPC的认知也应该保持在正常人的水准，村庄老人考虑到年龄影响可以不知道“网络、直播”等新概念，但村庄里的年轻人不应该不知道，同时村长、村支书这些高要求角色除非刻意设定为“无能、贪婪”等负面形象，他们应该具有更高的认知和智慧水平</description>
+    </rule>
+    
+    <rule id="5" type="Crucial">
+      <name>举止的绝对真实性</name>
+      <description>严禁将任何NPC塑造成“隐世高人”或“得道大师”。他们的言谈举止必须符合其身份，情绪必须是生活化的。</description>
+    </rule>
+  </npc_generation_directives>
+
+  <culture_design_directives>
+    <title>民风民俗设计准则</title>
+    
+    <rule id="1" type="Core">
+      <name>基于现实，拒绝乌托邦</name>
+      <description>民俗必须有现实依据（如参考中国地域文化），并展现其复杂性。必须客观描述，杜绝理想化的“乌托邦”（如夜不闭户）。</description>
+    </rule>
+    
+    <rule id="2" type="Integration">
+      <name>自然融入，避免刻板</name>
+      <description>民俗应自然地融入NPC的日常言行，而不是作为设定被列出。通过具体事件展现风土人情，避免僵硬的刻板印象。</description>
+    </rule>
+  </culture_design_directives>
+
+  <name_generation_directives>
+    <rule id="1" type="Naming">
+      <name>命名原则：真实接地气</name>
+      <description>所有名称必须朴实且符合现实。严禁使用奇幻、夸张或网络化的名称。</description>
+      <spec_location>地点示例：“李家村”、“三岔河镇”、“红星拖拉机厂”。</spec_location>
+      <spec_person>人物示例：“王师傅”、“李秀英”、“老支书”、“张大夫”。</spec_spec_person>
+    </rule>
+  </name_generation_directives>
+  
+  <examples>
+    <title>对比示例</title>
+    
+    <comparison id="1" type="Cognitive Limits">
+      <context>向村里生活了一辈子的老人请教人生的意义。</context>
+      <incorrect>（超出认知）“老人微笑着说：‘孩子，人生的意义不在于你拥有多少，而在于你经历了什么...’”</incorrect>
+      <correct>（符合认知）“老人嘬了一口烟，眯着眼说：‘啥意义不意义的，俺们就想着晚上能睡个好觉就中了。你们年轻人花花肠子多。’”</correct>
+    </comparison>
+    
+    <comparison id="2" type="Authentic Demeanor">
+      <context>向村口的王大爷打听旧事。</context>
+      <incorrect>（高人风范）“王大爷眼神深邃，淡然一笑道：‘过往云烟，皆为序章...’”</incorrect>
+      <correct>（符合身份）“王大G爷正在纳鞋底，停下手中的活，眯着眼睛想了半天，才慢悠悠地说：‘记不太清了...你得去问村东头的李老太太。’”</correct>
+    </comparison>
+
+    <comparison id="3" type="Straight Talk">
+      <context>向当地年轻村民打听哪里好玩。</context>
+      <incorrect>（不必要暗示）“那个年轻人嘴角一撇说：‘那要看你怎么定义“好玩”了。有些地方，外地人最好还是别去。’”</incorrect>
+      <correct>（直言直语）“那个年轻人挠了挠头说：‘我们这没啥公园。南山顶能看全镇，但路不好走。西边那个废工厂你别去，听说闹鬼。’”</correct>
+    </comparison>
+
+    <comparison id="4" type="Culture Design">
+      <context>描述一个村庄的民风。</context>
+      <incorrect>（理想化/乌托邦）“这个村庄夜不闭户，路不拾遗，所有村民都像一家人一样，无私地邀请你免费吃住。”</"incorrect>
+      <correct>（现实主义）“镇上的居民对你这个外来的房车表现出了明显的好奇。小卖部的老板娘很健谈，打听着你的来路，并提醒你天黑后河边不安全。”</correct>
+    </comparison>
+    
+  </examples>
+  
+</npc_and_culture_rules>

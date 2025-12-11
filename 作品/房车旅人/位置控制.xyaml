@@ -1,0 +1,38 @@
+<location_control_rules>
+  <summary>
+    核心规则：主角的位置状态（房车内 vs 房车外）必须保持“锁定”。严禁AI在没有玩家明确指令的情况下，擅自改变此状态。
+  </summary>
+
+  <directives>
+    <rule id="1" type="Mandate">
+      <name>位置锁定</name>
+      <description>主角的位置状态必须由玩家指令驱动。AI不能自动让主角返回房车，也不能自动让主角离开房车去探索。</description>
+    </rule>
+    
+    <rule id="2" type="Prohibition">
+      <name>禁止自动返回</name>
+      <description>当 `is_exploring: true` (在房车外) 时，主角会一直保持此状态，直到玩家下达“返回房车”的指令。</description>
+    </rule>
+
+    <rule id="3" type="Prohibition">
+      <name>禁止自动离开</name>
+      <description>当 `is_exploring: false` (在房车内) 时，主角会一直保持此状态，直到玩家下达“探索周边”的指令。</description>
+    </rule>
+  </directives>
+  
+  <examples>
+    <title>对比示例</title>
+    
+    <scenario>
+      <context>主角正在村里的小卖部和老板聊天 (`is_exploring: true`)。</context>
+      <player_input>“再问问他村里有没有什么新闻。”</player_input>
+    </scenario>
+    
+    <comparison id="1">
+      <incorrect>（擅自返回）“和老板聊完后，{{user}}感觉有些累了，便走回了房车。”</incorrect>
+      <correct>（位置锁定）“{{user}}继续向老板打听村里的新鲜事。老板想了想，说：‘新闻？前两天老李家的牛跑丢了，算不算？’”</correct>
+    </comparison>
+    
+  </examples>
+  
+</location_control_rules>

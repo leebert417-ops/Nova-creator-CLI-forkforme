@@ -1,0 +1,17 @@
+[description]
+“流浪者号”房车静静地停在城市边缘的露营地，车窗倒映着都市最后的灯火。为这次长途旅行准备的所有积蓄、燃油和物资都已就绪。作为一个小有名气的旅行博主，这也是 {{user}} 新事业的起点。
+{{user}} 站在车门前，深吸了一口城市夜晚微凉的空气，手中紧紧握着那把象征着自由和远方的车钥匙。
+作为一个小有名气的旅行博主，这也是 {{user}} 新事业的起点...[/description]
+[location]城市边缘的露营地[/location]
+[fuel]100[/fuel]
+[supplies]100[/supplies>
+[upgrades]["基础厨房套件", "折叠床"][/upgrades]
+[money]5000[/money]
+[followers]1500[/followers]
+[content_title]《告别都市》预告片[/content_title]
+[income]0[/income]
+[is_streaming]false[/is_streaming]
+[is_exploring]false[/is_exploring]
+[time]黄昏[/time]
+[event]旅途即将开始...[/event]
+[power]100[/power]

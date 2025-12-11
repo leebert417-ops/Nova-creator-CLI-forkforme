@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>乡野房车之旅 </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f4f6f9; --panel-bg: #ffffff; --text-color: #212529; --primary-color: #007bff;
+            --border-color: #dee2e6; --progress-bg: #e9ecef; --fuel-color: #ffc107; --supplies-color: #28a745; --power-color: #00aeff;
+            --header-bg: #f8f9fa; --income-color: #20c997; --followers-color: #fd7e14; --live-color: #dc3545;
+            --return-color: #28a745;
+        }
+        body { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 15px; box-sizing: border-box; }
+        h3 { margin: 0 0 10px; font-size: 14px; color: #6c757d; border-bottom: none; display: flex; align-items: center; } h3 .fas { margin-right: 8px; }
+        .top-bar, .main-content { background-color: var(--panel-bg); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid var(--border-color); }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; }
+        .top-bar-item { display: flex; align-items: center; font-size: 16px; } .top-bar-item .fas { color: var(--primary-color); margin-right: 10px; font-size: 18px; } .top-bar-item span { font-weight: 500; }
+        .main-content { padding: 25px; } #story-text { line-height: 1.8; font-size: 16px; min-height: 80px; white-space: pre-wrap; } #event-log { font-style: italic; color: #6c757d; margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ced4da; }
+        .details-section { margin-bottom: 15px; }
+        .collapsible-header { background-color: var(--header-bg); color: #495057; cursor: pointer; padding: 15px 20px; width: 100%; border: 1px solid var(--border-color); border-radius: 8px; text-align: left; outline: none; font-size: 16px; font-weight: bold; transition: background-color 0.3s; display: flex; justify-content: space-between; align-items: center; }
+        .collapsible-header:hover, .collapsible-header.active { background-color: #e9ecef; } .collapsible-icon { transition: transform 0.3s ease; } .collapsible-header.active .collapsible-icon { transform: rotate(180deg); }
+        .collapsible-content { padding: 0 15px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; background-color: var(--panel-bg); border: 1px solid var(--border-color); border-top: none; border-radius: 0 0 8px 8px; }
+        .details-grid { padding: 20px 0 10px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+        .command-grid { padding: 15px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .command-btn { background: var(--primary-color); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 14px; text-align: center; transition: all 0.2s; white-space: nowrap; }
+        .command-btn:hover { transform: translateY(-1px); }
+        .command-btn[disabled] { background-color: #6c757d; cursor: not-allowed; transform: none; box-shadow: none; opacity: 0.7; }
+        #live-btn.streaming { background-color: var(--live-color); } #live-btn.streaming:hover { background-color: #c82333; }
+        #explore-btn.exploring { background-color: var(--return-color); } #explore-btn.exploring:hover { background-color: #218838; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 25px; border-radius: 8px; width: 90%; max-width: 450px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .modal-title { margin-top: 0; font-size: 20px; color: #333; }
+        .modal-body { margin-top: 15px; font-size: 15px; color: #555; }
+        .modal-body label { display: block; margin-top: 10px; margin-bottom: 5px; font-weight: bold; }
+        .modal-body input { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 14px; box-sizing: border-box; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
+        .modal-btn { padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer; font-size: 14px; }
+        .modal-confirm-btn { background: var(--primary-color); color: white; } .modal-cancel-btn { background: #6c757d; color: white; }
+        .details-item .status-value { font-size: 18px; font-weight: bold; }
+        #money-display { color: var(--income-color); } #followers-display { color: var(--followers-color); }
+        .progress-bar { width: 100%; height: 20px; background-color: var(--progress-bg); border-radius: 10px; overflow: hidden; margin-top: 5px;}
+        #fuel-bar { background-color: var(--fuel-color); } #supplies-bar { background-color: var(--supplies-color); } #power-bar { background-color: var(--power-color); }
+        .progress-bar-inner { height: 100%; transition: width 0.5s ease-in-out; text-align: center; color: white; font-weight: bold; line-height: 20px; font-size: 12px; }
+        #upgrades-list { list-style-type: none; padding-left: 0; margin-top: 0; max-height: 100px; overflow-y: auto;}
+        #upgrades-list li { background-color: #f8f9fa; border: 1px solid #e9ecef; padding: 6px 10px; border-radius: 4px; margin-bottom: 5px; font-size: 14px; }
+        #content-title-display { font-size: 14px; font-weight: normal; color: #343a40; background: #e9ecef; padding: 4px 8px; border-radius: 4px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+        
+        /* Choice Modal Styles (for Destination & Upgrades) */
+        .choice-modal-content { background: white; padding: 0; border-radius: 12px; width: 95%; max-width: 800px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); max-height: 90vh; display: flex; flex-direction: column; }
+        .choice-modal-header { padding: 15px 25px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .choice-modal-header h2 { margin: 0; font-size: 22px; color: #333; }
+        .choice-modal-close-btn { font-size: 24px; color: #888; cursor: pointer; background: none; border: none; padding: 5px; line-height: 1; }
+        .cards-container { padding: 25px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; overflow-y: auto; }
+        .choice-card { background: #f8f9fa; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; cursor: pointer; transition: all 0.2s ease-in-out; display: flex; flex-direction: column; }
+        .choice-card:hover { transform: translateY(-5px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: var(--primary-color); }
+        .choice-card-header { margin-bottom: 15px; }
+        .choice-card-header h4 { margin: 0 0 5px; font-size: 18px; color: var(--primary-color); }
+        .choice-card-header span { font-size: 14px; color: #6c757d; }
+        .choice-card-body { font-size: 15px; line-height: 1.6; color: #495057; margin-bottom: 20px; flex-grow: 1; }
+        .choice-card-footer { font-size: 14px; color: #6c757d; border-top: 1px dashed #ced4da; padding-top: 15px; }
+        .card-costs { display: flex; justify-content: space-around; gap: 10px; margin-top: 10px; }
+        .card-costs div { display: flex; align-items: center; font-size: 14px; font-weight: 500; }
+        .card-costs .fas { margin-right: 6px; }
+
+        @media (max-width: 600px) { .top-bar { flex-direction: column; align-items: flex-start; gap: 10px; } }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-bar-item"><i class="fas fa-map-marker-alt"></i><span id="location-display">...</span></div>
+        <div class="top-bar-item"><i class="fas fa-clock"></i><span id="time-display">...</span></div>
+    </div>
+    <div class="main-content">
+        <div id="story-text">正在加载旅行日志...</div>
+        <div id="event-log"></div>
+    </div>
+    <div class="details-section">
+        <button id="rv-status-header" class="collapsible-header"><span><i class="fas fa-rv"></i> 房车状态</span><i class="fas fa-chevron-down collapsible-icon"></i></button>
+        <div id="rv-status-content" class="collapsible-content"><div class="details-grid"><div class="details-item"><h3><i class="fas fa-gas-pump"></i> 燃油储备</h3><div class="progress-bar"><div id="fuel-bar" class="progress-bar-inner">--%</div></div></div><div class="details-item"><h3><i class="fas fa-box-open"></i> 生活物资</h3><div class="progress-bar"><div id="supplies-bar" class="progress-bar-inner">--%</div></div></div><div class="details-item"><h3><i class="fas fa-bolt"></i> 电力存储</h3><div class="progress-bar"><div id="power-bar" class="progress-bar-inner">--%</div></div></div><div class="details-item" style="grid-column: 1 / -1;"><h3><i class="fas fa-cogs"></i> 房车装置</h3><ul id="upgrades-list"><li>正在检查...</li></ul></div></div></div>
+    </div>
+    <div class="details-section">
+        <button id="media-ops-header" class="collapsible-header"><span><i class="fas fa-camera-retro"></i> 自媒体运营</span><i class="fas fa-chevron-down collapsible-icon"></i></button>
+        <div id="media-ops-content" class="collapsible-content"><div class="details-grid"><div class="details-item"><h3><i class="fas fa-users"></i> 粉丝数量</h3><p id="followers-display" class="status-value">----</p></div><div class="details-item"><h3><i class="fas fa-wallet"></i> 旅行资金</h3><p id="money-display" class="status-value">¥ ----</p></div><div class="details-item"><h3><i class="fas fa-hand-holding-usd"></i> 本期收益</h3><p id="income-display" class="status-value">+ ¥0</p></div><div class="details-item" style="grid-column: 1 / -1;"><h3><i class="fas fa-file-video"></i> 最新内容</h3><p id="content-title-display">暂无</p></div></div></div>
+    </div>
+    <div class="details-section">
+        <button id="command-header" class="collapsible-header"><span><i class="fas fa-terminal"></i> 指令集</span><i class="fas fa-chevron-down collapsible-icon"></i></button>
+        <div id="command-content" class="collapsible-content"><div class="command-grid"><button id="journey-btn" class="command-btn"><i class="fas fa-route"></i> 踏上旅途</button><button id="explore-btn" class="command-btn"><i class="fas fa-binoculars"></i> 探索周边</button><button id="restock-btn" class="command-btn"><i class="fas fa-shopping-cart"></i> 采购物资</button><button id="refuel-btn" class="command-btn"><i class="fas fa-gas-pump"></i> 补充燃油</button><button id="create-video-btn" class="command-btn"><i class="fas fa-video"></i> 创作视频</button><button id="live-btn" class="command-btn"><i class="fas fa-broadcast-tower"></i> 开启直播</button><button id="generate-power-btn" class="command-btn"><i class="fas fa-exchange-alt"></i> 燃油发电</button><button id="add-upgrade-btn" class="command-btn"><i class="fas fa-plus-circle"></i> 添加装置</button><button id="trigger-event-btn" class="command-btn" style="grid-column: 1 / -1;"><i class="fas fa-bolt"></i> 触发事件</button></div></div>
+    </div>
+    
+    <div id="destination-modal" class="modal-overlay">
+        <div class="choice-modal-content">
+            <div class="choice-modal-header">
+                <h2>选择下一个目的地</h2>
+                
+            </div>
+            <div id="destination-cards-container" class="cards-container"></div>
+        </div>
+    </div>
+
+    <div id="upgrade-modal" class="modal-overlay">
+        <div class="choice-modal-content">
+            <div class="choice-modal-header">
+                <h2>商店有什么好东西...</h2>
+                
+            </div>
+            <div id="upgrade-cards-container" class="cards-container"></div>
+        </div>
+    </div>
+
+    <div id="generic-modal" class="modal-overlay"><div class="modal-content"><h2 class="modal-title"></h2><div class="modal-body"></div><div class="modal-actions"><button class="modal-btn modal-cancel-btn">取消</button><button class="modal-btn modal-confirm-btn">确认</button></div></div></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. DOM Elements & State
+    const UIElements = {
+        location: document.getElementById('location-display'), time: document.getElementById('time-display'), storyText: document.getElementById('story-text'), eventLog: document.getElementById('event-log'),
+        rvStatusHeader: document.getElementById('rv-status-header'), rvStatusContent: document.getElementById('rv-status-content'), fuelBar: document.getElementById('fuel-bar'), suppliesBar: document.getElementById('supplies-bar'), powerBar: document.getElementById('power-bar'), upgradesList: document.getElementById('upgrades-list'),
+        mediaOpsHeader: document.getElementById('media-ops-header'), mediaOpsContent: document.getElementById('media-ops-content'), followers: document.getElementById('followers-display'), money: document.getElementById('money-display'), income: document.getElementById('income-display'), contentTitle: document.getElementById('content-title-display'),
+        commandHeader: document.getElementById('command-header'), commandContent: document.getElementById('command-content'),
+        journeyBtn: document.getElementById('journey-btn'), exploreBtn: document.getElementById('explore-btn'), restockBtn: document.getElementById('restock-btn'), refuelBtn: document.getElementById('refuel-btn'), createVideoBtn: document.getElementById('create-video-btn'), liveBtn: document.getElementById('live-btn'), generatePowerBtn: document.getElementById('generate-power-btn'), addUpgradeBtn: document.getElementById('add-upgrade-btn'), triggerEventBtn: document.getElementById('trigger-event-btn'),
+        modal: document.getElementById('generic-modal'), modalTitle: document.querySelector('.modal-title'), modalBody: document.querySelector('.modal-body'), modalConfirmBtn: document.querySelector('.modal-confirm-btn'), modalCancelBtn: document.querySelector('.modal-cancel-btn'),
+        destinationModal: document.getElementById('destination-modal'), destinationCardsContainer: document.getElementById('destination-cards-container'),
+        upgradeModal: document.getElementById('upgrade-modal'), upgradeCardsContainer: document.getElementById('upgrade-cards-container'),
+    };
+    let localState = { isStreaming: false, isExploring: false, onConfirmCallback: null, isBusy: false, upgrades: [] };
+
+    // 2. Utility Functions
+    const encodeJSON = (data) => btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    const decodeJSON = (encodedData) => { try { return JSON.parse(decodeURIComponent(escape(atob(encodedData)))); } catch (e) { return null; } };
+
+    // 3. UI Update Functions
+    function updateUpgradesUI() {
+        UIElements.upgradesList.innerHTML = '';
+        if (localState.upgrades && localState.upgrades.length > 0) {
+            localState.upgrades.forEach(item => { const li = document.createElement('li'); li.textContent = item; UIElements.upgradesList.appendChild(li); });
+        } else { UIElements.upgradesList.innerHTML = '<li>暂无特殊装置</li>'; }
+    }
+
+    function updateExploreButtonUI() {
+        if (localState.isExploring) {
+            UIElements.exploreBtn.innerHTML = '<i class="fas fa-home"></i> 回到房车';
+            UIElements.exploreBtn.classList.add('exploring');
+            UIElements.journeyBtn.disabled = true;
+        } else {
+            UIElements.exploreBtn.innerHTML = '<i class="fas fa-binoculars"></i> 探索周边';
+            UIElements.exploreBtn.classList.remove('exploring');
+            UIElements.journeyBtn.disabled = false;
+        }
+    }
+
+    function updateLiveButtonUI() {
+        if (localState.isStreaming) {
+            UIElements.liveBtn.innerHTML = '<i class="fas fa-times-circle"></i> 结束直播';
+            UIElements.liveBtn.classList.add('streaming');
+        } else {
+            UIElements.liveBtn.innerHTML = '<i class="fas fa-broadcast-tower"></i> 开启直播';
+            UIElements.liveBtn.classList.remove('streaming');
+        }
+    }
+
+    // 4. Modal Functions
+    function showModal({ title, bodyHTML, confirmText = '确认', showCancel = true, onConfirm = null }) {
+        UIElements.modalTitle.textContent = title;
+        UIElements.modalBody.innerHTML = bodyHTML;
+        UIElements.modalConfirmBtn.textContent = confirmText;
+        UIElements.modalCancelBtn.style.display = showCancel ? 'block' : 'none';
+        localState.onConfirmCallback = onConfirm;
+        UIElements.modal.style.display = 'flex';
+    }
+
+    function hideModal() {
+        UIElements.modal.style.display = 'none';
+        localState.onConfirmCallback = null;
+    }
+
+    function showDestinationConfirmation(destination) {
+        const bodyHTML = `
+            <p>确定要前往 <strong>${destination.name}</strong> 吗？</p>
+            
+            <div style="margin-top: 20px; margin-bottom: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+                <div style="display: flex; align-items: center;">
+                    <input type="checkbox" id="describe-journey-checkbox" style="margin-right: 10px; width: auto;">
+                    <label for="describe-journey-checkbox" style="cursor:pointer;">描写路途</label>
+                </div>
+                <div id="journey-event-details" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
+                    <p style="margin-top:0; font-size: 14px; color: #666;">选填，不填则随机生成路途事件：</p>
+                    <label for="journey-event-type-input">事件类型</label>
+                    <input type="text" id="journey-event-type-input" class="modal-body-input" placeholder="例如：车辆故障、粉丝偶遇、网红点打卡">
+                    <label for="journey-event-content-input">具体内容</label>
+                    <input type="text" id="journey-event-content-input" class="modal-body-input" placeholder="例如：遇到一个请求搭车的背包客">
+                </div>
+            </div>
+
+            <p>这将消耗以下资源：</p>
+            <div class="card-costs" style="justify-content: center; margin-top: 5px;">
+                <div><i class="fas fa-gas-pump" style="color: var(--fuel-color);"></i> ${destination.resource_cost.fuel}</div>
+                <div><i class="fas fa-box-open" style="color: var(--supplies-color);"></i> ${destination.resource_cost.supplies}</div>
+                <div><i class="fas fa-bolt" style="color: var(--power-color);"></i> ${destination.resource_cost.power}</div>
+            </div>
+        `;
+        showModal({
+            title: '确认行程',
+            bodyHTML: bodyHTML,
+            confirmText: '出发！',
+            onConfirm: async () => {
+                const describeJourney = document.getElementById('describe-journey-checkbox').checked;
+                let command = `{{user}} 最终决定，出发前往目的地：“${destination.name}”。`;
+
+                if (describeJourney) {
+                    const eventType = document.getElementById('journey-event-type-input').value.trim() || '随机';
+                    const eventContent = document.getElementById('journey-event-content-input').value.trim();
+                    command += `\n要求：需要详细描写路途过程。`;
+                    if (eventContent) {
+                        command += `途中希望发生一个“${eventType}”类型的事件，具体是关于“${eventContent}”。`;
+                    } else {
+                        command += `途中希望发生一个“${eventType}”类型的随机事件。`;
+                    }
+                } else {
+                    command += `\n要求：跳过路途过程的描写，直接到达。`;
+                }
+
+                await STscript(`/setinput ${command}`);
+                UIElements.destinationModal.style.display = 'none';
+                await STscript('/setvar key=destination_options ""');
+            }
+        });
+
+        document.getElementById('describe-journey-checkbox').addEventListener('change', function() {
+            document.getElementById('journey-event-details').style.display = this.checked ? 'block' : 'none';
+        });
+    }
+
+    function showUpgradeConfirmation(upgrade) {
+        const bodyHTML = `
+            <p>确定要安装 <strong>${upgrade.name}</strong> 吗？</p>
+            <p>这将花费 <strong style="color: var(--income-color);">¥${upgrade.cost}</strong>。</p>
+        `;
+        showModal({
+            title: '确认安装',
+            bodyHTML: bodyHTML,
+            confirmText: '确认购买',
+            onConfirm: async () => {
+                const command = `{{user}} 最终决定，花费 ${upgrade.cost} 资金，从“${upgrade.supplier}”购买并安装了“${upgrade.name}”。`;
+                await STscript(`/setinput ${command}`);
+                UIElements.upgradeModal.style.display = 'none';
+                await STscript('/setvar key=upgrade_options ""');
+            }
+        });
+    }
+
+    // 5. Core Logic
+    window.updateTemplateVariables = async function(vars) {
+        if (!vars) return;
+
+        if (vars.destination_options) {
+            try {
+                const rawData = vars.destination_options;
+                const startIndex = rawData.indexOf('JSON_PAYLOAD_START');
+                const endIndex = rawData.indexOf('JSON_PAYLOAD_END');
+                if (startIndex === -1 || endIndex === -1) { throw new Error("Could not find JSON_PAYLOAD_START or JSON_PAYLOAD_END markers."); }
+                const jsonString = rawData.substring(startIndex + 'JSON_PAYLOAD_START'.length, endIndex).trim();
+                const options = JSON.parse(jsonString);
+
+                UIElements.destinationCardsContainer.innerHTML = '';
+                options.forEach(dest => {
+                    const card = document.createElement('div');
+                    card.className = 'choice-card';
+                    card.innerHTML = `
+                        <div class="choice-card-header">
+                            <h4>${dest.name}</h4>
+                            <span>${dest.region}</span>
+                        </div>
+                        <div class="choice-card-body">${dest.description}</div>
+                        <div class="choice-card-footer">
+                            <div><strong>距离:</strong> ${dest.distance}</div>
+                            <div class="card-costs">
+                                <div><i class="fas fa-gas-pump" style="color: var(--fuel-color);"></i> ${dest.resource_cost.fuel}</div>
+                                <div><i class="fas fa-box-open" style="color: var(--supplies-color);"></i> ${dest.resource_cost.supplies}</div>
+                                <div><i class="fas fa-bolt" style="color: var(--power-color);"></i> ${dest.resource_cost.power}</div>
+                            </div>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => showDestinationConfirmation(dest));
+                    UIElements.destinationCardsContainer.appendChild(card);
+                });
+                UIElements.destinationModal.style.display = 'flex';
+            } catch (e) {
+                console.error("Failed to parse destination_options:", e);
+                UIElements.storyText.innerHTML = "<span style='color:red;'>[错误：无法解析目的地数据。请检查输出规则和AI返回内容。]</span>";
+            }
+        }
+
+        if (vars.upgrade_options) {
+            try {
+                const rawData = vars.upgrade_options;
+                const startIndex = rawData.indexOf('JSON_PAYLOAD_START');
+                const endIndex = rawData.indexOf('JSON_PAYLOAD_END');
+                if (startIndex === -1 || endIndex === -1) { throw new Error("Could not find JSON_PAYLOAD_START or JSON_PAYLOAD_END markers."); }
+                const jsonString = rawData.substring(startIndex + 'JSON_PAYLOAD_START'.length, endIndex).trim();
+                const options = JSON.parse(jsonString);
+
+                UIElements.upgradeCardsContainer.innerHTML = '';
+                options.forEach(upg => {
+                    const card = document.createElement('div');
+                    card.className = 'choice-card';
+                    card.innerHTML = `
+                        <div class="choice-card-header">
+                            <h4>${upg.name}</h4>
+                            <span>${upg.supplier}</span>
+                        </div>
+                        <div class="choice-card-body">${upg.description}</div>
+                        <div class="choice-card-footer">
+                            <div class="card-costs" style="justify-content: center;">
+                                <div><i class="fas fa-wallet" style="color: var(--income-color);"></i> ¥${upg.cost}</div>
+                            </div>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => showUpgradeConfirmation(upg));
+                    UIElements.upgradeCardsContainer.appendChild(card);
+                });
+                UIElements.upgradeModal.style.display = 'flex';
+            } catch (e) {
+                console.error("Failed to parse upgrade_options:", e);
+                UIElements.storyText.innerHTML = "<span style='color:red;'>[错误：无法解析装置数据。请检查输出规则和AI返回内容。]</span>";
+            }
+        }
+
+        if (vars.location) UIElements.location.textContent = vars.location;
+        if (vars.time) UIElements.time.textContent = vars.time;
+        if (vars.description) UIElements.storyText.innerHTML = vars.description.replace(/\n/g, '<br>'); else UIElements.storyText.innerHTML = '';
+        if (vars.event) UIElements.eventLog.innerHTML = `<i class="fas fa-bell"></i> ${vars.event}`; else UIElements.eventLog.innerHTML = '';
+        if (vars.fuel !== undefined) { const val = parseInt(vars.fuel); UIElements.fuelBar.style.width = `${val}%`; UIElements.fuelBar.textContent = `${val}%`; await STscript(`/setvar key=rv_fuel ${val}`); }
+        if (vars.supplies !== undefined) { const val = parseInt(vars.supplies); UIElements.suppliesBar.style.width = `${val}%`; UIElements.suppliesBar.textContent = `${val}%`; await STscript(`/setvar key=rv_supplies ${val}`); }
+        if (vars.power !== undefined) { const val = parseInt(vars.power); UIElements.powerBar.style.width = `${val}%`; UIElements.powerBar.textContent = `${val}%`; await STscript(`/setvar key=rv_power ${val}`); }
+        if (vars.money !== undefined) { const val = parseInt(vars.money); UIElements.money.textContent = `¥ ${val.toLocaleString()}`; await STscript(`/setvar key=rv_money ${val}`); }
+        if (vars.followers !== undefined) { const val = parseInt(vars.followers); UIElements.followers.textContent = val.toLocaleString(); await STscript(`/setvar key=rv_followers ${val}`); }
+        if (vars.income !== undefined) { UIElements.income.textContent = `+ ¥${parseInt(vars.income).toLocaleString()}`; }
+        if (vars.content_title) UIElements.contentTitle.textContent = vars.content_title;
+
+        if (vars.upgrades) {
+             try {
+                const newUpgrades = JSON.parse(vars.upgrades);
+                if (JSON.stringify(newUpgrades) !== JSON.stringify(localState.upgrades)) {
+                    localState.upgrades = newUpgrades;
+                    const encoded = encodeJSON(newUpgrades);
+                    await STscript(`/setvar key=rv_upgrades_b64 "${encoded}"`);
+                    updateUpgradesUI();
+                }
+            } catch(e) { console.error("解析upgrades失败: ", e); }
+        }
+
+        if (vars.is_streaming !== undefined) { const isStreaming = vars.is_streaming === 'true'; if (isStreaming !== localState.isStreaming) { localState.isStreaming = isStreaming; updateLiveButtonUI(); await STscript(`/setvar key=rv_is_streaming ${isStreaming}`); } }
+        if (vars.is_exploring !== undefined) { const isExploring = vars.is_exploring === 'true'; if (isExploring !== localState.isExploring) { localState.isExploring = isExploring; updateExploreButtonUI(); await STscript(`/setvar key=rv_is_exploring ${isExploring}`); } }
+    };
+
+    async function initializeOrSync() {
+        const isInitialized = await STscript('/getvar rv_initialized');
+        if (!isInitialized) {
+            await STscript('/setvar key=rv_initialized true');
+            await STscript('/setvar key=rv_money 5000');
+            await STscript('/setvar key=rv_fuel 100');
+            await STscript('/setvar key=rv_supplies 100');
+            await STscript('/setvar key=rv_power 100');
+            await STscript('/setvar key=rv_followers 1500');
+            await STscript('/setvar key=rv_is_streaming false');
+            await STscript('/setvar key=rv_is_exploring false');
+        }
+
+        const money = await STscript('/getvar rv_money') || 5000; UIElements.money.textContent = `¥ ${parseInt(money).toLocaleString()}`;
+        const followers = await STscript('/getvar rv_followers') || 1500; UIElements.followers.textContent = parseInt(followers).toLocaleString();
+        const fuel = await STscript('/getvar rv_fuel') || 100; UIElements.fuelBar.style.width = `${fuel}%`; UIElements.fuelBar.textContent = `${fuel}%`;
+        const supplies = await STscript('/getvar rv_supplies') || 100; UIElements.suppliesBar.style.width = `${supplies}%`; UIElements.suppliesBar.textContent = `${supplies}%`;
+        const power = await STscript('/getvar rv_power') || 100; UIElements.powerBar.style.width = `${power}%`; UIElements.powerBar.textContent = `${power}%`;
+        const isStreaming = (await STscript('/getvar rv_is_streaming')) === 'true'; localState.isStreaming = isStreaming; updateLiveButtonUI();
+        const isExploring = (await STscript('/getvar rv_is_exploring')) === 'true'; localState.isExploring = isExploring; updateExploreButtonUI();
+
+        // Robustly check for and initialize upgrades
+        let upgradesEncoded = await STscript('/getvar rv_upgrades_b64');
+        if (!upgradesEncoded) {
+            const initialUpgrades = ["基础厨房套件", "折叠床"];
+            upgradesEncoded = encodeJSON(initialUpgrades);
+            await STscript(`/setvar key=rv_upgrades_b64 "${upgradesEncoded}"`);
+        }
+        localState.upgrades = decodeJSON(upgradesEncoded) || [];
+        updateUpgradesUI();
+    }
+
+    // 6. Event Handlers & Setup
+    async function handleInteraction(button, action) { 
+        if (localState.isBusy) return;
+        localState.isBusy = true;
+        button.disabled = true;
+        try { await action(); } finally { localState.isBusy = false; button.disabled = false; }
+    }
+
+    function setupCollapsible(trigger, content) { 
+        trigger.addEventListener('click', function() { 
+            this.classList.toggle('active'); 
+            if (content.style.maxHeight && content.style.maxHeight !== '0px') { 
+                content.style.maxHeight = null; 
+                setTimeout(() => { if (!this.classList.contains('active')) content.style.padding = "0 15px"; }, 400); 
+            } else { 
+                content.style.padding = "20px 15px 10px 15px"; 
+                content.style.maxHeight = content.scrollHeight + "px"; 
+            } 
+        }); 
+        if (trigger.classList.contains('active')) { 
+            content.style.padding = "20px 15px 10px 15px"; 
+            content.style.maxHeight = content.scrollHeight + "px"; 
+        } 
+    }
+
+    // Bind Event Listeners
+    UIElements.modalConfirmBtn.addEventListener('click', () => { if (localState.onConfirmCallback) { localState.onConfirmCallback(); } hideModal(); });
+    UIElements.modalCancelBtn.addEventListener('click', hideModal);
+
+    setupCollapsible(UIElements.rvStatusHeader, UIElements.rvStatusContent);
+    setupCollapsible(UIElements.mediaOpsHeader, UIElements.mediaOpsContent);
+    setupCollapsible(UIElements.commandHeader, UIElements.commandContent);
+
+    UIElements.journeyBtn.addEventListener('click', (e) => handleInteraction(e.currentTarget, () => { showModal({ title: '规划下一段旅途', bodyHTML: `<label for="humanities-input">人文环境偏好</label><input type="text" id="humanities-input" class="modal-body-input" placeholder="例如：历史古迹、民族风情"><label for="geography-input">地理风光偏好</label><input type="text" id="geography-input" class="modal-body-input" placeholder="例如：雪山、草原、沿海公路">`, confirmText: '规划路线', onConfirm: async () => { const humanities = document.getElementById('humanities-input').value.trim() || '不限'; const geography = document.getElementById('geography-input').value.trim() || '不限'; const command = `{{user}} 计划踏上新的旅途，目的地要求：人文方面是“${humanities}”，地理方面是“${geography}”。`; await STscript(`/setinput ${command}`); } }); }));
+    UIElements.exploreBtn.addEventListener('click', (e) => handleInteraction(e.currentTarget, () => { if (localState.isExploring) { const command = `{{user}} 结束了在周边的探索，回到了房车上。`; STscript(`/setinput ${command}`); } else { showModal({ title: '探索周边', bodyHTML: `<label for="explore-dest-input">目的地</label><input type="text" id="explore-dest-input" class="modal-body-input" placeholder="例如：山顶的观景台、村里的小卖部"><label for="explore-activity-input">具体做什么</label><input type="text" id="explore-activity-input" class="modal-body-input" placeholder="例如：拍照、和村民聊天、寻找特产">`, onConfirm: async () => { const dest = document.getElementById('explore-dest-input').value.trim(); const activity = document.getElementById('explore-activity-input').value.trim(); let command = '{{user}} 决定在附近探索一下'; if (dest && activity) { command = `{{user}} 决定去周边的“${dest}”，并打算“${activity}”。`; } else if (dest) { command = `{{user}} 决定去周边的“${dest}”看一看。`; } else if (activity) { command = `{{user}} 决定在附近逛逛，主要是为了“${activity}”。`; } await STscript(`/setinput ${command}`); } }); } }));
+    UIElements.restockBtn.addEventListener('click', (e) => handleInteraction(e.currentTarget, async () => { const supplies = parseInt(await STscript('/getvar rv_supplies')) || 0; const money = parseInt(await STscript('/getvar rv_money')) || 0; const needed = 100 - supplies; if (needed <= 0) { showModal({ title: '物资充足', bodyHTML: '生活物资满满，无需补充！', showCancel: false }); return; } const cost = needed * 5; if (money >= cost) { showModal({ title: '物资采购确认', bodyHTML: `<p>将生活物资从 ${supplies}% 补满至 100% 需要消耗 <strong style="color: #dc3545;">¥${cost}</strong>。</p><p>是否确认采购？</p>`, confirmText: '确认采购', onConfirm: async () => { const command = `{{user}} 决定花费 ${cost} 资金，将生活物资补满。`; await STscript(`/setinput ${command}`); } }); } else { showModal({ title: '资金不足', bodyHTML: `<p>补满物资需要 ¥${cost}，但当前资金仅剩 ¥${money}。</p>`, showCancel: false }); } }));
+    UIElements.refuelBtn.addEventListener('click', (e) => handleInteraction(e.currentTarget, async () => { const fuel = parseInt(await STscript('/getvar rv_fuel')) || 0; const money = parseInt(await STscript('/getvar rv_money')) || 0; const needed = 100 - fuel; if (needed <= 0) { showModal({ title: '燃油充足', bodyHTML: '燃油储备满满，无需补充！', showCancel: false }); return; } const cost = needed * 5; if (money >= cost) { showModal({ title: '燃油补充确认', bodyHTML: `<p>将燃油储备从 ${fuel}% 补满至 100% 需要消耗 <strong style="color: #dc3545;">¥${cost}</strong>。</p><p>是否确认补充？</p>`, confirmText: '确认补充', onConfirm: async () => { const command = `{{user}} 决定花费 ${cost} 资金，将燃油补满。`; await STscript(`/setinput ${command}`); } }); } else { showModal({ title: '资金不足', bodyHTML: `<p>补满燃油需要 ¥${cost}，但当前资金仅剩 ¥${money}。</p>`, showCancel: false }); } }));
+    UIElements.createVideoBtn.addEventListener('click', (e) => handleInteraction(e.currentTarget, () => { showModal({ title: '创作新视频', bodyHTML: `<label for="video-theme-input">视频主题</label><input type="text" id="video-theme-input" class="modal-body-input" placeholder="例如：日出延时摄影、古镇美食探店"><label for="video-content-input">具体内容</label><input type="text" id="video-content-input" class="modal-body-input" placeholder="例如：拍摄日出过程，并采访当地人">`, onConfirm: async () => { const theme = document.getElementById('video-theme-input').value.trim(); const content = document.getElementById('video-content-input').value.trim(); const command = `{{user}} 准备创作一部以“${theme}”为主题的视频，具体内容是关于“${content}”。`; await STscript(`/setinput ${command}`); } }); }));
+    UIElements.liveBtn.addEventListener('click', (e) => handleInteraction(e.currentTarget, () => { if (localState.isStreaming) { const command = `{{user}} 结束了本次直播，向观众们告别。`; STscript(`/setinput ${command}`); } else { showModal({ title: '开启直播', bodyHTML: `<label for="live-topic-input">直播主题</label><input type="text" id="live-topic-input" class="modal-body-input" placeholder="例如：路上的趣闻、回答观众提问"><label for="live-content-input">具体内容</label><input type="text" id="live-content-input" class="modal-body-input" placeholder="例如：展示新买的纪念品，并和观众互动">`, confirmText: '开始直播', onConfirm: async () => { const topic = document.getElementById('live-topic-input').value.trim(); const content = document.getElementById('live-content-input').value.trim(); const command = `{{user}} 开启了直播，准备和大家聊聊“${topic}”，具体内容是关于“${content}”。`; await STscript(`/setinput ${command}`); } }); } }));
+    UIElements.generatePowerBtn.addEventListener('click', (e) => handleInteraction(e.currentTarget, async () => { const power = parseInt(await STscript('/getvar rv_power')) || 0; const fuel = parseInt(await STscript('/getvar rv_fuel')) || 0; const powerNeeded = 100 - power; if (powerNeeded <= 0) { showModal({ title: '电力充足', bodyHTML: '电力储备满满，无需发电！', showCancel: false }); return; } const fuelCost = Math.ceil(powerNeeded / 2); if (fuel >= fuelCost) { showModal({ title: '燃油发电确认', bodyHTML: `<p>将电力从 ${power}% 补满至 100% 需要消耗 <strong style="color: #ffc107;">${fuelCost}</strong> 单位燃油。</p><p>是否确认发电？</p>`, confirmText: '确认发电', onConfirm: async () => { const command = `{{user}} 决定消耗 ${fuelCost} 单位燃油为房车发电，将电力补满。`; await STscript(`/setinput ${command}`); } }); } else { showModal({ title: '燃油不足', bodyHTML: `<p>为房车充满电需要 ${fuelCost} 单位燃油，但当前仅剩 ${fuel} 单位。</p>`, showCancel: false }); } }));
+    UIElements.addUpgradeBtn.addEventListener('click', (e) => handleInteraction(e.currentTarget, () => { showModal({ title: '寻找装置', bodyHTML: `<label for="upgrade-search-input">您想寻找什么样的装置？</label><input type="text" id="upgrade-search-input" class="modal-body-input" placeholder="例如：太阳能电池板、净水器">`, confirmText: '开始寻找', onConfirm: async () => { const search = document.getElementById('upgrade-search-input').value.trim(); if (!search) return; const command = `{{user}} 想要寻找并购买“${search}”。`; await STscript(`/setinput ${command}`); } }); }));
+    UIElements.triggerEventBtn.addEventListener('click', (e) => handleInteraction(e.currentTarget, () => { showModal({ title: '触发自定义事件', bodyHTML: `<label for="event-type-input">事件类型</label><input type="text" id="event-type-input" class="modal-body-input" placeholder="例如：奇遇、危险、社交、机遇"><label for="event-content-input">具体内容</label><input type="text" id="event-content-input" class="modal-body-input" placeholder="例如：在森林里发现一个废弃的小屋">`, confirmText: '触发事件', onConfirm: async () => { const eventType = document.getElementById('event-type-input').value.trim() || '普通'; const eventContent = document.getElementById('event-content-input').value.trim(); const command = eventContent ? `{{user}} 想要触发一个“${eventType}”类型的事件，具体内容是：“${eventContent}”。` : `{{user}} 想要触发一个“${eventType}”类型的随机事件。`; await STscript(`/setinput ${command}`); } }); }));
+
+    // 7. Initialize
+    initializeOrSync();
+});
+</script>
+</body>
+</html>
+

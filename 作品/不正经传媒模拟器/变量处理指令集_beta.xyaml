@@ -1,0 +1,55 @@
+---
+<status_current_variables>
+{{get_message_variable::stat_data}}
+</status_current_variables>
+rule:
+  - You should output the update analysis in the end of the next reply.
+  - Use `_.set('path', 'old', 'new')` for direct assignment or state changes.
+  - Use `_.add('path', value)` to add or subtract a numerical value.
+  - Use `_.insert('path', 'item_or_key', 'value')` to add an element to an array or object.
+  - Use `_.remove('path', 'item_or_key')` to remove an element from an array or object.
+  - When using _.set with objects or arrays, do NOT wrap them in quotes - use direct object/array literals (e.g., {key: value} or [item1, item2])
+  - When using _.set with strings, DO wrap them in quotes (e.g., 'string value')
+  - When using _.set with numbers or booleans, do NOT use quotes (e.g., 42, true, false)
+format: |-
+  <UpdateVariable>
+    <Analysis>
+      ${variable_path}: ${Whether the variable should be updated: 'Yes' or 'No'}
+      ...
+    </Analysis>
+    ${command_expression}; // ${brief reason for change}
+    ...
+  </UpdateVariable>
+example: |-
+  <UpdateVariable>
+    <Analysis>
+      media_company.fame: Yes
+      media_company.current_events: Yes
+      media_company.development_suggestions: Yes
+      media_company.main_artists: Yes
+      media_company.moments_feed: Yes
+      media_company.twitter_feed: Yes
+      media_company.live_comments: Yes
+      world_state.date: No
+      world_state.time_period: Yes
+      world_state.hour: Yes
+      world_state.weather: No
+    </Analysis>
+    _.set('media_company.fame', '小有名气', '声名鹊起'); // 旗下艺人林晚晚的直播爆火
+    _.remove('media_company.current_events', '正在策划林晚晚的出道推广'); // 推广活动已成功完成
+    _.insert('media_company.current_events', '准备下月的线下粉丝见面会'); // 新增见面会筹备事件
+    _.set('media_company.development_suggestions', ['建议1：签约更多潜力新人', '建议2：策划一次线上推广活动', '建议3：寻求第一笔天使轮投资'], ['建议1：扩大办公场地，招聘更多运营人员', '建议2：为林晚晚安排品牌代言合作', '建议3：筹备公司首个线下活动']); // 根据公司发展阶段更新建议
+    _.insert('media_company.main_artists', {name: '苏梦枕', fame: '新人', content: '舞蹈、美妆', demand: '希望参加热门综艺', appearance: '古典清冷，丹凤眼，身材高挑', personality: '外冷内热，不善言辞，但内心坚定', live_schedule: '18:00-20:00', live_content: '正在教大家跳古典舞'}); // 成功签约一位潜力新人
+    _.set('media_company.main_artists[0].fame', '小有名气', '声名鹊起'); // 林晚晚的知名度提升
+    _.set('media_company.main_artists[0].demand', '需要更多推广资源', '想要参加更高规格的活动'); // 林晚晚的诉求变化
+    _.set('media_company.main_artists[0].live_content', '正在玩《原神》', '正在和粉丝互动，聊今天的工作趣事'); // 更新直播内容
+    _.insert('media_company.moments_feed', {author: '秦双双', content: '今天去猫咖了，好治愈~猫猫太可爱了！[图片]', timestamp: '刚刚', comments: [{author: '{{user}}', content: '哪家店？下次带我一起去'}, {author: '林晚晚', content: '我也想去！双双姐带我！'}]}); // 秦双双发布私人动态
+    _.insert('media_company.moments_feed', {author: '林晚晚', content: '今天直播效果超好！感谢大家的支持💕', timestamp: '刚刚', comments: [{author: '秦双双', content: '恭喜恭喜！继续加油~'}]}); // 林晚晚分享心情
+    _.remove('media_company.moments_feed', 10); // 移除第11条动态
+    _.insert('media_company.twitter_feed', {author: '新艺传媒官方', content: '欢迎@苏梦枕 加入新艺传媒大家庭！🎉 直播时间：每天18:00-20:00，主要内容：舞蹈教学、美妆分享。期待与大家见面~', timestamp: '刚刚', comments: [{author: '粉丝A', content: '欢迎新人！'}, {author: '路人', content: '期待首播'}]}); // 新艺人签约公告
+    _.insert('media_company.twitter_feed', {author: '林晚晚', content: '感谢大家今晚的陪伴！明天见💖', timestamp: '刚刚', comments: [{author: '榜一大哥', content: '晚晚辛苦了！'}, {author: '忠实粉丝', content: '已三连！'}]}); // 艺人发布工作动态
+    _.insert('media_company.live_comments', {artist: '林晚晚', comments: [{author: '游戏高手', content: '这波操作可以啊！'}, {author: '路过的DD', content: '主播声音好好听'}, {author: '榜一富婆', content: '晚晚今天状态真好'}, {author: '单推人', content: '芜湖~起飞！'}, {author: '乐子人', content: '哈哈哈笑死'}, {author: 'AWSL', content: 'AWSL！！'}]}); // 林晚晚直播间的观众评论
+    _.set('media_company.live_comments[0].comments', [{author: '游戏高手', content: '这波操作可以啊！'}], []); // 苏梦枕下播，清空评论
+    _.set('world_state.hour', 14, 19); // 时间过去了5小时
+    _.set('world_state.time_period', '下午', '晚上'); // 时段变化
+  </UpdateVariable>
