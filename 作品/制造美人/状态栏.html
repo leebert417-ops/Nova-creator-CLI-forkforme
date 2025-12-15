@@ -1,0 +1,47 @@
+<div class="mvu-status-bar" style="
+    padding: 10px;
+    background: #fdf6e3;
+    border: 1px solid #d2b48c;
+    border-radius: 8px;
+    font-family: 'Segoe UI', sans-serif;
+    color: #5b4636;
+    font-size: 0.9em;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+">
+    <!-- 顶部：时间和地点 -->
+    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #d2b48c; padding-bottom: 5px; margin-bottom: 8px;">
+        <span style="font-weight: bold;">📅 {{getvar::time_sys.当前日期}}</span>
+        <span>{{getvar::time_sys.时间段}} | {{getvar::time_sys.学期状态}}</span>
+    </div>
+
+    <!-- 中部：好感度概览 -->
+    <div style="display: flex; justify-content: space-around; margin-bottom: 10px;">
+        <div title="林心悦好感度">👩‍⚕️ 林院长: {{getvar::stat_data.林心悦.好感度}}%</div>
+        <div title="付潇潇好感度">👧 付潇潇: {{getvar::stat_data.付潇潇.好感度}}%</div>
+        <div title="祝伊伊好感度">💃 祝伊伊: {{getvar::stat_data.祝伊伊.好感度}}%</div>
+    </div>
+
+    <!-- 底部：患者病历卡追踪 -->
+    <div style="background: #fff; padding: 5px; border-radius: 4px; border: 1px solid #eee;">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #d35400;">📋 今日巡查记录:</div>
+        
+        <!-- 付潇潇状态 -->
+        <div style="display: flex; align-items: center; margin-bottom: 3px;">
+            <span style="width: 60px; font-weight: bold;">付潇潇:</span>
+            <span style="background: #e8f8f5; color: #16a085; padding: 0 4px; border-radius: 3px; margin-right: 5px;">
+                {{getvar::stat_data.付潇潇.阶段}}
+            </span>
+            <span style="font-size: 0.85em; color: #7f8c8d;">({{getvar::stat_data.付潇潇.症状}})</span>
+        </div>
+
+        <!-- 祝伊伊状态 -->
+        <div style="display: flex; align-items: center;">
+            <span style="width: 60px; font-weight: bold;">祝伊伊:</span>
+            <span style="background: #fdedec; color: #c0392b; padding: 0 4px; border-radius: 3px; margin-right: 5px;">
+                {{getvar::stat_data.祝伊伊.阶段}}
+            </span>
+            <span style="font-size: 0.85em; color: #7f8c8d;">({{getvar::stat_data.祝伊伊.当前治疗}})</span>
+        </div>
+    </div>
+</div>

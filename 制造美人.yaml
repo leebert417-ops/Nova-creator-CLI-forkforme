@@ -1,0 +1,156 @@
+# 基础信息
+name: 制造美人
+creator: ""
+character_version: "1.0"
+
+# 主要字段映射
+fields:
+  description: ""
+  personality: ""
+  scenario: ""
+  first_mes: 作品/制造美人/开场白.md
+  mes_example: ""
+  creator_notes: ""
+  system_prompt: ""
+  post_history_instructions: ""
+
+# 扩展字段
+extensions:
+  talkativeness: "0.5"
+  fav: false
+  world: 制造美人
+  status_bar: 作品/制造美人/状态栏.html
+
+# 脚本配置
+scripts:
+  # 变量结构设计脚本（Zod Schema）
+  - name: "变量结构设计"
+    content: 作品/制造美人/变量结构.js
+    enabled: true
+
+# 角色书配置
+character_book:
+  name: 制造美人
+  entries:
+    # [InitVar]初始化条目
+    - comment: "[initvar]变量初始化"
+      content: 作品/制造美人/[initvar]变量初始化.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 101
+      depth: 4
+      role: 0
+
+    # 变量更新规则
+    - comment: "[mvu_update]变量更新规则"
+      content: 作品/制造美人/[mvu_update]变量更新规则.xyaml
+      enabled: true
+      position: at_depth
+      insertion_order: 1
+      depth: 1
+      role: 0
+
+    # 变量列表
+    - comment: "变量列表"
+      content: 作品/制造美人/变量列表.xyaml
+      enabled: true
+      position: at_depth
+      insertion_order: 2
+      depth: 1
+      role: 0
+
+    # 变量输出格式
+    - comment: "[mvu_update]变量输出格式"
+      content: 作品/制造美人/[mvu_update]变量输出格式.xyaml
+      enabled: true
+      position: at_depth
+      insertion_order: 3
+      depth: 1
+      role: 0
+
+    # 背景设定
+    - comment: "背景设定"
+      content: 作品/制造美人/背景设定.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 1
+      depth: 4
+      role: 0
+
+    # 玩家角色
+    - comment: "玩家角色_{{user}}"
+      content: 作品/制造美人/玩家角色_{{user}}.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 2
+      depth: 4
+      role: 0
+
+    # 其他角色设定
+    - comment: "角色设定_林心悦"
+      content: 作品/制造美人/角色设定_林心悦.xyaml
+      enabled: true
+      position: after_char
+      insertion_order: 1
+      depth: 4
+      role: 0
+
+    - comment: "角色设定_付潇潇"
+      content: 作品/制造美人/角色设定_付潇潇.xyaml
+      enabled: true
+      position: after_char
+      insertion_order: 2
+      depth: 4
+      role: 0
+
+    - comment: "角色设定_祝伊伊"
+      content: 作品/制造美人/角色设定_祝伊伊.xyaml
+      enabled: true
+      position: after_char
+      insertion_order: 3
+      depth: 4
+      role: 0
+
+    - comment: "角色设定_秦雯"
+      content: 作品/制造美人/角色设定_秦雯.xyaml
+      enabled: true
+      position: after_char
+      insertion_order: 4
+      depth: 4
+      role: 0
+
+    # 分阶段角色设定 - 林心悦
+    - comment: "林心悦分阶段设定"
+      content: 作品/制造美人/林心悦分阶段设定.xyaml
+      enabled: true
+      position: after_char
+      insertion_order: 5
+      depth: 4
+      role: 0
+
+    # 分阶段角色设定 - 付潇潇
+    - comment: "付潇潇分阶段设定"
+      content: 作品/制造美人/付潇潇分阶段设定.xyaml
+      enabled: true
+      position: after_char
+      insertion_order: 6
+      depth: 4
+      role: 0
+
+    # 分阶段角色设定 - 秦雯
+    - comment: "秦雯分阶段设定"
+      content: 作品/制造美人/秦雯分阶段设定.xyaml
+      enabled: true
+      position: after_char
+      insertion_order: 7
+      depth: 4
+      role: 0
+
+    # 动态世界内容
+    - comment: "动态世界内容"
+      content: 作品/制造美人/动态世界内容.xyaml
+      enabled: true
+      position: after_char
+      insertion_order: 8
+      depth: 4
+      role: 0

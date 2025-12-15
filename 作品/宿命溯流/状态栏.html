@@ -1,0 +1,89 @@
+<div class="mvu-status-bar" style="
+    padding: 12px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ebf0 100%);
+    border: 2px solid #4a90e2;
+    border-radius: 10px;
+    font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+    color: #2c3e50;
+    font-size: 0.9em;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+">
+    <!-- 标题与时间 -->
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #4a90e2; padding-bottom: 8px; margin-bottom: 10px;">
+        <span style="font-size: 1.1em; font-weight: bold; color: #4a90e2;">⏰ 宿命溯流</span>
+        <span style="font-weight: bold;">📅 {{getvar::时间系统.当前日期}}</span>
+    </div>
+
+    <!-- 世界信息 -->
+    <div style="background: #fff; padding: 8px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #3498db;">
+        <div style="font-weight: bold; color: #3498db; margin-bottom: 5px;">🌍 世界状态</div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.9em;">
+            <span>历史阶段: <strong>{{getvar::宿命系统.历史阶段}}</strong></span>
+            <span>偏离度: <strong style="color: {{#if (gte (getvar::世界变化.历史偏离度) 30)}}#e74c3c{{else}}#27ae60{{/if}};">{{getvar::世界变化.历史偏离度}}%</strong></span>
+        </div>
+    </div>
+
+    <!-- 好感度 -->
+    <div style="background: #fff; padding: 8px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #e91e63;">
+        <div style="font-weight: bold; color: #e91e63; margin-bottom: 5px;">💕 人物好感度</div>
+
+        <!-- 祝伊伊好感度 -->
+        <div style="margin-bottom: 6px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+                <span style="font-weight: bold;">👧 祝伊伊</span>
+                <span style="font-size: 0.85em;">
+                    <span style="background: #fce4ec; color: #e91e63; padding: 2px 6px; border-radius: 3px; margin-right: 5px;">{{getvar::好感度.祝伊伊.等级}}</span>
+                    <strong>{{getvar::好感度.祝伊伊.数值}}</strong>
+                </span>
+            </div>
+            <div style="background: #f0f0f0; height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="background: linear-gradient(90deg, #ff6b9d 0%, #c44569 100%); height: 100%; width: {{#if (gte (getvar::好感度.祝伊伊.数值) 0)}}{{getvar::好感度.祝伊伊.数值}}{{else}}0{{/if}}%; transition: width 0.3s;"></div>
+            </div>
+        </div>
+
+        <!-- 陈姝（母亲）好感度 -->
+        <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+                <span style="font-weight: bold;">👩 陈姝（母亲）</span>
+                <span style="font-size: 0.85em;">
+                    <span style="background: #fff3e0; color: #f57c00; padding: 2px 6px; border-radius: 3px; margin-right: 5px;">{{getvar::好感度.陈姝.等级}}</span>
+                    <strong>{{getvar::好感度.陈姝.数值}}</strong>
+                </span>
+            </div>
+            <div style="background: #f0f0f0; height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="background: linear-gradient(90deg, #ffa726 0%, #fb8c00 100%); height: 100%; width: {{getvar::好感度.陈姝.数值}}%; transition: width 0.3s;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 宿命系统 -->
+    <div style="background: #fff; padding: 8px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #9c27b0;">
+        <div style="font-weight: bold; color: #9c27b0; margin-bottom: 5px;">🔮 宿命系统</div>
+        <div style="margin-bottom: 6px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+                <span>回忆梦境能量</span>
+                <strong style="color: {{#if (gte (getvar::宿命系统.宿命值) 100)}}#e74c3c{{else}}#9c27b0{{/if}};">{{getvar::宿命系统.宿命值}}/100</strong>
+            </div>
+            <div style="background: #f0f0f0; height: 10px; border-radius: 5px; overflow: hidden;">
+                <div style="background: linear-gradient(90deg, #ab47bc 0%, #8e24aa 100%); height: 100%; width: {{getvar::宿命系统.宿命值}}%; transition: width 0.3s;"></div>
+            </div>
+        </div>
+        <div style="font-size: 0.85em; color: #7f8c8d; background: #f9f9f9; padding: 5px; border-radius: 4px;">
+            📍 下一事件: {{getvar::宿命系统.下一事件}}
+        </div>
+    </div>
+
+    <!-- 角色状态 -->
+    <div style="background: #fff; padding: 8px; border-radius: 6px; border-left: 4px solid #00bcd4;">
+        <div style="font-weight: bold; color: #00bcd4; margin-bottom: 5px;">📊 当前状态</div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.9em;">
+            <span>位置: <strong>{{getvar::角色状态.user状态.当前位置}}</strong></span>
+            <span>心情: <strong>{{getvar::角色状态.user状态.心情}}</strong></span>
+            <span>身体: <strong>{{getvar::角色状态.user状态.身体}}</strong></span>
+        </div>
+        <div style="margin-top: 5px; font-size: 0.85em; color: #7f8c8d;">
+            伊伊路线: <span style="background: #e0f7fa; color: #00838f; padding: 2px 6px; border-radius: 3px;">{{getvar::角色状态.祝伊伊状态.发展路线}}</span>
+        </div>
+    </div>
+</div>
