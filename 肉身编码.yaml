@@ -1,0 +1,113 @@
+# 基础信息
+name: 肉身编码
+creator: "Nova"
+character_version: "1.0"
+
+# 主要字段映射
+fields:
+  description: 作品/肉身编码/角色设定_沈馨.xyaml
+  personality: ""
+  scenario: 作品/肉身编码/背景设定.xyaml
+  first_mes: 作品/肉身编码/开场白.md
+  mes_example: ""
+  creator_notes: ""
+  system_prompt: ""
+  post_history_instructions: ""
+
+# 扩展字段
+extensions:
+  talkativeness: "0.5"
+  fav: false
+  world: 肉身编码
+  status_bar: 作品/肉身编码/状态栏.html
+
+# 脚本配置
+scripts:
+  - name: "变量结构设计"
+    content: 作品/肉身编码/变量结构.js
+    enabled: true
+
+# 角色书配置
+character_book:
+  name: 肉身编码
+  entries:
+    # [InitVar]初始化条目
+    - comment: "[initvar]变量初始化"
+      content: 作品/肉身编码/[initvar]变量初始化.xyaml
+      enabled: false
+      position: before_char
+      insertion_order: 101
+      depth: 4
+      role: 0
+
+    # 变量更新规则
+    - comment: "[mvu_update]变量更新规则"
+      content: 作品/肉身编码/[mvu_update]变量更新规则.xyaml
+      enabled: true
+      position: at_depth
+      insertion_order: 1
+      depth: 1
+      role: 0
+
+    # 变量列表
+    - comment: "变量列表"
+      content: 作品/肉身编码/变量列表.xyaml
+      enabled: true
+      position: at_depth
+      insertion_order: 2
+      depth: 1
+      role: 0
+
+    # 变量输出格式
+    - comment: "[mvu_update]变量输出格式"
+      content: 作品/肉身编码/[mvu_update]变量输出格式.xyaml
+      enabled: true
+      position: at_depth
+      insertion_order: 3
+      depth: 1
+      role: 0
+
+    # FPA技术文档
+    - comment: "FPA肉体可编程架构技术文档"
+      content: 作品/肉身编码/血肉编码.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 1
+      depth: 4
+      role: 0
+
+    # 玩家角色
+    - comment: "玩家角色_{{user}}"
+      content: 作品/肉身编码/玩家角色_{{user}}.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 2
+      depth: 4
+      role: 0
+    
+    # 角色采访
+    - comment: "角色采访"
+      content: 作品/肉身编码/角色采访_沈馨.xyaml
+      enabled: true
+      position: after_char
+      insertion_order: 1
+      depth: 4
+      role: 0
+
+    # 对话补充
+    - comment: "对话补充"
+      content: 作品/肉身编码/对话补充_沈馨.xyaml
+      enabled: true
+      position: after_char
+      insertion_order: 2
+      depth: 4
+      role: 0
+
+    # NPC反馈
+    - comment: "NPC反馈"
+      content: 作品/肉身编码/NPC反馈.xyaml
+      enabled: true
+      position: after_char
+      insertion_order: 3
+      depth: 4
+      role: 0

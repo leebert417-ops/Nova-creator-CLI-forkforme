@@ -1,0 +1,128 @@
+# 基础信息
+name: 制造美人2.0
+creator: ""
+character_version: "1.1"
+
+# 主要字段映射
+fields:
+  description: ""
+  personality: ""
+  scenario: ""
+  first_mes: 作品/制造美人2.0/开场白.md
+  mes_example: ""
+  creator_notes: 作品/制造美人2.0/creator_notes.txt
+  system_prompt: ""
+  post_history_instructions: ""
+
+# 扩展字段
+extensions:
+  talkativeness: "0.5"
+  fav: false
+  world: 制造美人2.0
+  status_bar: 作品/制造美人2.0/状态栏.html
+
+# 脚本配置
+scripts:
+  - name: "变量结构设计"
+    content: 作品/制造美人2.0/变量结构.js
+    enabled: true
+
+# 角色书配置
+character_book:
+  name: 制造美人2.0
+  entries:
+    # [InitVar]初始化条目
+    - comment: "[initvar]变量初始化"
+      content: 作品/制造美人2.0/[initvar]变量初始化.xyaml
+      enabled: false
+      position: before_char
+      insertion_order: 101
+      depth: 4
+      role: 0
+
+    # 变量更新规则
+    - comment: "[mvu_update]变量更新规则"
+      content: 作品/制造美人2.0/[mvu_update]变量更新规则.xyaml
+      enabled: true
+      position: at_depth
+      insertion_order: 1
+      depth: 1
+      role: 0
+
+    # 变量列表
+    - comment: "变量列表"
+      content: 作品/制造美人2.0/变量列表.xyaml
+      enabled: true
+      position: at_depth
+      insertion_order: 2
+      depth: 1
+      role: 0
+
+    # 变量输出格式
+    - comment: "[mvu_update]变量输出格式"
+      content: 作品/制造美人2.0/[mvu_update]变量输出格式.xyaml
+      enabled: true
+      position: at_depth
+      insertion_order: 3
+      depth: 1
+      role: 0
+
+    # 叙事控制
+    - comment: "[narrative]防全知规则"
+      content: 作品/制造美人2.0/[narrative]防全知规则.xyaml
+      enabled: true
+      position: at_depth
+      insertion_order: 4
+      depth: 4
+      role: 0
+
+    # 背景设定
+    - comment: "背景设定"
+      content: 作品/制造美人2.0/背景设定.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 1
+      depth: 4
+      role: 0
+
+    # 玩家角色
+    - comment: "玩家角色_{{user}}"
+      content: 作品/制造美人2.0/玩家角色_{{user}}.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 2
+      depth: 4
+      role: 0
+
+    # 主要角色设定
+    - comment: "角色设定_陈环"
+      content: 作品/制造美人2.0/角色设定_陈环.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 3
+      depth: 4
+      role: 0
+
+    - comment: "角色设定_刘奈妲"
+      content: 作品/制造美人2.0/角色设定_刘奈妲.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 4
+      depth: 4
+      role: 0
+
+    - comment: "角色设定_付娅"
+      content: 作品/制造美人2.0/角色设定_付娅.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 4
+      depth: 4
+      role: 0
+
+    - comment: "角色设定_关雅"
+      content: 作品/制造美人2.0/角色设定_关雅.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 5
+      depth: 4
+      role: 0

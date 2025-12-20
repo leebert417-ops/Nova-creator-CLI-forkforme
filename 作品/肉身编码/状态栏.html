@@ -1,0 +1,505 @@
+<head>
+    <style>
+        :root {
+            --primary: #d63384; /* 肉感粉色 */
+            --secondary: #6610f2; /* 科技紫 */
+            --accent: #fd7e14; /* 活力橙 */
+            --surface: #f8f9fa;
+            --surface-strong: #ffffff;
+            --border: rgba(214, 51, 132, 0.2);
+            --text-main: #212529;
+            --text-muted: #6c757d;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+            background: transparent;
+            color: var(--text-main);
+            padding: 10px;
+        }
+        .status-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            backdrop-filter: blur(10px);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+        }
+        .title { font-size: 1.2rem; font-weight: bold; color: var(--primary); }
+        .meta-info { font-size: 0.9rem; color: var(--text-muted); display: flex; gap: 10px; }
+
+        .location-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: var(--surface);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        .location-label { color: var(--text-muted); }
+        .location-value { font-weight: bold; color: var(--secondary); }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+
+        .stat-box {
+            background: var(--surface);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+        .stat-value { font-size: 1.1rem; font-weight: bold; color: var(--secondary); }
+
+        .progress-container {
+            width: 100%;
+            margin-top: 5px;
+        }
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .tab-nav { display: flex; gap: 5px; margin-bottom: 10px; }
+        .tab-btn {
+            padding: 6px 12px;
+            border: none;
+            background: var(--surface);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .appearance-item {
+            background: var(--surface);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .appearance-title {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .appearance-detail {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            line-height: 1.5;
+            margin-bottom: 3px;
+        }
+        .appearance-feature {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .modification-record {
+            background: var(--surface);
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+            margin-bottom: 8px;
+        }
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        .record-title {
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+        .record-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .record-content {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+        .record-remark {
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .current-modification {
+            background: linear-gradient(135deg, rgba(214, 51, 132, 0.1), rgba(102, 16, 242, 0.1));
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+        }
+        .current-mod-title {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+        .current-mod-info {
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+        .current-mod-label {
+            color: var(--text-muted);
+            display: inline-block;
+            width: 80px;
+        }
+        .current-mod-value {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .empty-tip {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .scrollable {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .scrollable::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollable::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        .scrollable::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+    </style>
+    <script type="module">
+        function updateBar(id, value, max = 100, color = '') {
+            const val = _.clamp(parseFloat(value) || 0, 0, max);
+            const pct = (val / max) * 100;
+            $(`#${id}-val`).text(val);
+            $(`#${id}-bar`).css('width', `${pct}%`);
+            if (color) $(`#${id}-bar`).css('background-color', color);
+        }
+
+        function populate() {
+            try {
+                const vars = getAllVariables();
+                const data = vars.stat_data || {};
+
+                /* 基础信息 */
+                $('#date-display').text(_.get(data, '时间.日期', '2025年9月1日'));
+                $('#time-display').text(_.get(data, '时间.时刻', '上午'));
+                $('#user-location').text(_.get(data, 'user.当前位置', '办公室'));
+                $('#shenxin-location').text(_.get(data, '沈馨.当前位置', '教室'));
+                $('#shenxin-outfit').text(_.get(data, '沈馨.当前穿着', '宽松卫衣和牛仔裤'));
+
+                /* 基础状态 */
+                updateBar('favor', _.get(data, '沈馨.好感度', 0), 100, '#ff6b6b');
+                updateBar('shame', _.get(data, '沈馨.羞耻度', 80), 100, '#ff922b');
+                updateBar('corruption', _.get(data, '沈馨.堕落度', 0), 100, '#ae3ec9');
+                updateBar('anxiety', _.get(data, '沈馨.焦虑值', 90), 100, '#20c997');
+
+                /* 外貌详情 */
+                const appearance = _.get(data, '沈馨.外貌', {});
+
+                // 胸部
+                $('#chest-cup').text(_.get(appearance, '胸部.罩杯', 'G罩杯'));
+                $('#chest-desc').text(_.get(appearance, '胸部.描述', ''));
+                $('#chest-feature').text(_.get(appearance, '胸部.特征', ''));
+
+                // 臀部
+                $('#hip-size').text(_.get(appearance, '臀部.尺寸', '标准偏丰满'));
+                $('#hip-desc').text(_.get(appearance, '臀部.描述', ''));
+                $('#hip-feature').text(_.get(appearance, '臀部.特征', ''));
+
+                // 腰部
+                $('#waist-size').text(_.get(appearance, '腰部.尺寸', '纤细'));
+                $('#waist-desc').text(_.get(appearance, '腰部.描述', ''));
+                $('#waist-feature').text(_.get(appearance, '腰部.特征', ''));
+
+                // 腿部
+                $('#leg-desc').text(_.get(appearance, '腿部.描述', ''));
+                $('#leg-feature').text(_.get(appearance, '腿部.特征', ''));
+
+                // 面容
+                $('#face-shape').text(_.get(appearance, '面容.脸型', '圆脸带婴儿肥'));
+                $('#face-eyes').text(_.get(appearance, '面容.眼睛', ''));
+                $('#face-nose').text(_.get(appearance, '面容.鼻子', ''));
+                $('#face-lips').text(_.get(appearance, '面容.嘴唇', ''));
+                $('#face-desc').text(_.get(appearance, '面容.描述', ''));
+
+                // 皮肤
+                $('#skin-color').text(_.get(appearance, '皮肤.肤色', '白皙'));
+                $('#skin-texture').text(_.get(appearance, '皮肤.质感', ''));
+                $('#skin-feature').text(_.get(appearance, '皮肤.特征', ''));
+
+                // 头发
+                $('#hair-length').text(_.get(appearance, '头发.长度', ''));
+                $('#hair-style').text(_.get(appearance, '头发.发型', ''));
+                $('#hair-feature').text(_.get(appearance, '头发.特征', ''));
+
+                // 身高体重
+                $('#height').text(_.get(appearance, '身高体重.身高', '158cm'));
+                $('#weight').text(_.get(appearance, '身高体重.体重', '约52kg'));
+                $('#body-type').text(_.get(appearance, '身高体重.体型', ''));
+
+                /* 改造系统 */
+                const records = _.get(data, '沈馨.改造记录', []);
+                const $recordsList = $('#modifications-list');
+                $recordsList.empty();
+
+                if (_.isEmpty(records)) {
+                    $recordsList.html('<div class="empty-tip">暂无改造记录</div>');
+                } else {
+                    _.forEach(records, (record) => {
+                        const remarkHtml = record.备注 ? `<div class="record-remark">备注: ${record.备注}</div>` : '';
+                        $recordsList.append(`
+                            <div class="modification-record">
+                                <div class="record-header">
+                                    <span class="record-title">${record.部位} - ${record.改造内容}</span>
+                                    <span class="record-date">${record.日期}</span>
+                                </div>
+                                <div class="record-content">
+                                    <div>改造前: ${record.改造前状态}</div>
+                                    <div>改造后: ${record.改造后状态}</div>
+                                </div>
+                                ${remarkHtml}
+                            </div>
+                        `);
+                    });
+                }
+
+                /* 当前改造项 */
+                const currentMod = _.get(data, '沈馨.当前改造项', {});
+                const isInProgress = _.get(currentMod, '是否进行中', false);
+
+                if (isInProgress) {
+                    $('.current-modification').show();
+                    $('#current-part').text(_.get(currentMod, '部位', '无'));
+                    $('#current-target').text(_.get(currentMod, '目标', '无'));
+                    $('#current-start').text(_.get(currentMod, '开始日期', ''));
+                    $('#current-end').text(_.get(currentMod, '预计完成日期', ''));
+                    updateBar('current-progress', _.get(currentMod, '进度', 0), 100, '#0ca678');
+                } else {
+                    $('.current-modification').hide();
+                }
+
+            } catch (e) {
+                console.error("Status Bar Error:", e);
+                $('#status-card').html(`<div style="color:red">Error: ${e.message}</div>`);
+            }
+        }
+
+        async function init() {
+            await waitGlobalInitialized('Mvu');
+            populate();
+
+            $('.tab-btn').on('click', function() {
+                $('.tab-btn').removeClass('active');
+                $(this).addClass('active');
+                $('.tab-content').removeClass('active');
+                $(`#content-${$(this).data('tab')}`).addClass('active');
+            });
+        }
+
+        $(errorCatched(init));
+    </script>
+</head>
+<body>
+    <div class="status-card" id="status-card">
+        <div class="header">
+            <div class="title">肉身编码 v0.2</div>
+            <div class="meta-info">
+                <span id="date-display">2025/9/1</span>
+                <span id="time-display">上午</span>
+            </div>
+        </div>
+
+        <div class="location-row">
+            <span><span class="location-label">教授位置:</span> <span class="location-value" id="user-location">办公室</span></span>
+            <span><span class="location-label">沈馨位置:</span> <span class="location-value" id="shenxin-location">教室</span></span>
+        </div>
+
+        <div style="text-align:center; font-size:0.85rem; color:var(--text-muted)">
+            当前穿着: <span style="color:var(--text-main); font-weight:500" id="shenxin-outfit">宽松卫衣和牛仔裤</span>
+        </div>
+
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="status">基础状态</button>
+            <button class="tab-btn" data-tab="appearance">外貌详情</button>
+            <button class="tab-btn" data-tab="modification">改造系统</button>
+        </div>
+
+        <!-- 基础状态标签页 -->
+        <div id="content-status" class="tab-content active">
+            <div class="grid-2">
+                <div class="stat-box">
+                    <span class="stat-label">好感度</span>
+                    <span class="stat-value" id="favor-val">0</span>
+                    <div class="progress-container"><div class="progress-bar-bg"><div id="favor-bar" class="progress-bar-fill"></div></div></div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">焦虑值</span>
+                    <span class="stat-value" id="anxiety-val">90</span>
+                    <div class="progress-container"><div class="progress-bar-bg"><div id="anxiety-bar" class="progress-bar-fill"></div></div></div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">羞耻度</span>
+                    <span class="stat-value" id="shame-val">80</span>
+                    <div class="progress-container"><div class="progress-bar-bg"><div id="shame-bar" class="progress-bar-fill"></div></div></div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">堕落度</span>
+                    <span class="stat-value" id="corruption-val">0</span>
+                    <div class="progress-container"><div class="progress-bar-bg"><div id="corruption-bar" class="progress-bar-fill"></div></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 外貌详情标签页 -->
+        <div id="content-appearance" class="tab-content">
+            <div class="scrollable">
+                <!-- 身高体重 -->
+                <div class="appearance-item">
+                    <div class="appearance-title">📏 身高体重</div>
+                    <div class="appearance-detail">身高: <span id="height">158cm</span> | 体重: <span id="weight">约52kg</span></div>
+                    <div class="appearance-feature" id="body-type">娇小玲珑，肉感适中</div>
+                </div>
+
+                <!-- 胸部 -->
+                <div class="appearance-item">
+                    <div class="appearance-title">🍑 胸部 (<span id="chest-cup">G罩杯</span>)</div>
+                    <div class="appearance-detail" id="chest-desc">与娇小身材极不相称的硕大双峰</div>
+                    <div class="appearance-feature" id="chest-feature">自然下垂感，触感柔软</div>
+                </div>
+
+                <!-- 臀部 -->
+                <div class="appearance-item">
+                    <div class="appearance-title">🍑 臀部 (<span id="hip-size">标准偏丰满</span>)</div>
+                    <div class="appearance-detail" id="hip-desc">圆润饱满，微微上翘</div>
+                    <div class="appearance-feature" id="hip-feature">紧致有弹性</div>
+                </div>
+
+                <!-- 腰部 -->
+                <div class="appearance-item">
+                    <div class="appearance-title">⏳ 腰部 (<span id="waist-size">纤细</span>)</div>
+                    <div class="appearance-detail" id="waist-desc">腰身纤细但不骨感</div>
+                    <div class="appearance-feature" id="waist-feature">盈盈一握</div>
+                </div>
+
+                <!-- 腿部 -->
+                <div class="appearance-item">
+                    <div class="appearance-title">🦵 腿部</div>
+                    <div class="appearance-detail" id="leg-desc">大腿肉肉的，小腿匀称</div>
+                    <div class="appearance-feature" id="leg-feature">白皙柔软</div>
+                </div>
+
+                <!-- 面容 -->
+                <div class="appearance-item">
+                    <div class="appearance-title">😊 面容 (<span id="face-shape">圆脸带婴儿肥</span>)</div>
+                    <div class="appearance-detail">
+                        <div>眼睛: <span id="face-eyes">圆圆的杏眼</span></div>
+                        <div>鼻子: <span id="face-nose">小巧挺翘</span></div>
+                        <div>嘴唇: <span id="face-lips">粉嫩饱满</span></div>
+                    </div>
+                    <div class="appearance-feature" id="face-desc">典型的幼态脸</div>
+                </div>
+
+                <!-- 皮肤 -->
+                <div class="appearance-item">
+                    <div class="appearance-title">✨ 皮肤 (<span id="skin-color">白皙</span>)</div>
+                    <div class="appearance-detail" id="skin-texture">细腻光滑</div>
+                    <div class="appearance-feature" id="skin-feature">容易泛起红晕</div>
+                </div>
+
+                <!-- 头发 -->
+                <div class="appearance-item">
+                    <div class="appearance-title">💇 头发</div>
+                    <div class="appearance-detail">
+                        <div><span id="hair-length">黑长直，长至腰部</span></div>
+                        <div><span id="hair-style">高马尾，总是乱糟糟的</span></div>
+                    </div>
+                    <div class="appearance-feature" id="hair-feature">发质柔顺但不爱打理</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 改造系统标签页 -->
+        <div id="content-modification" class="tab-content">
+            <!-- 当前改造项 -->
+            <div class="current-modification" style="display:none;">
+                <div class="current-mod-title">🔬 当前改造进行中</div>
+                <div class="current-mod-info">
+                    <span class="current-mod-label">部位:</span>
+                    <span class="current-mod-value" id="current-part">无</span>
+                </div>
+                <div class="current-mod-info">
+                    <span class="current-mod-label">目标:</span>
+                    <span class="current-mod-value" id="current-target">无</span>
+                </div>
+                <div class="current-mod-info">
+                    <span class="current-mod-label">开始日期:</span>
+                    <span class="current-mod-value" id="current-start">-</span>
+                </div>
+                <div class="current-mod-info">
+                    <span class="current-mod-label">预计完成:</span>
+                    <span class="current-mod-value" id="current-end">-</span>
+                </div>
+                <div style="margin-top:8px">
+                    <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:#666;margin-bottom:4px">
+                        <span>进度</span>
+                        <span><span id="current-progress-val">0</span>%</span>
+                    </div>
+                    <div class="progress-container"><div class="progress-bar-bg"><div id="current-progress-bar" class="progress-bar-fill"></div></div></div>
+                </div>
+            </div>
+
+            <!-- 改造记录列表 -->
+            <div style="margin-top:12px">
+                <div style="font-weight:bold; color:var(--secondary); margin-bottom:8px; font-size:0.95rem">📋 改造记录</div>
+                <div id="modifications-list" class="scrollable">
+                    <!-- 动态填充 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
