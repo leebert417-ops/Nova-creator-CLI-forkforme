@@ -1,0 +1,89 @@
+# 基础信息
+name: 润水社区
+creator: ""
+character_version: "1.0"
+
+# 主要字段映射
+fields:
+  description: ""
+  personality: ""
+  scenario: ""
+  first_mes: 作品/润水社区/开场白.md
+  mes_example: ""
+  creator_notes: ""
+  system_prompt: ""
+  post_history_instructions: ""
+
+# 扩展字段
+extensions:
+  talkativeness: "0.5"
+  fav: false
+  world: 润水社区
+  # status_bar: 作品/润水社区/状态栏.html
+
+# 角色书配置
+character_book:
+  name: 润水社区
+  entries:
+    # 背景设定
+    - comment: "背景设定"
+      content: 作品/润水社区/背景设定.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 10
+      depth: 4
+      role: 0
+
+    # 玩家角色
+    - comment: "玩家角色_{{user}}"
+      content: 作品/润水社区/玩家角色_{{user}}.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 20
+      depth: 4
+      role: 0
+
+    # 陈环角色设定
+    - comment: "角色设定_陈环"
+      content: 作品/润水社区/角色设定_陈环.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 30
+      depth: 4
+      role: 0
+
+    # 刘奈妲角色设定
+    - comment: "角色设定_刘奈妲"
+      content: 作品/润水社区/角色设定_刘奈妲.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 31
+      depth: 4
+      role: 0
+
+    # 沈馨角色设定
+    - comment: "角色设定_沈馨"
+      content: 作品/润水社区/角色设定_沈馨.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 32
+      depth: 4
+      role: 0
+
+    # 萧潇角色设定
+    - comment: "角色设定_萧潇"
+      content: 作品/润水社区/角色设定_萧潇.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 33
+      depth: 4
+      role: 0
+
+    # 祝伊伊角色设定
+    - comment: "角色设定_祝伊伊"
+      content: 作品/润水社区/角色设定_祝伊伊.xyaml
+      enabled: true
+      position: before_char
+      insertion_order: 34
+      depth: 4
+      role: 0
